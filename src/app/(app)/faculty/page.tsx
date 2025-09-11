@@ -2,13 +2,17 @@ import { facultyData } from '@/lib/data';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FacultyProfile } from '@/components/app/faculty-profile';
+import { AddFaculty } from '@/components/app/add-faculty';
 
 export default function FacultyPage() {
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight">Faculty Members</h1>
-        <p className="text-muted-foreground">Browse and manage faculty profiles and workloads.</p>
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight">Faculty Members</h1>
+          <p className="text-muted-foreground">Browse and manage faculty profiles and workloads.</p>
+        </div>
+        <AddFaculty />
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {facultyData.map((faculty) => (
