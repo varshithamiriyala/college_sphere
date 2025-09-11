@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { generateTimetableAction } from '@/app/actions';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -18,8 +18,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Input } from '../ui/input';
 import { facultyData, sampleTimetable } from '@/lib/data';
 import { MultiSelect } from '../ui/multi-select';
-import { parse, format, addMinutes, isWithinInterval, set } from 'date-fns';
+import { parse, format, addMinutes } from 'date-fns';
 
+const facultySubjectMappingSchema = z.record(z.array(z.string()));
 
 const FormSchema = z.object({
   classrooms: z.array(z.string()).min(1, 'Please select at least one classroom.'),
@@ -33,7 +34,7 @@ const FormSchema = z.object({
   numTimetables: z.string(),
   maxClassesPerDay: z.string().optional(),
   classesPerSubject: z.string().optional(),
-  facultySubjectMapping: z.string().optional(),
+  facultySubjectMapping: facultySubjectMappingSchema.optional(),
   specialConstraints: z.string().optional(),
 });
 
@@ -59,9 +60,6 @@ const facultySubjectMap = facultyData.reduce((acc, faculty) => {
     return acc;
 }, {} as Record<string, string[]>);
 
-const facultySubjectMappingString = Object.entries(facultySubjectMap)
-    .map(([faculty, subjects]) => `${faculty}: ${subjects.join(', ')}`)
-    .join('; ');
 
 // Helper function to generate time slots
 const generateTimeSlots = (start: string, end: string, duration: number, breaks: string) => {
@@ -121,10 +119,18 @@ export default function TimetableGenerator() {
       numTimetables: '3',
       maxClassesPerDay: '5',
       classesPerSubject: 'Data Structures: 3 per week, Algorithms: 3 per week',
-      facultySubjectMapping: facultySubjectMappingString,
+      facultySubjectMapping: facultySubjectMap,
       specialConstraints: 'No classes on Friday after 3 PM.',
     },
   });
+
+  const selectedFaculty = useWatch({
+    control: form.control,
+    name: 'faculty',
+  });
+
+  const allSubjectsOptions = availableSubjects.map(v => ({ value: v, label: v }));
+
 
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
@@ -148,8 +154,16 @@ export default function TimetableGenerator() {
         return;
       }
 
+      const facultySubjectMappingString = data.facultySubjectMapping 
+        ? Object.entries(data.facultySubjectMapping)
+            .filter(([faculty, subjects]) => data.faculty.includes(faculty) && subjects.length > 0)
+            .map(([faculty, subjects]) => `${faculty}: ${subjects.join(', ')}`)
+            .join('; ')
+        : undefined;
+
       const input = {
         ...data,
+        facultySubjectMapping: facultySubjectMappingString,
         timings: timeSlots,
         numTimetables: parseInt(data.numTimetables, 10),
       };
@@ -348,11 +362,11 @@ export default function TimetableGenerator() {
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField
               control={form.control}
               name="classesPerSubject"
               render={({ field }) => (
-                <FormItem className="md:col-span-2">
+                <FormItem>
                   <FormLabel>Number of Classes per Subject (per week/day)</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., Data Structures: 4 per week, Algorithms: 3 per week" {...field} rows={3} />
@@ -361,19 +375,37 @@ export default function TimetableGenerator() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="facultySubjectMapping"
-              render={({ field }) => (
-                <FormItem className="md:col-span-2">
-                  <FormLabel>Faculty-to-Subject Mapping (Optional)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., Dr. Evelyn Reed: Data Structures, Algorithms; Dr. Samuel Green: Circuit Theory" {...field} rows={3} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Faculty-to-Subject Mapping</CardTitle>
+                    <CardDescription>Assign subjects that each selected faculty member can teach.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 pt-4">
+                    {selectedFaculty.map((facultyName) => (
+                        <FormField
+                            key={facultyName}
+                            control={form.control}
+                            name={`facultySubjectMapping.${facultyName}`}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{facultyName}</FormLabel>
+                                    <MultiSelect
+                                        options={allSubjectsOptions}
+                                        selected={field.value || []}
+                                        onChange={field.onChange}
+                                        placeholder="Select subjects..."
+                                    />
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    ))}
+                    {selectedFaculty.length === 0 && (
+                        <p className="text-sm text-muted-foreground">Select faculty members above to assign subjects.</p>
+                    )}
+                </CardContent>
+            </Card>
              <FormField
               control={form.control}
               name="specialConstraints"
@@ -387,7 +419,6 @@ export default function TimetableGenerator() {
                 </FormItem>
               )}
             />
-          </div>
           <FormField
             control={form.control}
             name="numTimetables"
