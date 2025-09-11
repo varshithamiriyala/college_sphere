@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -25,35 +26,44 @@ import Link from 'next/link';
 import { AddSubject } from '@/components/app/add-subject';
 import { AddClassroom } from '@/components/app/add-classroom';
 import { AddBatch } from '@/components/app/add-batch';
+import { EntityListSheet } from '@/components/app/entity-list-sheet';
 
 export default function DashboardPage() {
   const totalFaculty = facultyData.length;
-  const totalSubjects = new Set(sampleTimetable.map(item => item.subject)).size;
-  const totalClassrooms = new Set(sampleTimetable.map(item => item.room)).size;
+  const uniqueSubjects = [...new Set(sampleTimetable.map(item => item.subject))];
+  const uniqueClassrooms = [...new Set(sampleTimetable.map(item => item.room))];
   const todaysClasses = sampleTimetable.filter(
     item => item.day === 'Monday'
-  ).length; // Simulating 'Today' is Monday
+  );
 
   const summaryCards = [
     {
       title: 'Total Faculty',
       value: totalFaculty,
       icon: <Users className="h-6 w-6 text-muted-foreground" />,
+      items: facultyData.map(f => f.name),
+      listTitle: 'All Faculty Members',
     },
     {
       title: 'Total Subjects',
-      value: totalSubjects,
+      value: uniqueSubjects.length,
       icon: <Book className="h-6 w-6 text-muted-foreground" />,
+      items: uniqueSubjects,
+      listTitle: 'All Subjects',
     },
     {
       title: 'Total Classrooms',
-      value: totalClassrooms,
+      value: uniqueClassrooms.length,
       icon: <Building className="h-6 w-6 text-muted-foreground" />,
+      items: uniqueClassrooms,
+      listTitle: 'All Classrooms',
     },
     {
       title: "Today's Classes",
-      value: todaysClasses,
+      value: todaysClasses.length,
       icon: <ClipboardList className="h-6 w-6 text-muted-foreground" />,
+      items: todaysClasses.map(c => `${c.subject} at ${c.time} in ${c.room}`),
+      listTitle: "Today's Schedule (Monday)",
     },
   ];
 
@@ -200,17 +210,24 @@ export default function DashboardPage() {
       {/* Summary Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {summaryCards.map(card => (
-          <Card key={card.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {card.title}
-              </CardTitle>
-              {card.icon}
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{card.value}</div>
-            </CardContent>
-          </Card>
+          <EntityListSheet 
+            key={card.title} 
+            title={card.listTitle} 
+            description={`A list of all ${card.title.toLowerCase()} in the system.`}
+            items={card.items}
+          >
+            <Card className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  {card.title}
+                </CardTitle>
+                {card.icon}
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{card.value}</div>
+              </CardContent>
+            </Card>
+          </EntityListSheet>
         ))}
       </div>
 
@@ -262,3 +279,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+
