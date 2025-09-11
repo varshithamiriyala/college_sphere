@@ -22,6 +22,9 @@ import {
 } from 'lucide-react';
 import { facultyData, sampleTimetable } from '@/lib/data';
 import Link from 'next/link';
+import { AddSubject } from '@/components/app/add-subject';
+import { AddClassroom } from '@/components/app/add-classroom';
+import { AddBatch } from '@/components/app/add-batch';
 
 export default function DashboardPage() {
   const totalFaculty = facultyData.length;
@@ -83,41 +86,104 @@ export default function DashboardPage() {
       label: 'Add Faculty',
       icon: PlusCircle,
       href: '/faculty',
+      component: (
+        <Button
+          variant="outline"
+          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          asChild
+        >
+          <Link href="/faculty">
+            <PlusCircle className="h-6 w-6" />
+            <span className="text-center text-sm">Add Faculty</span>
+          </Link>
+        </Button>
+      ),
     },
     {
       label: 'Add Subject',
       icon: BookPlus,
       href: '#',
+      component: <AddSubject />,
     },
     {
       label: 'Add Classroom',
       icon: Home,
       href: '#',
+      component: <AddClassroom />,
     },
     {
       label: 'Add Batch',
       icon: Users2,
       href: '#',
+      component: <AddBatch />,
     },
     {
       label: 'Upload Data',
       icon: Upload,
       href: '#',
+      component: (
+         <Button
+          variant="outline"
+          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          asChild
+        >
+          <Link href="#">
+            <Upload className="h-6 w-6" />
+            <span className="text-center text-sm">Upload Data</span>
+          </Link>
+        </Button>
+      ),
     },
     {
       label: 'Generate Timetable',
       icon: CalendarPlus,
-      href: '/dashboard', // Assuming this is where the generator lives now
+      href: '/generate-timetable',
+       component: (
+         <Button
+          variant="outline"
+          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          asChild
+        >
+          <Link href="/generate-timetable">
+            <CalendarPlus className="h-6 w-6" />
+            <span className="text-center text-sm">Generate Timetable</span>
+          </Link>
+        </Button>
+      ),
     },
     {
       label: 'Schedule Fixed Class',
       icon: CalendarClock,
       href: '#',
+       component: (
+         <Button
+          variant="outline"
+          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          asChild
+        >
+          <Link href="#">
+            <CalendarClock className="h-6 w-6" />
+            <span className="text-center text-sm">Schedule Fixed Class</span>
+          </Link>
+        </Button>
+      ),
     },
     {
       label: 'Send Notification',
       icon: Bell,
       href: '#',
+       component: (
+         <Button
+          variant="outline"
+          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          asChild
+        >
+          <Link href="#">
+            <Bell className="h-6 w-6" />
+            <span className="text-center text-sm">Send Notification</span>
+          </Link>
+        </Button>
+      ),
     },
   ];
 
@@ -159,17 +225,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-2">
              {quickActions.map((action) => (
-              <Button
-                key={action.label}
-                variant="outline"
-                className="flex h-auto flex-col items-center justify-center gap-2 p-4"
-                asChild
-              >
-                <Link href={action.href}>
-                  <action.icon className="h-6 w-6" />
-                  <span className="text-center text-sm">{action.label}</span>
-                </Link>
-              </Button>
+              <div key={action.label}>
+                {action.component}
+              </div>
             ))}
           </CardContent>
         </Card>
