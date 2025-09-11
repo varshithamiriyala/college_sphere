@@ -25,6 +25,10 @@ const GenerateTimetableFromDataInputSchema = z.object({
     .max(5)
     .default(3)
     .describe('Number of conflict-free timetable options to generate (3-5).'),
+  collegeStartTime: z.string().optional().describe('The start time of the college day.'),
+  collegeEndTime: z.string().optional().describe('The end time of the college day.'),
+  periodDuration: z.number().optional().describe('The duration of each class period in minutes.'),
+  breakTimings: z.string().optional().describe('Comma-separated break time intervals, e.g., "11:00-11:15, 13:00-14:00".'),
   maxClassesPerDay: z.string().optional().describe('Maximum number of classes allowed per day.'),
   classesPerSubject: z.string().optional().describe('Specifies the number of classes to be conducted for each subject (e.g., "Data Structures: 4 per week").'),
   facultySubjectMapping: z.string().optional().describe('Mapping of which faculty can teach which subjects (e.g., "Dr. Reed: Data Structures, Algorithms").'),
@@ -62,9 +66,13 @@ const prompt = ai.definePrompt({
 - Batches: {{#each batches}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 - Subjects: {{#each subjects}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 - Faculty: {{#each faculty}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
-- Timings: {{#each timings}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- Available Time Slots: {{#each timings}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 
 **Constraints:**
+{{#if collegeStartTime}}- College Start Time: {{{collegeStartTime}}}{{/if}}
+{{#if collegeEndTime}}- College End Time: {{{collegeEndTime}}}{{/if}}
+{{#if periodDuration}}- Class Period Duration: {{{periodDuration}}} minutes{{/if}}
+{{#if breakTimings}}- Break Times: {{{breakTimings}}}{{/if}}
 {{#if maxClassesPerDay}}- Maximum classes per day: {{{maxClassesPerDay}}}{{/if}}
 {{#if classesPerSubject}}- Weekly classes per subject: {{{classesPerSubject}}}{{/if}}
 {{#if facultySubjectMapping}}- Faculty-Subject mapping: {{{facultySubjectMapping}}}{{/if}}
@@ -73,7 +81,7 @@ const prompt = ai.definePrompt({
 **Instructions:**
 1.  Generate {{{numTimetables}}} different timetable versions.
 2.  Ensure there are no conflicts: a faculty member, a classroom, or a batch cannot be in two places at once.
-3.  Strictly adhere to all provided constraints, including timings, class limits, and special requirements.
+3.  Strictly adhere to all provided constraints, including the available time slots, class limits, and special requirements. The generated class times must exactly match the slots provided in 'Available Time Slots'.
 4.  For each timetable option, return a single JSON string which is an array of objects.
 5.  Each object in the array represents a single class session and must include the keys: "day", "time", "room", "batch", "subject", and "faculty".
 6.  The final output must be a JSON object with a "timetables" key, which is an array of objects, where each object has a "timetable" key containing the JSON string of the generated timetable.
@@ -94,3 +102,5 @@ const generateTimetableFromDataFlow = ai.defineFlow(
     return output!;
   }
 );
+
+    

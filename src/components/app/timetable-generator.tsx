@@ -18,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Input } from '../ui/input';
 import { facultyData, sampleTimetable } from '@/lib/data';
 import { MultiSelect } from '../ui/multi-select';
+import { parse, format, addMinutes, isWithinInterval, set } from 'date-fns';
 
 
 const FormSchema = z.object({
@@ -25,7 +26,10 @@ const FormSchema = z.object({
   batches: z.array(z.string()).min(1, 'Please select at least one batch.'),
   subjects: z.array(z.string()).min(1, 'Please select at least one subject.'),
   faculty: z.array(z.string()).min(1, 'Please select at least one faculty member.'),
-  timings: z.string().min(1, 'Please provide at least one time slot.'),
+  collegeStartTime: z.string().min(1, 'Start time is required.'),
+  collegeEndTime: z.string().min(1, 'End time is required.'),
+  periodDuration: z.coerce.number().min(15, 'Duration must be at least 15 minutes.'),
+  breakTimings: z.string().optional(),
   numTimetables: z.string(),
   maxClassesPerDay: z.string().optional(),
   classesPerSubject: z.string().optional(),
@@ -45,7 +49,6 @@ const availableClassrooms = getUniqueValues(sampleTimetable, 'room');
 const availableBatches = getUniqueValues(sampleTimetable, 'batch');
 const availableSubjects = getUniqueValues(sampleTimetable, 'subject');
 const availableFaculty = facultyData.map(f => f.name);
-const availableTimings = getUniqueValues(sampleTimetable, 'time').join(', ');
 
 // Create a mapping of faculty to the subjects they teach from the sample timetable
 const facultySubjectMap = facultyData.reduce((acc, faculty) => {
@@ -60,6 +63,44 @@ const facultySubjectMappingString = Object.entries(facultySubjectMap)
     .map(([faculty, subjects]) => `${faculty}: ${subjects.join(', ')}`)
     .join('; ');
 
+// Helper function to generate time slots
+const generateTimeSlots = (start: string, end: string, duration: number, breaks: string) => {
+    const timeSlots = [];
+    const today = new Date();
+    
+    let currentTime = parse(start, 'HH:mm', today);
+    const endTime = parse(end, 'HH:mm', today);
+
+    const breakIntervals = (breaks || '').split(',')
+        .map(b => b.trim())
+        .filter(b => b.includes('-'))
+        .map(b => {
+            const [breakStart, breakEnd] = b.split('-');
+            return {
+                start: parse(breakStart, 'HH:mm', today),
+                end: parse(breakEnd, 'HH:mm', today),
+            };
+        });
+
+    while (currentTime < endTime) {
+        const nextTime = addMinutes(currentTime, duration);
+        if (nextTime > endTime) break;
+
+        const isBreak = breakIntervals.some(interval => 
+            (currentTime >= interval.start && currentTime < interval.end) ||
+            (nextTime > interval.start && nextTime <= interval.end)
+        );
+
+        if (!isBreak) {
+            timeSlots.push(`${format(currentTime, 'HH:mm')}-${format(nextTime, 'HH:mm')}`);
+        }
+        
+        currentTime = nextTime;
+    }
+
+    return timeSlots;
+};
+
 
 export default function TimetableGenerator() {
   const { toast } = useToast();
@@ -73,7 +114,10 @@ export default function TimetableGenerator() {
       batches: availableBatches,
       subjects: availableSubjects,
       faculty: availableFaculty,
-      timings: availableTimings,
+      collegeStartTime: '09:00',
+      collegeEndTime: '17:00',
+      periodDuration: 60,
+      breakTimings: '12:00-13:00',
       numTimetables: '3',
       maxClassesPerDay: '5',
       classesPerSubject: 'Data Structures: 3 per week, Algorithms: 3 per week',
@@ -87,9 +131,26 @@ export default function TimetableGenerator() {
     setGeneratedTimetables([]);
 
     try {
+      const timeSlots = generateTimeSlots(
+          data.collegeStartTime,
+          data.collegeEndTime,
+          data.periodDuration,
+          data.breakTimings || ''
+      );
+
+      if (timeSlots.length === 0) {
+        toast({
+          variant: 'destructive',
+          title: 'No Time Slots Generated',
+          description: 'Please check your college timings, duration, and breaks. No valid time slots could be created.',
+        });
+        setIsLoading(false);
+        return;
+      }
+
       const input = {
         ...data,
-        timings: data.timings.split(',').map(s => s.trim()),
+        timings: timeSlots,
         numTimetables: parseInt(data.numTimetables, 10),
       };
       
@@ -208,19 +269,72 @@ export default function TimetableGenerator() {
                 </FormItem>
               )}
             />
-             <FormField
-              control={form.control}
-              name="timings"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Timings (Comma-separated)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., 09:00-10:00, 10:00-11:00" {...field} rows={2} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            </div>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle>Timings & Duration</CardTitle>
+                    <CardDescription>Define the schedule structure for the timetable.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
+                         <FormField
+                            control={form.control}
+                            name="collegeStartTime"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>College Start Time</FormLabel>
+                                <FormControl>
+                                    <Input type="time" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                        <FormField
+                            control={form.control}
+                            name="collegeEndTime"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>College End Time</FormLabel>
+                                <FormControl>
+                                    <Input type="time" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                        <FormField
+                            control={form.control}
+                            name="periodDuration"
+                            render={({ field }) => (
+                                <FormItem>
+                                <FormLabel>Period Duration (mins)</FormLabel>
+                                <FormControl>
+                                    <Input type="number" placeholder="e.g., 60" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                    </div>
+                     <FormField
+                        control={form.control}
+                        name="breakTimings"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Break Times (comma-separated)</FormLabel>
+                            <FormControl>
+                                <Input placeholder="e.g., 11:00-11:15, 13:00-14:00" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                </CardContent>
+            </Card>
+
+           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormField
               control={form.control}
               name="maxClassesPerDay"
@@ -361,3 +475,5 @@ export default function TimetableGenerator() {
     </div>
   );
 }
+
+    
