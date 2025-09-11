@@ -15,6 +15,10 @@ import {
   Upload,
   CalendarPlus,
   Bell,
+  BookPlus,
+  Home,
+  Users2,
+  CalendarClock,
 } from 'lucide-react';
 import { facultyData, sampleTimetable } from '@/lib/data';
 import Link from 'next/link';
@@ -74,6 +78,50 @@ export default function DashboardPage() {
     },
   ];
 
+  const quickActions = [
+    {
+      label: 'Add Faculty',
+      icon: PlusCircle,
+      href: '/faculty',
+    },
+    {
+      label: 'Add Subject',
+      icon: BookPlus,
+      href: '#',
+    },
+    {
+      label: 'Add Classroom',
+      icon: Home,
+      href: '#',
+    },
+    {
+      label: 'Add Batch',
+      icon: Users2,
+      href: '#',
+    },
+    {
+      label: 'Upload Data',
+      icon: Upload,
+      href: '#',
+    },
+    {
+      label: 'Generate Timetable',
+      icon: CalendarPlus,
+      href: '/dashboard', // Assuming this is where the generator lives now
+    },
+    {
+      label: 'Schedule Fixed Class',
+      icon: CalendarClock,
+      href: '#',
+    },
+    {
+      label: 'Send Notification',
+      icon: Bell,
+      href: '#',
+    },
+  ];
+
+
   return (
     <div className="space-y-6">
       <div className="space-y-1">
@@ -109,25 +157,20 @@ export default function DashboardPage() {
               Shortcuts for common tasks.
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="flex h-auto flex-col items-center gap-2 p-4">
-              <PlusCircle className="h-6 w-6" />
-              <span className="text-center text-sm">Add Faculty</span>
-            </Button>
-            <Button variant="outline" className="flex h-auto flex-col items-center gap-2 p-4">
-              <Upload className="h-6 w-6" />
-              <span className="text-center text-sm">Upload Data</span>
-            </Button>
-            <Button variant="outline" className="flex h-auto flex-col items-center gap-2 p-4">
-              <Link href="/dashboard" className="flex flex-col items-center gap-2">
-                <CalendarPlus className="h-6 w-6" />
-                <span className="text-center text-sm">Generate Timetable</span>
-              </Link>
-            </Button>
-            <Button variant="outline" className="flex h-auto flex-col items-center gap-2 p-4">
-              <Bell className="h-6 w-6" />
-              <span className="text-center text-sm">Send Notification</span>
-            </Button>
+          <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-2">
+             {quickActions.map((action) => (
+              <Button
+                key={action.label}
+                variant="outline"
+                className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+                asChild
+              >
+                <Link href={action.href}>
+                  <action.icon className="h-6 w-6" />
+                  <span className="text-center text-sm">{action.label}</span>
+                </Link>
+              </Button>
+            ))}
           </CardContent>
         </Card>
 
