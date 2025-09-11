@@ -1,3 +1,41 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "faculty-1",
+      "description": "Portrait of Dr. Evelyn Reed",
+      "imageUrl": "https://picsum.photos/seed/EvelynReed/100/100",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "faculty-2",
+      "description": "Portrait of Dr. Samuel Green",
+      "imageUrl": "https://picsum.photos/seed/SamuelGreen/100/100",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "faculty-3",
+      "description": "Portrait of Dr. Clara Bennett",
+      "imageUrl": "https://picsum.photos/seed/ClaraBennett/100/100",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "faculty-4",
+      "description": "Portrait of Dr. Marcus Hayes",
+      "imageUrl": "https://picsum.photos/seed/MarcusHayes/100/100",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "faculty-5",
+      "description": "Portrait of Dr. Olivia Chen",
+      "imageUrl": "https://picsum.photos/seed/OliviaChen/100/100",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "faculty-6",
+      "description": "Portrait of Dr. Isaac Rodriguez",
+      "imageUrl": "https://picsum.photos/seed/IsaacRodriguez/100/100",
+      "imageHint": "man portrait"
+    }
+  ]
 }
