@@ -58,11 +58,11 @@ const prompt = ai.definePrompt({
   prompt: `You are a timetable generation expert. Your task is to generate {{{numTimetables}}} unique, conflict-free timetable options based on the data and constraints provided below.
 
 **Core Data:**
-- Classrooms: {{{classrooms}}}
-- Batches: {{{batches}}}
-- Subjects: {{{subjects}}}
-- Faculty: {{{faculty}}}
-- Timings: {{{timings}}}
+- Classrooms: {{#each classrooms}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- Batches: {{#each batches}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- Subjects: {{#each subjects}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- Faculty: {{#each faculty}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
+- Timings: {{#each timings}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 
 **Constraints:**
 {{#if maxClassesPerDay}}- Maximum classes per day: {{{maxClassesPerDay}}}{{/if}}

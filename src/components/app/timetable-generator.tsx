@@ -17,12 +17,14 @@ import { GeneratedTimetable, TimetableEntry } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { facultyData, sampleTimetable } from '@/lib/data';
+import { MultiSelect } from '../ui/multi-select';
+
 
 const FormSchema = z.object({
-  classrooms: z.string().min(1, 'Please provide at least one classroom.'),
-  batches: z.string().min(1, 'Please provide at least one batch.'),
-  subjects: z.string().min(1, 'Please provide at least one subject.'),
-  faculty: z.string().min(1, 'Please provide at least one faculty member.'),
+  classrooms: z.array(z.string()).min(1, 'Please select at least one classroom.'),
+  batches: z.array(z.string()).min(1, 'Please select at least one batch.'),
+  subjects: z.array(z.string()).min(1, 'Please select at least one subject.'),
+  faculty: z.array(z.string()).min(1, 'Please select at least one faculty member.'),
   timings: z.string().min(1, 'Please provide at least one time slot.'),
   numTimetables: z.string(),
   maxClassesPerDay: z.string().optional(),
@@ -39,10 +41,10 @@ const getUniqueValues = (data: any[], key: string) => {
 };
 
 // Auto-populate data from existing sources
-const availableClassrooms = getUniqueValues(sampleTimetable, 'room').join(', ');
-const availableBatches = getUniqueValues(sampleTimetable, 'batch').join(', ');
-const availableSubjects = getUniqueValues(sampleTimetable, 'subject').join(', ');
-const availableFaculty = facultyData.map(f => f.name).join(', ');
+const availableClassrooms = getUniqueValues(sampleTimetable, 'room');
+const availableBatches = getUniqueValues(sampleTimetable, 'batch');
+const availableSubjects = getUniqueValues(sampleTimetable, 'subject');
+const availableFaculty = facultyData.map(f => f.name);
 const availableTimings = getUniqueValues(sampleTimetable, 'time').join(', ');
 
 // Create a mapping of faculty to the subjects they teach from the sample timetable
@@ -86,16 +88,9 @@ export default function TimetableGenerator() {
 
     try {
       const input = {
-        classrooms: data.classrooms.split(',').map(s => s.trim()),
-        batches: data.batches.split(',').map(s => s.trim()),
-        subjects: data.subjects.split(',').map(s => s.trim()),
-        faculty: data.faculty.split(',').map(s => s.trim()),
+        ...data,
         timings: data.timings.split(',').map(s => s.trim()),
         numTimetables: parseInt(data.numTimetables, 10),
-        maxClassesPerDay: data.maxClassesPerDay,
-        classesPerSubject: data.classesPerSubject,
-        facultySubjectMapping: data.facultySubjectMapping,
-        specialConstraints: data.specialConstraints,
       };
       
       const result = await generateTimetableAction(input);
@@ -136,6 +131,13 @@ export default function TimetableGenerator() {
       setIsLoading(false);
     }
   }
+  
+  const options = {
+    classrooms: availableClassrooms.map(v => ({ value: v, label: v })),
+    batches: availableBatches.map(v => ({ value: v, label: v })),
+    subjects: availableSubjects.map(v => ({ value: v, label: v })),
+    faculty: availableFaculty.map(v => ({ value: v, label: v })),
+  };
 
   return (
     <div className="space-y-8">
@@ -147,23 +149,29 @@ export default function TimetableGenerator() {
               name="classrooms"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Classrooms (Comma-separated)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., CR-101, CR-102" {...field} rows={2} />
-                  </FormControl>
+                  <FormLabel>Classrooms</FormLabel>
+                  <MultiSelect
+                    options={options.classrooms}
+                    selected={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select classrooms..."
+                  />
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField
               control={form.control}
               name="batches"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Batches (Comma-separated)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., CS-A, EE-A" {...field} rows={2} />
-                  </FormControl>
+                  <FormLabel>Batches</FormLabel>
+                  <MultiSelect
+                    options={options.batches}
+                    selected={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select batches..."
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -173,10 +181,13 @@ export default function TimetableGenerator() {
               name="subjects"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subjects (Comma-separated)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., Data Structures, Algorithms" {...field} rows={2} />
-                  </FormControl>
+                  <FormLabel>Subjects</FormLabel>
+                   <MultiSelect
+                    options={options.subjects}
+                    selected={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select subjects..."
+                  />
                   <FormMessage />
                 </FormItem>
               )}
@@ -186,10 +197,13 @@ export default function TimetableGenerator() {
               name="faculty"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Faculty (Comma-separated)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="e.g., Dr. Evelyn Reed, Dr. Samuel Green" {...field} rows={2} />
-                  </FormControl>
+                  <FormLabel>Faculty</FormLabel>
+                   <MultiSelect
+                    options={options.faculty}
+                    selected={field.value}
+                    onChange={field.onChange}
+                    placeholder="Select faculty..."
+                  />
                   <FormMessage />
                 </FormItem>
               )}
