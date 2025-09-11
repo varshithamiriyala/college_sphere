@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { GeneratedTimetable, TimetableEntry } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Input } from '../ui/input';
 
 const FormSchema = z.object({
   classrooms: z.string().min(1, 'Please provide at least one classroom.'),
@@ -23,6 +24,10 @@ const FormSchema = z.object({
   faculty: z.string().min(1, 'Please provide at least one faculty member.'),
   timings: z.string().min(1, 'Please provide at least one time slot.'),
   numTimetables: z.string(),
+  maxClassesPerDay: z.string().optional(),
+  classesPerSubject: z.string().optional(),
+  facultySubjectMapping: z.string().optional(),
+  specialConstraints: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
@@ -41,6 +46,10 @@ export default function TimetableGenerator() {
       faculty: 'Dr. Evelyn Reed, Dr. Samuel Green, Dr. Clara Bennett, Dr. Marcus Hayes, Dr. Olivia Chen',
       timings: '09:00-10:00, 10:00-11:00, 11:00-12:00, 13:00-14:00, 14:00-15:00',
       numTimetables: '3',
+      maxClassesPerDay: '5',
+      classesPerSubject: 'Data Structures: 3 per week, Algorithms: 3 per week',
+      facultySubjectMapping: 'Dr. Evelyn Reed: Data Structures, Dr. Samuel Green: Circuit Theory',
+      specialConstraints: 'No classes on Friday after 3 PM.',
     },
   });
 
@@ -56,6 +65,10 @@ export default function TimetableGenerator() {
         faculty: data.faculty.split(',').map(s => s.trim()),
         timings: data.timings.split(',').map(s => s.trim()),
         numTimetables: parseInt(data.numTimetables, 10),
+        maxClassesPerDay: data.maxClassesPerDay,
+        classesPerSubject: data.classesPerSubject,
+        facultySubjectMapping: data.facultySubjectMapping,
+        specialConstraints: data.specialConstraints,
       };
       
       const result = await generateTimetableAction(input);
@@ -107,7 +120,7 @@ export default function TimetableGenerator() {
               name="classrooms"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Classrooms</FormLabel>
+                  <FormLabel>Classrooms (Comma-separated)</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., CR-101, CR-102" {...field} rows={2} />
                   </FormControl>
@@ -120,7 +133,7 @@ export default function TimetableGenerator() {
               name="batches"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Batches</FormLabel>
+                  <FormLabel>Batches (Comma-separated)</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., CS-A, EE-A" {...field} rows={2} />
                   </FormControl>
@@ -133,7 +146,7 @@ export default function TimetableGenerator() {
               name="subjects"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subjects</FormLabel>
+                  <FormLabel>Subjects (Comma-separated)</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., Data Structures, Algorithms" {...field} rows={2} />
                   </FormControl>
@@ -146,7 +159,7 @@ export default function TimetableGenerator() {
               name="faculty"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Faculty</FormLabel>
+                  <FormLabel>Faculty (Comma-separated)</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., Dr. Evelyn Reed, Dr. Samuel Green" {...field} rows={2} />
                   </FormControl>
@@ -158,10 +171,62 @@ export default function TimetableGenerator() {
               control={form.control}
               name="timings"
               render={({ field }) => (
-                <FormItem className="md:col-span-2">
-                  <FormLabel>Timings</FormLabel>
+                <FormItem>
+                  <FormLabel>Timings (Comma-separated)</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., 09:00-10:00, 10:00-11:00" {...field} rows={2} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="maxClassesPerDay"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Maximum Classes per Day</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="e.g., 5" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="classesPerSubject"
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>Number of Classes per Subject (per week/day)</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Data Structures: 4 per week, Algorithms: 3 per week" {...field} rows={3} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="facultySubjectMapping"
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>Faculty-to-Subject Mapping (Optional)</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Dr. Evelyn Reed: Data Structures, Algorithms; Dr. Samuel Green: Circuit Theory" {...field} rows={3} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="specialConstraints"
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>Special Constraints & Fixed Slots</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Lab session for CS-A on Wednesday 11:00-13:00 in LB-301. No classes after 4 PM on Fridays." {...field} rows={3} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -173,7 +238,7 @@ export default function TimetableGenerator() {
             name="numTimetables"
             render={({ field }) => (
               <FormItem className="w-full max-w-xs">
-                <FormLabel>Number of Timetables</FormLabel>
+                <FormLabel>Number of Timetable Options</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
