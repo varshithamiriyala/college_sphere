@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { GeneratedTimetable, TimetableEntry } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
+import { facultyData, sampleTimetable } from '@/lib/data';
 
 const FormSchema = z.object({
   classrooms: z.string().min(1, 'Please provide at least one classroom.'),
@@ -32,6 +33,32 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
+// Helper to get unique values from an array of objects
+const getUniqueValues = (data: any[], key: string) => {
+    return Array.from(new Set(data.map(item => item[key])));
+};
+
+// Auto-populate data from existing sources
+const availableClassrooms = getUniqueValues(sampleTimetable, 'room').join(', ');
+const availableBatches = getUniqueValues(sampleTimetable, 'batch').join(', ');
+const availableSubjects = getUniqueValues(sampleTimetable, 'subject').join(', ');
+const availableFaculty = facultyData.map(f => f.name).join(', ');
+const availableTimings = getUniqueValues(sampleTimetable, 'time').join(', ');
+
+// Create a mapping of faculty to the subjects they teach from the sample timetable
+const facultySubjectMap = facultyData.reduce((acc, faculty) => {
+    const subjectsTaught = getUniqueValues(sampleTimetable.filter(entry => entry.faculty === faculty.name), 'subject');
+    if (subjectsTaught.length > 0) {
+        acc[faculty.name] = subjectsTaught;
+    }
+    return acc;
+}, {} as Record<string, string[]>);
+
+const facultySubjectMappingString = Object.entries(facultySubjectMap)
+    .map(([faculty, subjects]) => `${faculty}: ${subjects.join(', ')}`)
+    .join('; ');
+
+
 export default function TimetableGenerator() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -40,15 +67,15 @@ export default function TimetableGenerator() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      classrooms: 'CR-101, CR-102, CR-103, LH-201, LB-301',
-      batches: 'CS-A, CS-B, EE-A, ME-A',
-      subjects: 'Data Structures, Algorithms, Circuit Theory, Thermodynamics, Quantum Mechanics',
-      faculty: 'Dr. Evelyn Reed, Dr. Samuel Green, Dr. Clara Bennett, Dr. Marcus Hayes, Dr. Olivia Chen',
-      timings: '09:00-10:00, 10:00-11:00, 11:00-12:00, 13:00-14:00, 14:00-15:00',
+      classrooms: availableClassrooms,
+      batches: availableBatches,
+      subjects: availableSubjects,
+      faculty: availableFaculty,
+      timings: availableTimings,
       numTimetables: '3',
       maxClassesPerDay: '5',
       classesPerSubject: 'Data Structures: 3 per week, Algorithms: 3 per week',
-      facultySubjectMapping: 'Dr. Evelyn Reed: Data Structures, Dr. Samuel Green: Circuit Theory',
+      facultySubjectMapping: facultySubjectMappingString,
       specialConstraints: 'No classes on Friday after 3 PM.',
     },
   });
