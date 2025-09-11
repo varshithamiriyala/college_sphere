@@ -21,6 +21,7 @@ const FormSchema = z.object({
   batches: z.string().min(1, 'Please provide at least one batch.'),
   subjects: z.string().min(1, 'Please provide at least one subject.'),
   faculty: z.string().min(1, 'Please provide at least one faculty member.'),
+  timings: z.string().min(1, 'Please provide at least one time slot.'),
   numTimetables: z.string(),
 });
 
@@ -38,6 +39,7 @@ export default function TimetableGenerator() {
       batches: 'CS-A, CS-B, EE-A, ME-A',
       subjects: 'Data Structures, Algorithms, Circuit Theory, Thermodynamics, Quantum Mechanics',
       faculty: 'Dr. Evelyn Reed, Dr. Samuel Green, Dr. Clara Bennett, Dr. Marcus Hayes, Dr. Olivia Chen',
+      timings: '09:00-10:00, 10:00-11:00, 11:00-12:00, 13:00-14:00, 14:00-15:00',
       numTimetables: '3',
     },
   });
@@ -52,6 +54,7 @@ export default function TimetableGenerator() {
         batches: data.batches.split(',').map(s => s.trim()),
         subjects: data.subjects.split(',').map(s => s.trim()),
         faculty: data.faculty.split(',').map(s => s.trim()),
+        timings: data.timings.split(',').map(s => s.trim()),
         numTimetables: parseInt(data.numTimetables, 10),
       };
       
@@ -106,7 +109,7 @@ export default function TimetableGenerator() {
                 <FormItem>
                   <FormLabel>Classrooms</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., CR-101, CR-102" {...field} rows={3} />
+                    <Textarea placeholder="e.g., CR-101, CR-102" {...field} rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,7 +122,7 @@ export default function TimetableGenerator() {
                 <FormItem>
                   <FormLabel>Batches</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., CS-A, EE-A" {...field} rows={3} />
+                    <Textarea placeholder="e.g., CS-A, EE-A" {...field} rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,7 +135,7 @@ export default function TimetableGenerator() {
                 <FormItem>
                   <FormLabel>Subjects</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Data Structures, Algorithms" {...field} rows={3} />
+                    <Textarea placeholder="e.g., Data Structures, Algorithms" {...field} rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +148,20 @@ export default function TimetableGenerator() {
                 <FormItem>
                   <FormLabel>Faculty</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Dr. Evelyn Reed, Dr. Samuel Green" {...field} rows={3} />
+                    <Textarea placeholder="e.g., Dr. Evelyn Reed, Dr. Samuel Green" {...field} rows={2} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="timings"
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>Timings</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., 09:00-10:00, 10:00-11:00" {...field} rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

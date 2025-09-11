@@ -19,6 +19,7 @@ const GenerateTimetableFromDataInputSchema = z.object({
   batches: z.array(z.string()).describe('List of batches.'),
   subjects: z.array(z.string()).describe('List of subjects.'),
   faculty: z.array(z.string()).describe('List of faculty members.'),
+  timings: z.array(z.string()).describe('List of available time slots.'),
   numTimetables: z
     .number()
     .int()
@@ -52,7 +53,7 @@ const prompt = ai.definePrompt({
   name: 'generateTimetablePrompt',
   input: {schema: GenerateTimetableFromDataInputSchema},
   output: {schema: GenerateTimetableFromDataOutputSchema},
-  prompt: `You are a timetable generation expert. Generate {{{numTimetables}}} conflict-free timetables based on the following data:\n\nClassrooms: {{{classrooms}}}\nBatches: {{{batches}}}\nSubjects: {{{subjects}}}\nFaculty: {{{faculty}}}\n\nEnsure that the generated timetables are valid and do not have any conflicts. Return the timetables in a JSON format. Each timetable must have the format:\n{
+  prompt: `You are a timetable generation expert. Generate {{{numTimetables}}} conflict-free timetables based on the following data:\n\nClassrooms: {{{classrooms}}}\nBatches: {{{batches}}}\nSubjects: {{{subjects}}}\nFaculty: {{{faculty}}}\nTimings: {{{timings}}}\n\nEnsure that the generated timetables are valid and do not have any conflicts. Use only the provided timings. Return the timetables in a JSON format. Each timetable must have the format:\n{
  "timetable": "..."
 }
 Include details like Day, Time, Room, Batch, Subject, and Faculty for each entry in the timetable.
