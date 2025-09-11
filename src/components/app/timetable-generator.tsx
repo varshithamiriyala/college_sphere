@@ -64,6 +64,7 @@ const facultySubjectMap = facultyData.reduce((acc, faculty) => {
 // Helper function to generate time slots
 const generateTimeSlots = (start: string, end: string, duration: number, breaks: string) => {
     const timeSlots = [];
+    if (!start || !end || !duration) return [];
     const today = new Date();
     
     let currentTime = parse(start, 'HH:mm', today);
@@ -108,19 +109,19 @@ export default function TimetableGenerator() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      classrooms: availableClassrooms,
-      batches: availableBatches,
-      subjects: availableSubjects,
-      faculty: availableFaculty,
+      classrooms: [],
+      batches: [],
+      subjects: [],
+      faculty: [],
       collegeStartTime: '09:00',
       collegeEndTime: '17:00',
       periodDuration: 60,
-      breakTimings: '12:00-13:00',
+      breakTimings: '',
       numTimetables: '3',
-      maxClassesPerDay: '5',
-      classesPerSubject: 'Data Structures: 3 per week, Algorithms: 3 per week',
-      facultySubjectMapping: facultySubjectMap,
-      specialConstraints: 'No classes on Friday after 3 PM.',
+      maxClassesPerDay: '',
+      classesPerSubject: '',
+      facultySubjectMapping: {},
+      specialConstraints: '',
     },
   });
 

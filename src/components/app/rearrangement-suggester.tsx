@@ -36,8 +36,8 @@ export default function RearrangementSuggester() {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      constraints: 'Dr. Evelyn Reed cannot teach after 3 PM on Fridays. We need to free up the main lab (LB-301) on Wednesday mornings for maintenance.',
-      currentTimetable: 'Current timetable data can be pasted here for context...',
+      constraints: '',
+      currentTimetable: '',
     },
   });
 

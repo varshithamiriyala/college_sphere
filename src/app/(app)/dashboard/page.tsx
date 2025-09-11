@@ -67,29 +67,7 @@ export default function DashboardPage() {
     },
   ];
 
-  const recentActivities = [
-    {
-      id: 1,
-      description: 'Dr. Evelyn Reed updated her profile.',
-      time: '2 hours ago',
-    },
-    {
-      id: 2,
-      description: 'New timetable generated for CS department.',
-      time: '5 hours ago',
-    },
-    {
-      id: 3,
-      description: 'Dr. Samuel Green is on leave today.',
-      time: '1 day ago',
-    },
-    {
-      id: 4,
-      description:
-        'Maintenance scheduled for LB-301 on Wednesday morning.',
-      time: '2 days ago',
-    },
-  ];
+  const recentActivities: { id: number; description: string; time: string }[] = [];
 
   const quickActions = [
     {
@@ -258,25 +236,30 @@ export default function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-4">
-              {recentActivities.map(activity => (
-                <li key={activity.id} className="flex items-start gap-4">
-                  <div className="mt-1.5 flex h-2 w-2 items-center">
-                    <span className="relative flex h-2 w-2 rounded-full bg-primary"></span>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm">{activity.description}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {activity.time}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {recentActivities.length > 0 ? (
+                <ul className="space-y-4">
+                {recentActivities.map(activity => (
+                    <li key={activity.id} className="flex items-start gap-4">
+                    <div className="mt-1.5 flex h-2 w-2 items-center">
+                        <span className="relative flex h-2 w-2 rounded-full bg-primary"></span>
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-sm">{activity.description}</p>
+                        <p className="text-xs text-muted-foreground">
+                        {activity.time}
+                        </p>
+                    </div>
+                    </li>
+                ))}
+                </ul>
+            ) : (
+                <div className="flex items-center justify-center h-24">
+                    <p className="text-muted-foreground">No recent activity.</p>
+                </div>
+            )}
           </CardContent>
         </Card>
       </div>
     </div>
   );
 }
-
