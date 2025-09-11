@@ -92,7 +92,7 @@ const generateTimeSlots = (start: string, end: string, duration: number, breaks:
         );
 
         if (!isBreak) {
-            timeSlots.push(`${format(currentTime, 'HH:mm')}-${format(nextTime, 'HH:mm')}`);
+            timeSlots.push(`${format(currentTime, 'hh:mm a')}-${format(nextTime, 'hh:mm a')}`);
         }
         
         currentTime = nextTime;
@@ -325,7 +325,7 @@ export default function TimetableGenerator() {
                             <FormItem>
                             <FormLabel>Break Times (comma-separated)</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g., 11:00-11:15, 13:00-14:00" {...field} />
+                                <Input placeholder="e.g., 12:00-13:00" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -475,5 +475,3 @@ export default function TimetableGenerator() {
     </div>
   );
 }
-
-    

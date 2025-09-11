@@ -13,11 +13,22 @@ import { Calendar } from '@/components/ui/calendar';
 import { Progress } from '@/components/ui/progress';
 import { Faculty } from '@/lib/types';
 import { Separator } from '../ui/separator';
+import { parse, format } from 'date-fns';
 
 interface FacultyProfileProps {
   faculty: Faculty;
   children: React.ReactNode;
 }
+
+const formatTime = (time: string) => {
+  try {
+    const parsedTime = parse(time, 'HH:mm', new Date());
+    return format(parsedTime, 'hh:mm a');
+  } catch (error) {
+    return time; // Fallback to original string if parsing fails
+  }
+};
+
 
 export function FacultyProfile({ faculty, children }: FacultyProfileProps) {
   return (
@@ -44,7 +55,7 @@ export function FacultyProfile({ faculty, children }: FacultyProfileProps) {
           <div>
             <h4 className="mb-2 font-semibold">Working Hours</h4>
             <p className="text-sm text-muted-foreground">
-              {faculty.workingHours.start} - {faculty.workingHours.end}
+              {formatTime(faculty.workingHours.start)} - {formatTime(faculty.workingHours.end)}
             </p>
           </div>
           
