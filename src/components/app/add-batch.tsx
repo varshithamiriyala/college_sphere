@@ -36,6 +36,11 @@ const departments = [
     { value: 'aiml', label: 'Artificial Intelligence & Machine Learning' },
     { value: 'mech', label: 'Mechanical Engineering' },
     { value: 'civil', label: 'Civil Engineering' },
+    { value: 'aids', label: 'Artificial Intelligence & Data Science' },
+    { value: 'ds', label: 'Data Science' },
+    { value: 'iot', label: 'Internet of Things' },
+    { value: 'cyber', label: 'Cyber Security' },
+    { value: 'it', label: 'Information Technology' },
 ];
 
 export function AddBatch() {
