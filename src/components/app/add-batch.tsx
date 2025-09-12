@@ -19,6 +19,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Users2, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 const FormSchema = z.object({
   name: z.string().min(1, 'Batch name is required.'),
@@ -28,6 +29,14 @@ const FormSchema = z.object({
 });
 
 type FormValues = z.infer<typeof FormSchema>;
+
+const departments = [
+    { value: 'cse', label: 'Computer Science & Engineering' },
+    { value: 'ece', label: 'Electronics & Communication Engineering' },
+    { value: 'aiml', label: 'Artificial Intelligence & Machine Learning' },
+    { value: 'mech', label: 'Mechanical Engineering' },
+    { value: 'civil', label: 'Civil Engineering' },
+];
 
 export function AddBatch() {
   const [open, setOpen] = useState(false);
@@ -103,9 +112,18 @@ export function AddBatch() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Department</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g., Computer Science" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a department" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {departments.map((dept) => (
+                        <SelectItem key={dept.value} value={dept.value}>{dept.label}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
