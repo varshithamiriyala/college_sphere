@@ -6,18 +6,18 @@ import { Toaster } from "@/components/ui/toaster"
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <Sidebar className="border-r bg-card">
+      <Sidebar>
         <SidebarNav />
       </Sidebar>
-      <SidebarInset>
+      <div className="flex flex-col flex-1">
         <Header />
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="p-4 sm:p-6 lg:p-8 flex-1">
             <div className="mx-auto w-full max-w-screen-2xl">
                 {children}
             </div>
         </main>
-        <Toaster />
-      </SidebarInset>
+      </div>
+      <Toaster />
     </SidebarProvider>
   );
 }

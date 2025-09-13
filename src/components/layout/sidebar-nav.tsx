@@ -1,13 +1,15 @@
 'use client';
 
 import {
+    SidebarClose,
     SidebarContent,
     SidebarGroup,
-    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuItem,
     SidebarMenuButton,
+    SidebarTrigger,
+    useSidebar,
 } from '@/components/ui/sidebar';
 import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, MessageSquare } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -15,6 +17,7 @@ import Link from 'next/link';
 
 export function SidebarNav() {
     const pathname = usePathname();
+    const { open } = useSidebar();
 
     const menuItems = [
         { href: '/dashboard', label: 'Dashboard', icon: GanttChart },
@@ -23,7 +26,6 @@ export function SidebarNav() {
         { href: '/faculty', label: 'Faculty', icon: Users },
         { href: '/chat', label: 'Chat', icon: MessageSquare },
         { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-        { href: '/profile', label: 'My Profile', icon: User },
     ];
     
     return (
@@ -31,29 +33,29 @@ export function SidebarNav() {
             <SidebarHeader>
                 <div className="flex items-center gap-2">
                     <Bot className="h-7 w-7 text-primary" />
-                    <span className="text-xl font-semibold">TechTrack</span>
+                    <span className={`text-xl font-semibold transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>TechTrack</span>
+                </div>
+                <div className={`${open ? '' : 'md:hidden'}`}>
+                    <SidebarTrigger/>
                 </div>
             </SidebarHeader>
             <SidebarContent>
-                <SidebarGroup>
-                    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-                    <SidebarMenu>
-                        {menuItems.map((item) => (
-                            <SidebarMenuItem key={item.href}>
-                                <SidebarMenuButton
-                                    asChild
-                                    isActive={pathname.startsWith(item.href)}
-                                    tooltip={item.label}
-                                >
-                                    <Link href={item.href}>
-                                        <item.icon />
-                                        <span>{item.label}</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        ))}
-                    </SidebarMenu>
-                </SidebarGroup>
+                <SidebarMenu>
+                    {menuItems.map((item) => (
+                        <SidebarMenuItem key={item.href}>
+                            <SidebarMenuButton
+                                asChild
+                                isActive={pathname.startsWith(item.href)}
+                                tooltip={item.label}
+                            >
+                                <Link href={item.href}>
+                                    <item.icon />
+                                    <span>{item.label}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
             </SidebarContent>
         </>
     );

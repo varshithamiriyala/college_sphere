@@ -65,10 +65,10 @@ export function UploadData() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
         >
-          <Upload className="h-6 w-6" />
-          <span className="text-center text-sm">Upload Data</span>
+          <Upload className="h-8 w-8" />
+          <span className="mt-2 text-center text-sm font-medium">Upload Data</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

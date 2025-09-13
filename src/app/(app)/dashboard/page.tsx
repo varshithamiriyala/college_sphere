@@ -23,7 +23,7 @@ import {
   CalendarClock,
   ClipboardCheck,
   AlertTriangle,
-  Calendar as CalendarIcon,
+  UsersRound,
 } from 'lucide-react';
 import { facultyData, sampleTimetable } from '@/lib/data';
 import Link from 'next/link';
@@ -36,7 +36,8 @@ import { SendNotification } from '@/components/app/send-notification';
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { ChartTooltipContent } from '@/components/ui/chart';
 import { Badge } from '@/components/ui/badge';
-import { addDays, format } from 'date-fns';
+import { addDays, format, getDay } from 'date-fns';
+import { EntityListSheet } from '@/components/app/entity-list-sheet';
 
 const studentData = [
     { name: 'CS-A', count: 60 },
@@ -64,33 +65,38 @@ const upcomingEvents = [
 
 export default function DashboardPage() {
   const totalFaculty = facultyData.length;
-  const uniqueSubjects = [...new Set(sampleTimetable.map(item => item.subject))].length > 0 ? [...new Set(sampleTimetable.map(item => item.subject))] : ['Data Structures', 'Algorithms', 'Operating Systems', 'Database Management', 'Circuit Theory'];
-  const uniqueClassrooms = [...new Set(sampleTimetable.map(item => item.room))].length > 0 ? [...new Set(sampleTimetable.map(item => item.room))] : ['CR-101', 'CR-102', 'LH-201', 'LB-301'];
-  
+  const uniqueSubjects = [...new Set(sampleTimetable.map(item => item.subject))];
+  const uniqueClassrooms = [...new Set(sampleTimetable.map(item => item.room))];
+  const classesToday = sampleTimetable.filter(item => getDay(new Date()) === (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(item.day))).length;
+
   const summaryCards = [
     {
       title: 'Total Faculty',
       value: totalFaculty,
       icon: <Users className="h-6 w-6 text-muted-foreground" />,
       data: generateTrendData(totalFaculty),
+      items: facultyData.map(f => f.name)
     },
     {
       title: 'Total Subjects',
       value: uniqueSubjects.length,
       icon: <Book className="h-6 w-6 text-muted-foreground" />,
       data: generateTrendData(uniqueSubjects.length),
+      items: uniqueSubjects
     },
     {
       title: 'Total Classrooms',
       value: uniqueClassrooms.length,
       icon: <Building className="h-6 w-6 text-muted-foreground" />,
       data: generateTrendData(uniqueClassrooms.length),
+      items: uniqueClassrooms
     },
     {
       title: 'Total Students',
       value: totalStudents,
-      icon: <Users2 className="h-6 w-6 text-muted-foreground" />,
+      icon: <UsersRound className="h-6 w-6 text-muted-foreground" />,
       data: generateTrendData(totalStudents),
+      items: studentData.map(s => `${s.name} (${s.count})`)
     },
   ];
 
@@ -101,12 +107,12 @@ export default function DashboardPage() {
       component: (
         <Button
           variant="outline"
-          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
           asChild
         >
           <Link href="/faculty">
-            <PlusCircle className="h-6 w-6" />
-            <span className="text-center text-sm">Add Faculty</span>
+            <PlusCircle className="h-8 w-8" />
+            <span className="mt-2 text-center text-sm font-medium">Add Faculty</span>
           </Link>
         </Button>
       ),
@@ -121,12 +127,12 @@ export default function DashboardPage() {
       component: (
          <Button
           variant="outline"
-          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
           asChild
         >
           <Link href="/generate-timetable">
-            <CalendarPlus className="h-6 w-6" />
-            <span className="text-center text-sm">Generate Timetable</span>
+            <CalendarPlus className="h-8 w-8" />
+            <span className="mt-2 text-center text-sm font-medium">Generate Timetable</span>
           </Link>
         </Button>
       ),
@@ -147,42 +153,49 @@ export default function DashboardPage() {
       {/* Summary Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {summaryCards.map(card => (
-          <Card key={card.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
-              {card.icon}
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{card.value}</div>
-               <div className="h-16 w-full">
-                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart
-                        data={card.data}
-                        margin={{ top: 15, right: 0, left: 0, bottom: 0 }}
-                    >
-                        <defs>
-                            <linearGradient id={`color-${card.title.replace(/\s+/g, '')}`} x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.6}/>
-                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                            </linearGradient>
-                        </defs>
-                        <Tooltip
-                            cursor={false}
-                            contentStyle={{ display: 'none' }}
-                        />
-                        <Area 
-                            type="monotone" 
-                            dataKey="value" 
-                            stroke="hsl(var(--primary))"
-                            strokeWidth={2}
-                            fillOpacity={1} 
-                            fill={`url(#color-${card.title.replace(/\s+/g, '')}`}
-                        />
-                    </AreaChart>
-                 </ResponsiveContainer>
-               </div>
-            </CardContent>
-          </Card>
+          <EntityListSheet
+            key={card.title}
+            title={card.title}
+            description={`A list of all ${card.title.toLowerCase()} in the system.`}
+            items={card.items}
+          >
+            <Card className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+                {card.icon}
+                </CardHeader>
+                <CardContent>
+                <div className="text-2xl font-bold">{card.value}</div>
+                <div className="h-16 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart
+                            data={card.data}
+                            margin={{ top: 15, right: 0, left: 0, bottom: 0 }}
+                        >
+                            <defs>
+                                <linearGradient id={`color-${card.title.replace(/\s+/g, '')}`} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.6}/>
+                                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <Tooltip
+                                cursor={false}
+                                contentStyle={{ display: 'none' }}
+                            />
+                            <Area 
+                                type="monotone" 
+                                dataKey="value" 
+                                stroke="hsl(var(--primary))"
+                                strokeWidth={2}
+                                fillOpacity={1} 
+                                fill={`url(#color-${card.title.replace(/\s+/g, '')})`}
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>
+                </CardContent>
+            </Card>
+          </EntityListSheet>
         ))}
       </div>
 
@@ -200,9 +213,9 @@ export default function DashboardPage() {
                         <p className="text-sm text-muted-foreground">Conflicts</p>
                     </Card>
                     <Card className="flex flex-col items-center justify-center p-4">
-                        <ClipboardCheck className="h-8 w-8 text-green-500" />
-                        <p className="mt-2 text-2xl font-bold">5</p>
-                        <p className="text-sm text-muted-foreground">Notifications</p>
+                        <CalendarClock className="h-8 w-8 text-blue-500" />
+                        <p className="mt-2 text-2xl font-bold">{classesToday}</p>
+                        <p className="text-sm text-muted-foreground">Classes Today</p>
                     </Card>
                 </CardContent>
             </Card>
@@ -211,9 +224,9 @@ export default function DashboardPage() {
                     <CardTitle>Quick Actions</CardTitle>
                     <CardDescription>Shortcuts for common tasks.</CardDescription>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-2">
+                <CardContent className="grid grid-cols-2 gap-4">
                     {quickActions.map((action) => (
-                    <div key={action.label}>{action.component}</div>
+                        <div key={action.label}>{action.component}</div>
                     ))}
                 </CardContent>
             </Card>
@@ -229,7 +242,7 @@ export default function DashboardPage() {
             <div className="space-y-4">
               {upcomingEvents.map((event, index) => (
                 <div key={index} className="flex items-start gap-4">
-                  <div className="flex flex-col items-center justify-center rounded-md bg-muted p-2 text-center">
+                  <div className="flex flex-col items-center justify-center rounded-md bg-muted p-2 text-center w-14">
                     <span className="text-xs font-semibold uppercase">{format(event.date, 'MMM')}</span>
                     <span className="text-lg font-bold">{format(event.date, 'dd')}</span>
                   </div>
