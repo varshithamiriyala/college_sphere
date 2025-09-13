@@ -150,9 +150,22 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Quick Actions */}
+        <Card>
+            <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+                <CardDescription>Shortcuts for common tasks.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                {quickActions.map((action) => (
+                    <div key={action.label}>{action.component}</div>
+                ))}
+            </CardContent>
+        </Card>
+
+      <div className="grid grid-cols-1 gap-6">
         {/* Upcoming Events */}
-        <Card className="lg:col-span-2">
+        <Card>
           <CardHeader>
             <CardTitle>Upcoming Events</CardTitle>
             <CardDescription>A look at the week ahead.</CardDescription>
@@ -186,18 +199,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Quick Actions */}
-        <Card className="lg:col-span-1">
-            <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>Shortcuts for common tasks.</CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-4">
-                {quickActions.map((action) => (
-                    <div key={action.label}>{action.component}</div>
-                ))}
-            </CardContent>
-        </Card>
       </div>
     </div>
   );
