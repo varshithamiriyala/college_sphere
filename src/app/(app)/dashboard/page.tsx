@@ -21,9 +21,6 @@ import {
   Home,
   Users2,
   CalendarClock,
-  ClipboardCheck,
-  AlertTriangle,
-  UsersRound,
 } from 'lucide-react';
 import { facultyData, sampleTimetable } from '@/lib/data';
 import Link from 'next/link';
@@ -36,14 +33,7 @@ import { SendNotification } from '@/components/app/send-notification';
 import { Badge } from '@/components/ui/badge';
 import { addDays, format, getDay } from 'date-fns';
 import { cn } from '@/lib/utils';
-
-const studentData = [
-    { name: 'CS-A', count: 60 },
-    { name: 'CS-B', count: 62 },
-    { name: 'EE-A', count: 55 },
-    { name: 'ME-A', count: 65 },
-];
-const totalStudents = studentData.reduce((sum, batch) => sum + batch.count, 0);
+import { EntityListSheet } from '@/components/app/entity-list-sheet';
 
 const upcomingEvents = [
     { type: 'class', title: 'Data Structures', time: '10:00 AM', batch: 'CS-A', date: new Date() },
@@ -58,7 +48,6 @@ export default function DashboardPage() {
   const totalFaculty = facultyData.length;
   const uniqueSubjects = [...new Set(sampleTimetable.map(item => item.subject))];
   const uniqueClassrooms = [...new Set(sampleTimetable.map(item => item.room))];
-  const classesToday = sampleTimetable.filter(item => getDay(new Date()) === (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].indexOf(item.day))).length;
 
   const summaryCards = [
     {
@@ -66,18 +55,24 @@ export default function DashboardPage() {
       value: totalFaculty,
       icon: <Users className="h-6 w-6 text-white" />,
       color: 'bg-chart-1 text-white',
+      items: facultyData.map(f => f.name),
+      description: 'A list of all faculty members.',
     },
     {
       title: 'Total Subjects',
       value: uniqueSubjects.length,
       icon: <Book className="h-6 w-6 text-white" />,
       color: 'bg-chart-2 text-white',
+      items: uniqueSubjects,
+      description: 'A list of all subjects offered.',
     },
     {
       title: 'Total Classrooms',
       value: uniqueClassrooms.length,
       icon: <Building className="h-6 w-6 text-white" />,
       color: 'bg-chart-3 text-white',
+      items: uniqueClassrooms,
+      description: 'A list of all available classrooms.',
     },
   ];
 
@@ -134,18 +129,25 @@ export default function DashboardPage() {
       {/* Summary Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {summaryCards.map(card => (
-            <Card key={card.title} className={cn("transition-all hover:shadow-lg hover:-translate-y-1", card.color)}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
-                {card.icon}
-                </CardHeader>
-                <CardContent>
-                <div className="text-2xl font-bold">{card.value}</div>
-                 <p className="text-xs text-white/80">
-                    Click to view details
-                </p>
-                </CardContent>
-            </Card>
+            <EntityListSheet 
+                key={card.title}
+                title={card.title}
+                description={card.description}
+                items={card.items}
+            >
+                <Card className={cn("transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer", card.color)}>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
+                    {card.icon}
+                    </CardHeader>
+                    <CardContent>
+                    <div className="text-2xl font-bold">{card.value}</div>
+                    <p className="text-xs text-white/80">
+                        Click to view details
+                    </p>
+                    </CardContent>
+                </Card>
+            </EntityListSheet>
         ))}
       </div>
       <div className="grid grid-cols-1 gap-6">
