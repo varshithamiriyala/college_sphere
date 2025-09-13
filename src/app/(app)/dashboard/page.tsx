@@ -33,11 +33,8 @@ import { AddBatch } from '@/components/app/add-batch';
 import { UploadData } from '@/components/app/upload-data';
 import { ScheduleFixedClass } from '@/components/app/schedule-fixed-class';
 import { SendNotification } from '@/components/app/send-notification';
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
-import { ChartTooltipContent } from '@/components/ui/chart';
 import { Badge } from '@/components/ui/badge';
 import { addDays, format, getDay } from 'date-fns';
-import { EntityListSheet } from '@/components/app/entity-list-sheet';
 
 const studentData = [
     { name: 'CS-A', count: 60 },
@@ -46,13 +43,6 @@ const studentData = [
     { name: 'ME-A', count: 65 },
 ];
 const totalStudents = studentData.reduce((sum, batch) => sum + batch.count, 0);
-
-const generateTrendData = (base: number) => {
-    return Array.from({ length: 7 }, (_, i) => ({
-      day: `Day ${i + 1}`,
-      value: base + Math.floor(Math.random() * (base * 0.1)) - (base * 0.05),
-    }));
-};
 
 const upcomingEvents = [
     { type: 'class', title: 'Data Structures', time: '10:00 AM', batch: 'CS-A', date: new Date() },
@@ -74,29 +64,21 @@ export default function DashboardPage() {
       title: 'Total Faculty',
       value: totalFaculty,
       icon: <Users className="h-6 w-6 text-muted-foreground" />,
-      data: generateTrendData(totalFaculty),
-      items: facultyData.map(f => f.name)
     },
     {
       title: 'Total Subjects',
       value: uniqueSubjects.length,
       icon: <Book className="h-6 w-6 text-muted-foreground" />,
-      data: generateTrendData(uniqueSubjects.length),
-      items: uniqueSubjects
     },
     {
       title: 'Total Classrooms',
       value: uniqueClassrooms.length,
       icon: <Building className="h-6 w-6 text-muted-foreground" />,
-      data: generateTrendData(uniqueClassrooms.length),
-      items: uniqueClassrooms
     },
     {
       title: 'Total Students',
       value: totalStudents,
       icon: <UsersRound className="h-6 w-6 text-muted-foreground" />,
-      data: generateTrendData(totalStudents),
-      items: studentData.map(s => `${s.name} (${s.count})`)
     },
   ];
 
@@ -153,49 +135,18 @@ export default function DashboardPage() {
       {/* Summary Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {summaryCards.map(card => (
-          <EntityListSheet
-            key={card.title}
-            title={card.title}
-            description={`A list of all ${card.title.toLowerCase()} in the system.`}
-            items={card.items}
-          >
-            <Card className="cursor-pointer transition-all hover:shadow-md hover:-translate-y-1">
+            <Card key={card.title} className="transition-all hover:shadow-md hover:-translate-y-1">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
                 {card.icon}
                 </CardHeader>
                 <CardContent>
                 <div className="text-2xl font-bold">{card.value}</div>
-                <div className="h-16 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart
-                            data={card.data}
-                            margin={{ top: 15, right: 0, left: 0, bottom: 0 }}
-                        >
-                            <defs>
-                                <linearGradient id={`color-${card.title.replace(/\s+/g, '')}`} x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.6}/>
-                                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                                </linearGradient>
-                            </defs>
-                            <Tooltip
-                                cursor={false}
-                                contentStyle={{ display: 'none' }}
-                            />
-                            <Area 
-                                type="monotone" 
-                                dataKey="value" 
-                                stroke="hsl(var(--primary))"
-                                strokeWidth={2}
-                                fillOpacity={1} 
-                                fill={`url(#color-${card.title.replace(/\s+/g, '')})`}
-                            />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                </div>
+                 <p className="text-xs text-muted-foreground">
+                    Click to view details
+                </p>
                 </CardContent>
             </Card>
-          </EntityListSheet>
         ))}
       </div>
 
