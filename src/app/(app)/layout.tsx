@@ -1,6 +1,7 @@
 import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
 import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { Header } from '@/components/layout/header';
+import { Toaster } from "@/components/ui/toaster"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 {children}
             </div>
         </main>
+        <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );

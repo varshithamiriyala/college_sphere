@@ -9,7 +9,7 @@ import {
     SidebarMenuItem,
     SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus } from 'lucide-react';
+import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
@@ -22,6 +22,7 @@ export function SidebarNav() {
         { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus },
         { href: '/faculty', label: 'Faculty', icon: Users },
         { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+        { href: '/profile', label: 'My Profile', icon: User },
     ];
     
     return (
