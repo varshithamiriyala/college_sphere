@@ -35,6 +35,7 @@ import { ScheduleFixedClass } from '@/components/app/schedule-fixed-class';
 import { SendNotification } from '@/components/app/send-notification';
 import { Badge } from '@/components/ui/badge';
 import { addDays, format, getDay } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 const studentData = [
     { name: 'CS-A', count: 60 },
@@ -63,22 +64,20 @@ export default function DashboardPage() {
     {
       title: 'Total Faculty',
       value: totalFaculty,
-      icon: <Users className="h-6 w-6 text-muted-foreground" />,
+      icon: <Users className="h-6 w-6 text-white" />,
+      color: 'bg-chart-1 text-white',
     },
     {
       title: 'Total Subjects',
       value: uniqueSubjects.length,
-      icon: <Book className="h-6 w-6 text-muted-foreground" />,
+      icon: <Book className="h-6 w-6 text-white" />,
+      color: 'bg-chart-2 text-white',
     },
     {
       title: 'Total Classrooms',
       value: uniqueClassrooms.length,
-      icon: <Building className="h-6 w-6 text-muted-foreground" />,
-    },
-    {
-      title: 'Total Students',
-      value: totalStudents,
-      icon: <UsersRound className="h-6 w-6 text-muted-foreground" />,
+      icon: <Building className="h-6 w-6 text-white" />,
+      color: 'bg-chart-3 text-white',
     },
   ];
 
@@ -89,12 +88,12 @@ export default function DashboardPage() {
       component: (
         <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1 bg-blue-100 hover:bg-blue-200 border-blue-200"
           asChild
         >
           <Link href="/faculty">
-            <PlusCircle className="h-8 w-8" />
-            <span className="mt-2 text-center text-sm font-medium">Add Faculty</span>
+            <PlusCircle className="h-8 w-8 text-blue-600" />
+            <span className="mt-2 text-center text-sm font-medium text-blue-800">Add Faculty</span>
           </Link>
         </Button>
       ),
@@ -109,12 +108,12 @@ export default function DashboardPage() {
       component: (
          <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1 bg-green-100 hover:bg-green-200 border-green-200"
           asChild
         >
           <Link href="/generate-timetable">
-            <CalendarPlus className="h-8 w-8" />
-            <span className="mt-2 text-center text-sm font-medium">Generate Timetable</span>
+            <CalendarPlus className="h-8 w-8 text-green-600" />
+            <span className="mt-2 text-center text-sm font-medium text-green-800">Generate Timetable</span>
           </Link>
         </Button>
       ),
@@ -133,23 +132,23 @@ export default function DashboardPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {summaryCards.map(card => (
-            <Card key={card.title} className="transition-all hover:shadow-md hover:-translate-y-1">
+            <Card key={card.title} className={cn("transition-all hover:shadow-lg hover:-translate-y-1", card.color)}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
                 {card.icon}
                 </CardHeader>
                 <CardContent>
                 <div className="text-2xl font-bold">{card.value}</div>
-                 <p className="text-xs text-muted-foreground">
+                 <p className="text-xs text-white/80">
                     Click to view details
                 </p>
                 </CardContent>
             </Card>
         ))}
       </div>
-
+      <div className="grid grid-cols-1 gap-6">
         {/* Quick Actions */}
         <Card>
             <CardHeader>
@@ -163,7 +162,6 @@ export default function DashboardPage() {
             </CardContent>
         </Card>
 
-      <div className="grid grid-cols-1 gap-6">
         {/* Upcoming Events */}
         <Card>
           <CardHeader>

@@ -82,10 +82,10 @@ export function AddBatch() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1 bg-red-100 hover:bg-red-200 border-red-200"
         >
-          <Users2 className="h-8 w-8" />
-          <span className="mt-2 text-center text-sm font-medium">Add Batch</span>
+          <Users2 className="h-8 w-8 text-red-600" />
+          <span className="mt-2 text-center text-sm font-medium text-red-800">Add Batch</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
