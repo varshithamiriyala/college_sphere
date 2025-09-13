@@ -151,38 +151,6 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Quick Stats & Actions */}
-        <div className="space-y-6 lg:col-span-1">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Quick Stats</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                    <Card className="flex flex-col items-center justify-center p-4">
-                        <AlertTriangle className="h-8 w-8 text-yellow-500" />
-                        <p className="mt-2 text-2xl font-bold">0</p>
-                        <p className="text-sm text-muted-foreground">Conflicts</p>
-                    </Card>
-                    <Card className="flex flex-col items-center justify-center p-4">
-                        <CalendarClock className="h-8 w-8 text-blue-500" />
-                        <p className="mt-2 text-2xl font-bold">{classesToday}</p>
-                        <p className="text-sm text-muted-foreground">Classes Today</p>
-                    </Card>
-                </CardContent>
-            </Card>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Quick Actions</CardTitle>
-                    <CardDescription>Shortcuts for common tasks.</CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
-                    {quickActions.map((action) => (
-                        <div key={action.label}>{action.component}</div>
-                    ))}
-                </CardContent>
-            </Card>
-        </div>
-
         {/* Upcoming Events */}
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -216,6 +184,19 @@ export default function DashboardPage() {
               ))}
             </div>
           </CardContent>
+        </Card>
+
+        {/* Quick Actions */}
+        <Card className="lg:col-span-1">
+            <CardHeader>
+                <CardTitle>Quick Actions</CardTitle>
+                <CardDescription>Shortcuts for common tasks.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4">
+                {quickActions.map((action) => (
+                    <div key={action.label}>{action.component}</div>
+                ))}
+            </CardContent>
         </Card>
       </div>
     </div>
