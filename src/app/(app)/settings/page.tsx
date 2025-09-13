@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
+import ThemeCustomizer from '@/components/app/theme-customizer';
 
 const profileFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -69,6 +70,18 @@ export default function SettingsPage() {
             <p className="text-muted-foreground">Manage your account settings and notification preferences.</p>
         </div>
 
+      <Card>
+        <CardHeader>
+          <CardTitle>Appearance</CardTitle>
+          <CardDescription>Customize the look and feel of the application.</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <ThemeCustomizer />
+        </CardContent>
+      </Card>
+
+      <Separator />
+      
       <Card>
         <CardHeader>
           <CardTitle>Profile</CardTitle>
