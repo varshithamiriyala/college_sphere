@@ -27,6 +27,9 @@ import { AddSubject } from '@/components/app/add-subject';
 import { AddClassroom } from '@/components/app/add-classroom';
 import { AddBatch } from '@/components/app/add-batch';
 import { EntityListSheet } from '@/components/app/entity-list-sheet';
+import { UploadData } from '@/components/app/upload-data';
+import { ScheduleFixedClass } from '@/components/app/schedule-fixed-class';
+import { SendNotification } from '@/components/app/send-notification';
 
 export default function DashboardPage() {
   const totalFaculty = facultyData.length;
@@ -109,18 +112,7 @@ export default function DashboardPage() {
       label: 'Upload Data',
       icon: Upload,
       href: '#',
-      component: (
-         <Button
-          variant="outline"
-          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
-          asChild
-        >
-          <Link href="#">
-            <Upload className="h-6 w-6" />
-            <span className="text-center text-sm">Upload Data</span>
-          </Link>
-        </Button>
-      ),
+      component: <UploadData />,
     },
     {
       label: 'Generate Timetable',
@@ -143,35 +135,13 @@ export default function DashboardPage() {
       label: 'Schedule Fixed Class',
       icon: CalendarClock,
       href: '#',
-       component: (
-         <Button
-          variant="outline"
-          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
-          asChild
-        >
-          <Link href="#">
-            <CalendarClock className="h-6 w-6" />
-            <span className="text-center text-sm">Schedule Fixed Class</span>
-          </Link>
-        </Button>
-      ),
+      component: <ScheduleFixedClass />,
     },
     {
       label: 'Send Notification',
       icon: Bell,
       href: '#',
-       component: (
-         <Button
-          variant="outline"
-          className="flex h-auto flex-col items-center justify-center gap-2 p-4"
-          asChild
-        >
-          <Link href="#">
-            <Bell className="h-6 w-6" />
-            <span className="text-center text-sm">Send Notification</span>
-          </Link>
-        </Button>
-      ),
+      component: <SendNotification />,
     },
   ];
 
