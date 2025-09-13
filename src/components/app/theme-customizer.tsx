@@ -10,18 +10,18 @@ import { Button } from '../ui/button';
 type Theme = {
   name: string;
   primary: string;
-  secondary: string;
-  accent: string;
   background: string;
+  accent: string;
 };
 
 const themes: Theme[] = [
-  { name: 'Default', primary: '231 48% 48%', secondary: '0 0% 92%', accent: '262 52% 58%', background: '0 0% 96.1%' },
-  { name: 'Oceanic', primary: '205 90% 45%', secondary: '210 40% 96.1%', accent: '180 70% 40%', background: '210 40% 98%' },
-  { name: 'Forest', primary: '140 60% 35%', secondary: '120 20% 95%', accent: '90 50% 45%', background: '120 20% 99%' },
-  { name: 'Sunset', primary: '25 95% 55%', secondary: '30 50% 95%', accent: '0 85% 60%', background: '20 40% 98%' },
-  { name: 'Lavender', primary: '250 60% 60%', secondary: '250 30% 96%', accent: '240 80% 75%', background: '250 30% 99%' },
+    { name: 'Default', primary: '222.2 47.4% 11.2%', background: '0 0% 100%', accent: '210 40% 96.1%' },
+    { name: 'Oceanic', primary: '205 90% 45%', background: '210 40% 98%', accent: '180 70% 40%' },
+    { name: 'Forest', primary: '140 60% 35%', background: '120 20% 99%', accent: '90 50% 45%' },
+    { name: 'Sunset', primary: '25 95% 55%', background: '20 40% 98%', accent: '0 85% 60%' },
+    { name: 'Lavender', primary: '250 60% 60%', background: '250 30% 99%', accent: '240 80% 75%' },
 ];
+
 
 export default function ThemeCustomizer() {
   const [mounted, setMounted] = useState(false);
@@ -39,12 +39,12 @@ export default function ThemeCustomizer() {
   const applyTheme = (theme: Theme) => {
     const root = document.documentElement;
     root.style.setProperty('--primary', theme.primary);
-    root.style.setProperty('--secondary', theme.secondary);
-    root.style.setProperty('--accent', theme.accent);
     root.style.setProperty('--background', theme.background);
-    // Simple mapping for card/muted as they are often derived from background/secondary
-    root.style.setProperty('--card', theme.background === '0 0% 96.1%' ? '0 0% 100%' : theme.background);
-    root.style.setProperty('--muted', theme.secondary);
+    root.style.setProperty('--accent', theme.accent);
+    // Simple derivatives
+    root.style.setProperty('--card', theme.background);
+    root.style.setProperty('--muted', `hsl(${theme.accent} / 0.5)`);
+    root.style.setProperty('--secondary', `hsl(${theme.accent} / 0.2)`);
   };
 
   const handleThemeChange = (themeName: string) => {
@@ -82,7 +82,7 @@ export default function ThemeCustomizer() {
                 <div style={{ backgroundColor: `hsl(${theme.primary})` }} className="w-1/2 h-full rounded-l-sm" />
                 <div className="flex flex-col w-1/2 h-full">
                   <div style={{ backgroundColor: `hsl(${theme.accent})` }} className="h-1/2 rounded-tr-sm" />
-                  <div style={{ backgroundColor: `hsl(${theme.secondary})` }} className="h-1/2 rounded-br-sm" />
+                  <div style={{ backgroundColor: `hsl(${theme.background})`, border: '1px solid hsl(var(--border))' }} className="h-1/2 rounded-br-sm" />
                 </div>
               </div>
               {activeTheme === theme.name && (

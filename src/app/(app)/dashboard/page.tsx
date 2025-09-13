@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import {
@@ -53,24 +54,21 @@ export default function DashboardPage() {
     {
       title: 'Total Faculty',
       value: totalFaculty,
-      icon: <Users className="h-6 w-6 text-white" />,
-      color: 'bg-chart-1 text-white',
+      icon: <Users className="h-6 w-6 text-chart-1" />,
       items: facultyData.map(f => f.name),
       description: 'A list of all faculty members.',
     },
     {
       title: 'Total Subjects',
       value: uniqueSubjects.length,
-      icon: <Book className="h-6 w-6 text-white" />,
-      color: 'bg-chart-2 text-white',
+      icon: <Book className="h-6 w-6 text-chart-2" />,
       items: uniqueSubjects,
       description: 'A list of all subjects offered.',
     },
     {
       title: 'Total Classrooms',
       value: uniqueClassrooms.length,
-      icon: <Building className="h-6 w-6 text-white" />,
-      color: 'bg-chart-3 text-white',
+      icon: <Building className="h-6 w-6 text-chart-3" />,
       items: uniqueClassrooms,
       description: 'A list of all available classrooms.',
     },
@@ -83,12 +81,12 @@ export default function DashboardPage() {
       component: (
         <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1 bg-blue-100 hover:bg-blue-200 border-blue-200"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
           asChild
         >
           <Link href="/faculty">
-            <PlusCircle className="h-8 w-8 text-blue-600" />
-            <span className="mt-2 text-center text-sm font-medium text-blue-800">Add Faculty</span>
+            <PlusCircle className="h-8 w-8 text-primary" />
+            <span className="mt-2 text-center text-sm font-medium text-primary">Add Faculty</span>
           </Link>
         </Button>
       ),
@@ -103,12 +101,12 @@ export default function DashboardPage() {
       component: (
          <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1 bg-green-100 hover:bg-green-200 border-green-200"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
           asChild
         >
           <Link href="/generate-timetable">
-            <CalendarPlus className="h-8 w-8 text-green-600" />
-            <span className="mt-2 text-center text-sm font-medium text-green-800">Generate Timetable</span>
+            <CalendarPlus className="h-8 w-8 text-accent" />
+            <span className="mt-2 text-center text-sm font-medium text-accent">Generate Timetable</span>
           </Link>
         </Button>
       ),
@@ -135,14 +133,14 @@ export default function DashboardPage() {
                 description={card.description}
                 items={card.items}
             >
-                <Card className={cn("transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer", card.color)}>
+                <Card className="transition-all hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">{card.title}</CardTitle>
                     {card.icon}
                     </CardHeader>
                     <CardContent>
                     <div className="text-2xl font-bold">{card.value}</div>
-                    <p className="text-xs text-white/80">
+                    <p className="text-xs text-muted-foreground">
                         Click to view details
                     </p>
                     </CardContent>

@@ -64,10 +64,10 @@ export function AddClassroom() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1 bg-yellow-100 hover:bg-yellow-200 border-yellow-200"
+          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
         >
-            <Home className="h-8 w-8 text-yellow-600" />
-            <span className="mt-2 text-center text-sm font-medium text-yellow-800">Add Classroom</span>
+            <Home className="h-8 w-8 text-chart-3" />
+            <span className="mt-2 text-center text-sm font-medium text-muted-foreground">Add Classroom</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
