@@ -114,7 +114,7 @@ export default function TimetableGenerator() {
       collegeStartTime: '09:00',
       collegeEndTime: '17:00',
       periodDuration: 60,
-      breakTimings: '',
+      breakTimings: '13:00-14:00',
       numTimetables: '3',
       maxClassesPerDay: '',
       classesPerSubject: '',
@@ -335,7 +335,7 @@ export default function TimetableGenerator() {
                             <FormItem>
                             <FormLabel>Break Times (comma-separated)</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g., 12:00-13:00" {...field} />
+                                <Input placeholder="e.g., 13:00-14:00" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>

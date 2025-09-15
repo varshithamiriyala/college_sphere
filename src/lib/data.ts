@@ -144,6 +144,9 @@ export const sampleTimetable: TimetableEntry[] = [
   { day: 'Friday', time: '14:00-15:00', room: 'ME-202', batch: 'ME-B', subject: 'Machine Design', faculty: 'Dr. Emily Brown 13' },
   { day: 'Friday', time: '15:00-16:00', room: 'BT-102', batch: 'BT-B', subject: 'Immunology', faculty: 'Dr. Chris Davis 14' },
   { day: 'Friday', time: '16:00-17:00', room: 'IT-304', batch: 'IT-D', subject: 'Cyber Security', faculty: 'Dr. Katie Miller 15' },
+
+  { day: 'Saturday', time: '09:00-11:00', room: 'LH-201', batch: 'CS-A', subject: 'Workshop Practice', faculty: 'Dr. Marcus Hayes' },
+  { day: 'Saturday', time: '11:00-13:00', room: 'LB-301', batch: 'EE-A', subject: 'Project Work', faculty: 'Dr. Samuel Green' },
   
   ...Array.from({ length: 80 }, (_, i) => {
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];

@@ -10,7 +10,7 @@ interface TimetableGridProps {
 }
 
 export default function TimetableGrid({ timetable }: TimetableGridProps) {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const timeSlots = Array.from(new Set(timetable.map(entry => entry.time))).sort();
 
   const getEntry = (day: string, time: string) => {
@@ -18,7 +18,7 @@ export default function TimetableGrid({ timetable }: TimetableGridProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-1 overflow-x-auto rounded-lg border bg-card p-1 md:grid-cols-[auto_1fr_1fr_1fr_1fr_1fr]">
+    <div className="grid grid-cols-1 gap-1 overflow-x-auto rounded-lg border bg-card p-1 md:grid-cols-[auto,repeat(6,1fr)]">
       {/* Time Header */}
       <div className="hidden md:block"></div>
       {days.map(day => (
@@ -28,7 +28,7 @@ export default function TimetableGrid({ timetable }: TimetableGridProps) {
       ))}
       
       {timeSlots.map(time => (
-        <div key={time} className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr_1fr_1fr_1fr] md:contents">
+        <div key={time} className="grid grid-cols-1 md:grid-cols-[auto,repeat(6,1fr)] md:contents">
           <div className="sticky left-0 bg-card p-3 text-center font-semibold md:text-right">
             {time}
           </div>
