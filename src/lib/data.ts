@@ -76,6 +76,34 @@ export const facultyData: Faculty[] = [
     })
 ];
 
+const engineeringSubjects = {
+  "Computer Science": [
+    "Data Structures", "Algorithms", "Operating Systems", "Database Management", "Computer Networks",
+    "Software Engineering", "Artificial Intelligence", "Machine Learning", "Web Development", "Compiler Design"
+  ],
+  "Electrical Engineering": [
+    "Circuit Theory", "Digital Electronics", "Power Systems", "Control Systems", "VLSI Design",
+    "Signals and Systems", "Electromagnetic Fields", "Power Electronics", "Microprocessors", "Communication Systems"
+  ],
+  "Mechanical Engineering": [
+    "Thermodynamics", "Fluid Dynamics", "Machine Design", "Manufacturing Process", "Heat Transfer",
+    "Theory of Machines", "Mechatronics", "Automobile Engineering", "Robotics", "Material Science"
+  ],
+  "Civil Engineering": [
+    "Fluid Mechanics", "Surveying", "Structural Analysis", "Geotechnical Engineering", "Transportation Engineering",
+    "Concrete Technology", "Construction Management", "Environmental Engineering", "Hydrology", "Building Materials"
+  ],
+  "Information Technology": [
+    "Cloud Computing", "Cyber Security", "Data Mining", "Internet of Things", "Mobile Computing",
+    "Big Data Analytics", "E-Commerce", "Network Security", "Cryptography", "Advanced Java"
+  ],
+  "Biotechnology": ["Microbiology", "Genetics", "Immunology", "Bioinformatics", "Molecular Biology"],
+  "Chemical Engineering": ["Chemical Processes", "Organic Chemistry", "Process Control", "Mass Transfer", "Chemical Reaction Engineering"],
+  "General": ["Engineering Mathematics", "Engineering Physics", "Engineering Chemistry", "Professional Communication", "Workshop Practice"]
+};
+
+const allSubjects = Object.values(engineeringSubjects).flat();
+
 export const sampleTimetable: TimetableEntry[] = [
   { day: 'Monday', time: '09:00-10:00', room: 'CR-101', batch: 'CS-A', subject: 'Data Structures', faculty: 'Dr. Evelyn Reed' },
   { day: 'Monday', time: '10:00-11:00', room: 'CR-102', batch: 'CS-B', subject: 'Algorithms', faculty: 'Dr. Isabella Chen' },
@@ -122,12 +150,6 @@ export const sampleTimetable: TimetableEntry[] = [
     const times = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '14:00-15:00', '15:00-16:00', '16:00-17:00'];
     const rooms = Array.from({ length: 50 }, (__, j) => `CR-${j + 101}`);
     const batches = ['CS-A', 'CS-B', 'CS-C', 'EE-A', 'EE-B', 'ME-A', 'ME-B', 'CE-A', 'CE-B', 'IT-A', 'IT-B', 'BT-A', 'CH-A'];
-    const subjects = [
-        'Advanced Algorithms', 'Compiler Design', 'Image Processing', 'Control Systems', 'VLSI Design',
-        'Heat Transfer', 'Manufacturing Process', 'Geotechnical Engineering', 'Transportation Engineering', 'Data Mining',
-        'Machine Learning', 'Bioinformatics', 'Process Control', 'Quantum Physics', 'Astrophysics', 'Organic Chemistry',
-        'Physical Chemistry', 'Number Theory', 'Partial Differential Equations', 'Financial Mathematics'
-    ];
     const facultyIndex = i % facultyData.length;
     
     return {
@@ -135,7 +157,7 @@ export const sampleTimetable: TimetableEntry[] = [
         time: times[i % times.length],
         room: rooms[i % rooms.length],
         batch: batches[i % batches.length],
-        subject: subjects[i % subjects.length],
+        subject: allSubjects[i % allSubjects.length],
         faculty: facultyData[facultyIndex].name,
     }
   })
