@@ -53,4 +53,26 @@ export const facultyData: Faculty[] = [
     }
 ];
 
-export const sampleTimetable: TimetableEntry[] = [];
+export const sampleTimetable: TimetableEntry[] = [
+  { day: 'Monday', time: '09:00-10:00', room: 'CR-101', batch: 'CS-A', subject: 'Data Structures', faculty: 'Dr. Evelyn Reed' },
+  { day: 'Monday', time: '10:00-11:00', room: 'CR-102', batch: 'CS-B', subject: 'Algorithms', faculty: 'Dr. Isabella Chen' },
+  { day: 'Monday', time: '11:00-12:00', room: 'LH-201', batch: 'EE-A', subject: 'Circuit Theory', faculty: 'Dr. Samuel Green' },
+  { day: 'Monday', time: '14:00-15:00', room: 'CR-101', batch: 'CS-A', subject: 'Data Structures', faculty: 'Dr. Evelyn Reed' },
+
+  { day: 'Tuesday', time: '09:00-10:00', room: 'CR-102', batch: 'CS-B', subject: 'Algorithms', faculty: 'Dr. Isabella Chen' },
+  { day: 'Tuesday', time: '10:00-11:00', room: 'CR-101', batch: 'CS-A', subject: 'Operating Systems', faculty: 'Dr. Evelyn Reed' },
+  { day: 'Tuesday', time: '12:00-13:00', room: 'ME-105', batch: 'ME-A', subject: 'Thermodynamics', faculty: 'Dr. Marcus Hayes' },
+  { day: 'Tuesday', time: '15:00-16:00', room: 'LH-201', batch: 'EE-A', subject: 'Digital Electronics', faculty: 'Dr. Samuel Green' },
+
+  { day: 'Wednesday', time: '10:00-11:00', room: 'CR-101', batch: 'CS-A', subject: 'Data Structures', faculty: 'Dr. Evelyn Reed' },
+  { day: 'Wednesday', time: '11:00-12:00', room: 'CR-102', batch: 'CS-B', subject: 'Algorithms', faculty: 'Dr. Isabella Chen' },
+  { day: 'Wednesday', time: '14:00-15:00', room: 'CE-Lab', batch: 'CE-A', subject: 'Surveying Lab', faculty: 'Dr. Leo Patel' },
+
+  { day: 'Thursday', time: '09:00-10:00', room: 'LH-201', batch: 'EE-A', subject: 'Circuit Theory', faculty: 'Dr. Samuel Green' },
+  { day: 'Thursday', time: '11:00-12:00', room: 'CR-101', batch: 'CS-A', subject: 'Operating Systems', faculty: 'Dr. Evelyn Reed' },
+  { day: 'Thursday', time: '14:00-15:00', room: 'ME-105', batch: 'ME-A', subject: 'Thermodynamics', faculty: 'Dr. Marcus Hayes' },
+
+  { day: 'Friday', time: '10:00-11:00', room: 'CR-102', batch: 'CS-B', subject: 'Database Management', faculty: 'Dr. Isabella Chen' },
+  { day: 'Friday', time: '11:00-12:00', room: 'CR-101', batch: 'CS-A', subject: 'Data Structures', faculty: 'Dr. Evelyn Reed' },
+  { day: 'Friday', time: '14:00-15:00', room: 'LH-201', batch: 'EE-A', subject: 'Digital Electronics', faculty: 'Dr. Samuel Green' },
+];
