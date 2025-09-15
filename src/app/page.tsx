@@ -6,28 +6,28 @@ import Image from 'next/image';
 
 const features = [
   {
-    title: 'AI Timetable Generator',
+    title: 'ai timebable generator',
     description: 'Generate multiple, conflict-free timetable options in seconds based on your specific data and constraints.',
     icon: <BrainCircuit className="h-10 w-10 text-primary" />,
     image: 'https://picsum.photos/seed/feature1/600/400',
     hint: 'abstract technology',
   },
   {
-    title: 'Interactive Dashboard',
+    title: 'dashboarsds',
     description: 'Get a comprehensive overview with summary cards, trend graphs, and quick access to all essential management tools.',
     icon: <GanttChart className="h-10 w-10 text-primary" />,
     image: 'https://picsum.photos/seed/feature2/600/400',
     hint: 'dashboard data',
   },
   {
-    title: 'Detailed Analytics',
+    title: 'detailed analytics',
     description: 'Visualize faculty workload, leave trends, and submission compliance with insightful charts and graphs.',
     icon: <BarChart3 className="h-10 w-10 text-primary" />,
     image: 'https://picsum.photos/seed/feature3/600/400',
     hint: 'analytics chart',
   },
   {
-    title: 'Faculty Management',
+    title: 'faculty managment',
     description: 'Easily manage faculty profiles, working hours, leave schedules, and submission statuses all in one place.',
     icon: <Users className="h-10 w-10 text-primary" />,
     image: 'https://picsum.photos/seed/feature4/600/400',
