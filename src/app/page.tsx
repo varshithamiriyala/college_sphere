@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bot, BarChart3, Users, GanttChart, BrainCircuit } from 'lucide-react';
+import { Bot, BarChart3, Users, GanttChart, BrainCircuit, ListTree } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -87,6 +87,13 @@ export default function LandingPage() {
                   </div>
                 </Card>
               ))}
+            </div>
+            <div className="mt-12 text-center">
+                <Button asChild variant="outline">
+                    <Link href="/features">
+                        <ListTree className="mr-2" /> See All Features
+                    </Link>
+                </Button>
             </div>
           </div>
         </section>

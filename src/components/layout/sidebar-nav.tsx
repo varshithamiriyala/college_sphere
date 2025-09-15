@@ -11,7 +11,7 @@ import {
     SidebarTrigger,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, MessageSquare } from 'lucide-react';
+import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, MessageSquare, ListTree } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
@@ -21,6 +21,7 @@ export function SidebarNav() {
 
     const menuItems = [
         { href: '/dashboard', label: 'Dashboard', icon: GanttChart },
+        { href: '/features', label: 'Features', icon: ListTree },
         { href: '/timetable', label: 'Timetable', icon: CalendarDays },
         { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus },
         { href: '/faculty', label: 'Faculty', icon: Users },
