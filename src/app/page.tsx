@@ -1,37 +1,34 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bot, Calendar, BarChart3, Users, GanttChart, BrainCircuit } from 'lucide-react';
+import { Bot, BarChart3, Users, GanttChart, BrainCircuit } from 'lucide-react';
 import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const features = [
   {
-    title: 'ai timebable generator',
+    title: 'AI Timetable Generator',
     description: 'Generate multiple, conflict-free timetable options in seconds based on your specific data and constraints.',
     icon: <BrainCircuit className="h-10 w-10 text-primary" />,
-    image: 'https://picsum.photos/seed/feature1/600/400',
-    hint: 'abstract technology',
+    imageId: 'feature-timetable',
   },
   {
-    title: 'dashboarsds',
+    title: 'Dashboards',
     description: 'Get a comprehensive overview with summary cards, trend graphs, and quick access to all essential management tools.',
     icon: <GanttChart className="h-10 w-10 text-primary" />,
-    image: 'https://picsum.photos/seed/feature2/600/400',
-    hint: 'dashboard data',
+    imageId: 'feature-dashboard',
   },
   {
-    title: 'detailed analytics',
+    title: 'Detailed Analytics',
     description: 'Visualize faculty workload, leave trends, and submission compliance with insightful charts and graphs.',
     icon: <BarChart3 className="h-10 w-10 text-primary" />,
-    image: 'https://picsum.photos/seed/feature3/600/400',
-    hint: 'analytics chart',
+    imageId: 'feature-analytics',
   },
   {
-    title: 'faculty managment',
+    title: 'Faculty Management',
     description: 'Easily manage faculty profiles, working hours, leave schedules, and submission statuses all in one place.',
     icon: <Users className="h-10 w-10 text-primary" />,
-    image: 'https://picsum.photos/seed/feature4/600/400',
-    hint: 'team collaboration',
+    imageId: 'feature-faculty',
   },
 ];
 
@@ -77,31 +74,36 @@ export default function LandingPage() {
                 </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-              {features.map((feature) => (
-                <Card key={feature.title} className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
-                  <div className="grid md:grid-cols-2 items-center">
-                    <div className="p-6">
-                      <div className="mb-4 flex items-center gap-4">
-                        {feature.icon}
-                        <CardTitle className="text-xl capitalize">{feature.title}</CardTitle>
-                      </div>
-                      <CardContent className="p-0">
-                        <p className="text-muted-foreground">{feature.description}</p>
-                      </CardContent>
+              {features.map((feature) => {
+                const image = PlaceHolderImages.find(img => img.id === feature.imageId);
+                return (
+                    <Card key={feature.title} className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                    <div className="grid md:grid-cols-2 items-center">
+                        <div className="p-6">
+                        <div className="mb-4 flex items-center gap-4">
+                            {feature.icon}
+                            <CardTitle className="text-xl capitalize">{feature.title}</CardTitle>
+                        </div>
+                        <CardContent className="p-0">
+                            <p className="text-muted-foreground">{feature.description}</p>
+                        </CardContent>
+                        </div>
+                        {image && (
+                            <div className="h-full min-h-[200px] w-full">
+                                <Image
+                                    src={image.imageUrl}
+                                    alt={feature.title}
+                                    width={600}
+                                    height={400}
+                                    className="object-cover w-full h-full"
+                                    data-ai-hint={image.imageHint}
+                                />
+                            </div>
+                        )}
                     </div>
-                     <div className="h-full min-h-[200px] w-full">
-                        <Image
-                            src={feature.image}
-                            alt={feature.title}
-                            width={600}
-                            height={400}
-                            className="object-cover w-full h-full"
-                            data-ai-hint={feature.hint}
-                        />
-                    </div>
-                  </div>
-                </Card>
-              ))}
+                    </Card>
+                )
+              })}
             </div>
           </div>
         </section>

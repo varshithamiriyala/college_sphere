@@ -76,10 +76,10 @@ export function ScheduleFixedClass() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
+          className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center transition-all hover:shadow-md hover:-translate-y-1"
         >
           <CalendarClock className="h-8 w-8 text-chart-5" />
-          <span className="mt-2 text-center text-sm font-medium text-muted-foreground">Schedule Fixed Class</span>
+          <span className="mt-2 text-sm font-medium text-muted-foreground">Schedule Fixed Class</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

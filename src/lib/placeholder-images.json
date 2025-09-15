@@ -1,4 +1,29 @@
 
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "feature-timetable",
+      "description": "Abstract technology background for AI timetable generator feature.",
+      "imageUrl": "https://picsum.photos/seed/feature1/600/400",
+      "imageHint": "abstract technology"
+    },
+    {
+      "id": "feature-dashboard",
+      "description": "Dashboard data visualization for interactive dashboard feature.",
+      "imageUrl": "https://picsum.photos/seed/feature2/600/400",
+      "imageHint": "dashboard data"
+    },
+    {
+      "id": "feature-analytics",
+      "description": "Analytics chart for detailed analytics feature.",
+      "imageUrl": "https://picsum.photos/seed/feature3/600/400",
+      "imageHint": "analytics chart"
+    },
+    {
+      "id": "feature-faculty",
+      "description": "Team collaboration concept for faculty management feature.",
+      "imageUrl": "https://picsum.photos/seed/feature4/600/400",
+      "imageHint": "team collaboration"
+    }
+  ]
 }

@@ -69,10 +69,10 @@ export function SendNotification() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-full flex-col items-center justify-center gap-2 p-4 transition-all hover:shadow-md hover:-translate-y-1"
+          className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center transition-all hover:shadow-md hover:-translate-y-1"
         >
           <Bell className="h-8 w-8 text-yellow-500" />
-          <span className="mt-2 text-center text-sm font-medium text-muted-foreground">Send Notification</span>
+          <span className="mt-2 text-sm font-medium text-muted-foreground">Send Notification</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">
