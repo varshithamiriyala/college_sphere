@@ -83,7 +83,7 @@ export default function LandingPage() {
                     <div className="p-6">
                       <div className="mb-4 flex items-center gap-4">
                         {feature.icon}
-                        <CardTitle className="text-xl">{feature.title}</CardTitle>
+                        <CardTitle className="text-xl capitalize">{feature.title}</CardTitle>
                       </div>
                       <CardContent className="p-0">
                         <p className="text-muted-foreground">{feature.description}</p>
