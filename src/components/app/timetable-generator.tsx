@@ -20,8 +20,6 @@ import { facultyData, sampleTimetable } from '@/lib/data';
 import { MultiSelect } from '../ui/multi-select';
 import { parse, format, addMinutes } from 'date-fns';
 
-const facultySubjectMappingSchema = z.record(z.array(z.string()));
-
 const FormSchema = z.object({
   classrooms: z.array(z.string()).min(1, 'Please select at least one classroom.'),
   batches: z.array(z.string()).min(1, 'Please select at least one batch.'),
@@ -34,7 +32,6 @@ const FormSchema = z.object({
   numTimetables: z.string(),
   maxClassesPerDay: z.string().optional(),
   classesPerSubject: z.string().optional(),
-  facultySubjectMapping: facultySubjectMappingSchema.optional(),
   specialConstraints: z.string().optional(),
 });
 
@@ -105,6 +102,7 @@ export default function TimetableGenerator() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [generatedTimetables, setGeneratedTimetables] = useState<GeneratedTimetable[]>([]);
+  const [facultySubjectMapping, setFacultySubjectMapping] = useState<Record<string, string[]>>({});
 
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -120,7 +118,6 @@ export default function TimetableGenerator() {
       numTimetables: '3',
       maxClassesPerDay: '',
       classesPerSubject: '',
-      facultySubjectMapping: {},
       specialConstraints: '',
     },
   });
@@ -155,12 +152,10 @@ export default function TimetableGenerator() {
         return;
       }
 
-      const facultySubjectMappingString = data.facultySubjectMapping 
-        ? Object.entries(data.facultySubjectMapping)
+      const facultySubjectMappingString = Object.entries(facultySubjectMapping)
             .filter(([faculty, subjects]) => data.faculty.includes(faculty) && subjects.length > 0)
             .map(([faculty, subjects]) => `${faculty}: ${subjects.join(', ')}`)
-            .join('; ')
-        : undefined;
+            .join('; ');
 
       const input = {
         ...data,
@@ -384,23 +379,17 @@ export default function TimetableGenerator() {
                 </CardHeader>
                 <CardContent className="space-y-4 pt-4">
                     {selectedFaculty.map((facultyName) => (
-                        <FormField
-                            key={facultyName}
-                            control={form.control}
-                            name={`facultySubjectMapping.${facultyName}`}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>{facultyName}</FormLabel>
-                                    <MultiSelect
-                                        options={allSubjectsOptions}
-                                        selected={field.value || []}
-                                        onChange={field.onChange}
-                                        placeholder="Select subjects..."
-                                    />
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div key={facultyName}>
+                          <FormLabel>{facultyName}</FormLabel>
+                          <MultiSelect
+                              options={allSubjectsOptions}
+                              selected={facultySubjectMapping[facultyName] || []}
+                              onChange={(selectedSubjects) => {
+                                  setFacultySubjectMapping(prev => ({ ...prev, [facultyName]: selectedSubjects }))
+                              }}
+                              placeholder="Select subjects..."
+                          />
+                        </div>
                     ))}
                     {selectedFaculty.length === 0 && (
                         <p className="text-sm text-muted-foreground">Select faculty members above to assign subjects.</p>
