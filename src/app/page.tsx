@@ -74,36 +74,19 @@ export default function LandingPage() {
                 </p>
             </div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-              {features.map((feature) => {
-                const image = PlaceHolderImages.find(img => img.id === feature.imageId);
-                return (
-                    <Card key={feature.title} className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
-                    <div className="grid md:grid-cols-2 items-center">
-                        <div className="p-6">
-                        <div className="mb-4 flex items-center gap-4">
-                            {feature.icon}
-                            <CardTitle className="text-xl capitalize">{feature.title}</CardTitle>
-                        </div>
-                        <CardContent className="p-0">
-                            <p className="text-muted-foreground">{feature.description}</p>
-                        </CardContent>
-                        </div>
-                        {image && (
-                            <div className="h-full min-h-[200px] w-full">
-                                <Image
-                                    src={image.imageUrl}
-                                    alt={feature.title}
-                                    width={600}
-                                    height={400}
-                                    className="object-cover w-full h-full"
-                                    data-ai-hint={image.imageHint}
-                                />
-                            </div>
-                        )}
+              {features.map((feature) => (
+                <Card key={feature.title} className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1">
+                  <div className="p-6">
+                    <div className="mb-4 flex items-center gap-4">
+                        {feature.icon}
+                        <CardTitle className="text-xl capitalize">{feature.title}</CardTitle>
                     </div>
-                    </Card>
-                )
-              })}
+                    <CardContent className="p-0">
+                        <p className="text-muted-foreground">{feature.description}</p>
+                    </CardContent>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
