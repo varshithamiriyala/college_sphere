@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -27,10 +28,42 @@ export function Header() {
             <SidebarTrigger />
         </div>
         <div className="flex flex-1 items-center justify-end gap-4">
-          <Button variant="ghost" size="icon">
-            <Bell className="h-5 w-5" />
-            <span className="sr-only">Notifications</span>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Bell className="h-5 w-5" />
+                <span className="sr-only">Notifications</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-80" align="end">
+                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">New Timetable Generated</p>
+                    <p className="text-xs text-muted-foreground">
+                      A new timetable option for CS-A is available.
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">Deadline Reminder</p>
+                    <p className="text-xs text-muted-foreground">
+                      Assignment 1 for Algorithms is due tomorrow.
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+                 <DropdownMenuItem>
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium">Faculty Meeting</p>
+                    <p className="text-xs text-muted-foreground">
+                      A faculty meeting is scheduled for 4 PM today.
+                    </p>
+                  </div>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
