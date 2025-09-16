@@ -16,9 +16,18 @@ import { SidebarTrigger } from '../ui/sidebar';
 import Link from 'next/link';
 import { useSidebar } from '../ui/sidebar';
 import { ModeToggle } from './mode-toggle';
+import { useRouter } from 'next/navigation';
+
 
 export function Header() {
   const { isMobile, open } = useSidebar();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // In a real app, you'd clear session/token here
+    router.push('/login');
+  };
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 lg:px-8">
         <div className="md:hidden">
@@ -97,7 +106,7 @@ export function Header() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

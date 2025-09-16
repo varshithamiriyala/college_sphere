@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bot, BarChart3, Users, GanttChart, BrainCircuit, ListTree } from 'lucide-react';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const features = [
   {
@@ -43,7 +41,7 @@ export default function LandingPage() {
             <span className="text-xl font-semibold">TechTrack</span>
           </Link>
           <Button asChild>
-            <Link href="/dashboard">Go to Dashboard</Link>
+            <Link href="/login">Login</Link>
           </Button>
         </div>
       </header>
@@ -59,7 +57,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex justify-center">
             <Button size="lg" asChild>
-              <Link href="/dashboard">Get Started</Link>
+              <Link href="/signup">Get Started</Link>
             </Button>
           </div>
         </section>

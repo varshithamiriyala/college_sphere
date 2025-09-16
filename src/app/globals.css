@@ -86,3 +86,11 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.dark {
+  --primary: 205 90% 45%;
+  --primary-foreground: 210 40% 98%;
+  --background: 240 6% 9%;
+  --foreground: 210 40% 98%;
+  --accent: 180 70% 40%;
+}
