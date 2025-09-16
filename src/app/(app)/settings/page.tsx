@@ -13,6 +13,12 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import ThemeCustomizer from '@/components/app/theme-customizer';
 
+// In a real application, this would come from an auth context or API
+const loggedInUser = {
+    name: 'Admin',
+    email: 'admin@techtrack.edu',
+};
+
 const profileFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
   email: z.string().email('Please enter a valid email address.'),
@@ -33,8 +39,8 @@ export default function SettingsPage() {
     const profileForm = useForm<ProfileFormValues>({
         resolver: zodResolver(profileFormSchema),
         defaultValues: {
-            name: 'Admin',
-            email: 'admin@techtrack.edu',
+            name: loggedInUser.name,
+            email: loggedInUser.email,
         },
     });
 

@@ -18,6 +18,12 @@ import { useSidebar } from '../ui/sidebar';
 import { ModeToggle } from './mode-toggle';
 import { useRouter } from 'next/navigation';
 
+// In a real application, this would come from an auth context or API
+const loggedInUser = {
+    name: 'Admin',
+    email: 'admin@techtrack.edu',
+    avatarUrl: 'https://picsum.photos/seed/AdminUser/100/100',
+};
 
 export function Header() {
   const { isMobile, open } = useSidebar();
@@ -78,17 +84,17 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                 <Avatar className="h-9 w-9">
-                  <AvatarImage src="https://picsum.photos/seed/AdminUser/100/100" alt="Admin" data-ai-hint="person portrait"/>
-                  <AvatarFallback>A</AvatarFallback>
+                  <AvatarImage src={loggedInUser.avatarUrl} alt={loggedInUser.name} data-ai-hint="person portrait"/>
+                  <AvatarFallback>{loggedInUser.name.charAt(0)}</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">Admin</p>
+                  <p className="text-sm font-medium leading-none">{loggedInUser.name}</p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    admin@techtrack.edu
+                    {loggedInUser.email}
                   </p>
                 </div>
               </DropdownMenuLabel>

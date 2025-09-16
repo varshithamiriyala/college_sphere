@@ -15,6 +15,14 @@ import { useState } from 'react';
 import { Loader2, PlusCircle, Trash2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 
+// In a real application, this would come from an auth context or API
+const loggedInUser = {
+    name: 'Admin',
+    title: 'Professor',
+    department: 'Computer Science',
+    avatarUrl: 'https://picsum.photos/seed/AdminUser/200/200',
+};
+
 const qualificationSchema = z.object({
   degree: z.string().min(2, 'Degree is required.'),
   institution: z.string().min(2, 'Institution is required.'),
@@ -22,11 +30,6 @@ const qualificationSchema = z.object({
 });
 
 type Qualification = z.infer<typeof qualificationSchema>;
-
-const profileFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  title: z.string().min(1, "Title is required"),
-});
 
 const submissionFormSchema = z.object({
     type: z.string(),
@@ -99,11 +102,11 @@ export default function ProfilePage() {
                 <Card>
                     <CardHeader className="text-center">
                         <Avatar className="w-24 h-24 mx-auto border-2 border-primary mb-4">
-                            <AvatarImage src="https://picsum.photos/seed/AdminUser/200/200" alt="Admin" data-ai-hint="person portrait" />
-                            <AvatarFallback>A</AvatarFallback>
+                            <AvatarImage src={loggedInUser.avatarUrl} alt={loggedInUser.name} data-ai-hint="person portrait" />
+                            <AvatarFallback>{loggedInUser.name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <CardTitle>Admin</CardTitle>
-                        <CardDescription>Professor, Computer Science</CardDescription>
+                        <CardTitle>{loggedInUser.name}</CardTitle>
+                        <CardDescription>{loggedInUser.title}, {loggedInUser.department}</CardDescription>
                     </CardHeader>
                 </Card>
 
