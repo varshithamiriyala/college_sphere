@@ -12,7 +12,7 @@ export default function ChatPage() {
 
   // Find a default user to display in the chat, for demo purposes.
   // In a real app, this might be the first user, a welcome bot, or based on routing.
-  const defaultUser = users.find(u => u.id === '2') ?? users[0];
+  const defaultUser = users.find(u => u.id === '1') ?? users[0];
 
   const initialMessages = [
     {
