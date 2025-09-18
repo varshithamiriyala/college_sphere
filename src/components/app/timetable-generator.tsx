@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { generateTimetableAction } from '@/app/actions';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -22,7 +23,7 @@ import { parse, format, addMinutes } from 'date-fns';
 
 const FormSchema = z.object({
   classrooms: z.array(z.string()).min(1, 'Please select at least one classroom.'),
-  batches: z.array(z.string()).min(1, 'Please select at least one batch.'),
+  batch: z.string().min(1, 'Please select a batch.'),
   subjects: z.array(z.string()).min(1, 'Please select at least one subject.'),
   faculty: z.array(z.string()).min(1, 'Please select at least one faculty member.'),
   collegeStartTime: z.string().min(1, 'Start time is required.'),
@@ -108,7 +109,7 @@ export default function TimetableGenerator() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       classrooms: [],
-      batches: [],
+      batch: '',
       subjects: [],
       faculty: [],
       collegeStartTime: '09:00',
@@ -159,6 +160,7 @@ export default function TimetableGenerator() {
 
       const input = {
         ...data,
+        batches: [data.batch], // Wrap single batch in an array for the API
         facultySubjectMapping: facultySubjectMappingString,
         timings: timeSlots,
         numTimetables: parseInt(data.numTimetables, 10),
@@ -220,7 +222,7 @@ export default function TimetableGenerator() {
               name="classrooms"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Classrooms</FormLabel>
+                  <FormLabel>Available Classrooms</FormLabel>
                   <MultiSelect
                     options={options.classrooms}
                     selected={field.value}
@@ -233,16 +235,22 @@ export default function TimetableGenerator() {
             />
              <FormField
               control={form.control}
-              name="batches"
+              name="batch"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Batches</FormLabel>
-                  <MultiSelect
-                    options={options.batches}
-                    selected={field.value}
-                    onChange={field.onChange}
-                    placeholder="Select batches..."
-                  />
+                  <FormLabel>Batch</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                          <SelectTrigger>
+                              <SelectValue placeholder="Select a batch to generate timetable for" />
+                          </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                          {options.batches.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
+                          ))}
+                      </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -252,7 +260,7 @@ export default function TimetableGenerator() {
               name="subjects"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Subjects</FormLabel>
+                  <FormLabel>Subjects for this Batch</FormLabel>
                    <MultiSelect
                     options={options.subjects}
                     selected={field.value}
@@ -268,7 +276,7 @@ export default function TimetableGenerator() {
               name="faculty"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Faculty</FormLabel>
+                  <FormLabel>Available Faculty</FormLabel>
                    <MultiSelect
                     options={options.faculty}
                     selected={field.value}
@@ -496,3 +504,5 @@ export default function TimetableGenerator() {
     </div>
   );
 }
+
+    
