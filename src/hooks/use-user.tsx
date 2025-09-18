@@ -2,7 +2,6 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 
 const USER_STORAGE_KEY = 'techtrack.user';
 const ALL_USERS_STORAGE_KEY = 'techtrack.users';
@@ -49,9 +48,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // This `useEffect` runs only on the client, after the component has mounted.
+  // This prevents a mismatch between server and client initial render by delaying
+  // access to localStorage.
   useEffect(() => {
-    // This effect runs only on the client, after hydration.
-    // This prevents a mismatch between server and client initial render.
     try {
       const storedUser = localStorage.getItem(USER_STORAGE_KEY);
       if (storedUser) {
