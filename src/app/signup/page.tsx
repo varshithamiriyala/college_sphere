@@ -28,6 +28,8 @@ const formSchema = z.object({
   email: z.string().email('Please enter a valid email address.'),
   password: z.string().min(8, 'Password must be at least 8 characters.'),
   role: z.string().min(1, 'Please select a role.'),
+  collegeName: z.string().min(2, 'College name is required.'),
+  collegeCode: z.string().min(2, 'College code is required.'),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -45,6 +47,8 @@ export default function SignupPage() {
       email: '',
       password: '',
       role: '',
+      collegeName: '',
+      collegeCode: '',
     },
   });
 
@@ -55,7 +59,7 @@ export default function SignupPage() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     try {
-        signup(data.name, data.email, data.password, data.role);
+        signup(data.name, data.email, data.password, data.role, data.collegeName, data.collegeCode);
         toast({
             title: 'Account Created',
             description: 'Your account has been created. You can now log in.',
@@ -109,6 +113,32 @@ export default function SignupPage() {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input type="email" placeholder="john.doe@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="collegeName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>College Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., University of Technology" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="collegeCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>College Code</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g., UOT123" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

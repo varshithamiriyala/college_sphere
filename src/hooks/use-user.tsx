@@ -11,6 +11,8 @@ type User = {
   email: string;
   avatarUrl: string;
   role: string;
+  collegeName: string;
+  collegeCode: string;
 };
 
 type UserContextType = {
@@ -18,7 +20,7 @@ type UserContextType = {
   isLoading: boolean;
   login: (email: string, pass: string) => boolean;
   logout: () => void;
-  signup: (name: string, email: string, pass: string, role: string) => void;
+  signup: (name: string, email: string, pass: string, role: string, collegeName: string, collegeCode: string) => void;
   setUser: (user: User) => void; 
 };
 
@@ -29,6 +31,8 @@ const defaultUser: User = {
     email: 'admin@techtrack.edu',
     avatarUrl: 'https://picsum.photos/seed/AdminUser/100/100',
     role: 'admin',
+    collegeName: 'TechTrack University',
+    collegeCode: 'TTU',
 };
 
 const getStoredUsers = (): Record<string, any> => {
@@ -45,20 +49,27 @@ const getStoredUsers = (): Record<string, any> => {
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem(USER_STORAGE_KEY);
-      if (storedUser) {
-        setUserState(JSON.parse(storedUser));
-      }
-    } catch (error) {
-      console.error("Failed to parse user from localStorage", error);
-      setUserState(null);
-    } finally {
-      setIsLoading(false);
-    }
+    setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      try {
+        const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+        if (storedUser) {
+          setUserState(JSON.parse(storedUser));
+        }
+      } catch (error) {
+        console.error("Failed to parse user from localStorage", error);
+        setUserState(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }, [isMounted]);
 
   const setUser = (newUser: User | null) => {
     setUserState(newUser);
@@ -67,7 +78,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
             const allUsers = getStoredUsers();
             if (allUsers[newUser.email]) {
-                allUsers[newUser.email] = { ...allUsers[newUser.email], ...newUser };
+                const { password, ...userToStore } = allUsers[newUser.email];
+                allUsers[newUser.email] = { password, ...newUser };
                 localStorage.setItem(ALL_USERS_STORAGE_KEY, JSON.stringify(allUsers));
             }
         } else {
@@ -92,7 +104,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   }, []);
 
-  const signup = useCallback((name: string, email: string, pass: string, role: string) => {
+  const signup = useCallback((name: string, email: string, pass: string, role: string, collegeName: string, collegeCode: string) => {
     const allUsers = getStoredUsers();
     if (allUsers[email]) {
         throw new Error('An account with this email already exists.');
@@ -102,6 +114,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         name,
         email,
         role,
+        collegeName,
+        collegeCode,
         avatarUrl: `https://picsum.photos/seed/${name.replace(/\s/g, '')}/100/100`,
     };
     
@@ -110,8 +124,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   }, []);
 
+  const value = { user, isLoading, login, logout, signup, setUser: setUser as (u: User) => void };
+
   return (
-    <UserContext.Provider value={{ user, isLoading, login, logout, signup, setUser: setUser as (u: User) => void }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   );
