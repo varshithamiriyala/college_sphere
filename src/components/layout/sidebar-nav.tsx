@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -27,6 +28,7 @@ export function SidebarNav() {
         { href: '/faculty', label: 'Faculty', icon: Users },
         { href: '/chat', label: 'Chat', icon: MessageSquare },
         { href: '/analytics', label: 'Analytics', icon: BarChart3 },
+        { href: '/profile', label: 'Profile', icon: User },
     ];
     
     return (
