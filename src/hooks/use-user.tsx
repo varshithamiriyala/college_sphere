@@ -48,7 +48,6 @@ const getStoredUsers = (): Record<string, any> => {
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     // This effect runs only on the client, after hydration.
@@ -68,17 +67,18 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const setUser = (newUser: User | null) => {
     setUserState(newUser);
-    if (newUser) {
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
-       // Also update the user in the "all users" list
-      const allUsers = getStoredUsers();
-      if (allUsers[newUser.email]) {
-        allUsers[newUser.email] = { ...allUsers[newUser.email], ...newUser };
-        localStorage.setItem(ALL_USERS_STORAGE_KEY, JSON.stringify(allUsers));
-      }
-
-    } else {
-      localStorage.removeItem(USER_STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+        if (newUser) {
+            localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
+            // Also update the user in the "all users" list
+            const allUsers = getStoredUsers();
+            if (allUsers[newUser.email]) {
+                allUsers[newUser.email] = { ...allUsers[newUser.email], ...newUser };
+                localStorage.setItem(ALL_USERS_STORAGE_KEY, JSON.stringify(allUsers));
+            }
+        } else {
+            localStorage.removeItem(USER_STORAGE_KEY);
+        }
     }
   };
 
@@ -97,8 +97,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = useCallback(() => {
     setUser(null);
-    // No need to push here if Redirects are handled elsewhere
-    // router.push('/login'); 
   }, []);
 
   const signup = useCallback((name: string, email: string, pass: string, role: string) => {
@@ -111,7 +109,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         name,
         email,
         role,
-        avatarUrl: `https://picsum.photos/seed/${name.split(' ').join('')}/100/100`,
+        avatarUrl: `https://picsum.photos/seed/${name.replace(/\s/g, '')}/100/100`,
     };
     
     allUsers[email] = { password: pass, ...newUser };
