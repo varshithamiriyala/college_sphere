@@ -112,7 +112,7 @@ export default function ProfilePage() {
         }, 1000);
     }
 
-    if (isUserLoading) {
+    if (isUserLoading || !user) {
         return (
             <div className="space-y-6">
                 <div className="space-y-1">
@@ -313,6 +313,8 @@ export default function ProfilePage() {
   );
 }
     
+    
+
     
 
     
