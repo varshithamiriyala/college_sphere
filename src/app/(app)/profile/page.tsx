@@ -45,27 +45,30 @@ export default function ProfilePage() {
     const [isSubmittingSubmission, setIsSubmittingSubmission] = useState(false);
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
+    const profileForm = useForm<z.infer<typeof profileFormSchema>>({
+        resolver: zodResolver(profileFormSchema),
+        defaultValues: {
+            name: user?.name || '',
+            avatar: user?.avatarUrl || '',
+        },
+    });
+
     useEffect(() => {
-        // Moved state that should only exist on the client into useEffect.
         if (user) {
+            profileForm.reset({
+                name: user.name,
+                avatar: user.avatarUrl,
+            });
             setQualifications([
                 { degree: 'Ph.D. in Computer Science', institution: 'Stanford University', year: 2010 },
                 { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
             ]);
         }
-    }, [user]);
-
+    }, [user, profileForm]);
+    
     const qualificationForm = useForm<Qualification>({
         resolver: zodResolver(qualificationSchema),
         defaultValues: { degree: '', institution: '', year: new Date().getFullYear() },
-    });
-
-    const profileForm = useForm<z.infer<typeof profileFormSchema>>({
-        resolver: zodResolver(profileFormSchema),
-        defaultValues: {
-            name: '',
-            avatar: '',
-        },
     });
     
     const submissionForm = useForm<z.infer<typeof submissionFormSchema>>({
@@ -73,14 +76,6 @@ export default function ProfilePage() {
         defaultValues: { type: 'assignment', description: '' }
     });
     
-    useEffect(() => {
-        if (user) {
-            profileForm.reset({
-                name: user.name,
-                avatar: user.avatarUrl,
-            });
-        }
-    }, [user, profileForm]);
 
     function onAddQualification(data: Qualification) {
         setIsSubmitting(true);
@@ -317,6 +312,4 @@ export default function ProfilePage() {
     </div>
   );
 }
-    
-
     
