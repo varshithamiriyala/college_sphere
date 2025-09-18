@@ -1,6 +1,5 @@
 
 
-
 'use client';
 
 import {
@@ -183,9 +182,9 @@ export default function DashboardPage() {
                     </div>
                     <div className="mt-1 flex items-center gap-4 text-xs text-muted-foreground">
                         {event.type === 'class' && (
-                            <>
+                           
                                 <Badge variant="secondary">{event.batch}</Badge>
-                            </>
+                            
                         )}
                         {event.type === 'deadline' && <Badge variant="destructive">{event.subject}</Badge>}
                         {event.type === 'event' && <Badge variant="outline">{event.location}</Badge>}
