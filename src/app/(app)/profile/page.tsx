@@ -20,7 +20,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const qualificationSchema = z.object({
   degree: z.string().min(2, 'Degree is required.'),
   institution: z.string().min(2, 'Institution is required.'),
-  year: z.coerce.number().min(1950).max(new Date().getFullYear(), 'Invalid year.'),
+  year: z.coerce.number().min(1950, 'Invalid year.').max(new Date().getFullYear() + 1, 'Invalid year.'),
 });
 
 type Qualification = z.infer<typeof qualificationSchema>;

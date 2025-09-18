@@ -125,27 +125,25 @@ const SidebarProvider = React.forwardRef<
     )
 
     return (
-      <SidebarContext.Provider value={contextValue}>
-        <TooltipProvider delayDuration={0}>
-          <div
-            style={
-              {
-                "--sidebar-width": SIDEBAR_WIDTH,
-                "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-                ...style,
-              } as React.CSSProperties
-            }
-            className={cn(
-              "group/sidebar-wrapper flex min-h-svh w-full",
-              className
-            )}
-            ref={ref}
-            {...props}
-          >
-            {children}
-          </div>
-        </TooltipProvider>
-      </SidebarContext.Provider>
+      <TooltipProvider delayDuration={0}>
+        <div
+          style={
+            {
+              "--sidebar-width": SIDEBAR_WIDTH,
+              "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+              ...style,
+            } as React.CSSProperties
+          }
+          className={cn(
+            "group/sidebar-wrapper flex min-h-svh w-full",
+            className
+          )}
+          ref={ref}
+          {...props}
+        >
+          {children}
+        </div>
+      </TooltipProvider>
     )
   }
 )
@@ -164,6 +162,28 @@ const Sidebar = React.forwardRef<
     ref
   ) => {
     const { isMobile, open, openMobile, setOpenMobile } = useSidebar()
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    if (!mounted) {
+      return (
+        <div
+          ref={ref}
+          className={cn("group hidden shrink-0 md:block text-sidebar-foreground transition-all duration-200 ease-in-out w-[var(--sidebar-width)]", className)}
+          {...props}
+        >
+          <div
+            data-sidebar="sidebar"
+            className="flex h-full w-full flex-col bg-card"
+          >
+            {children}
+          </div>
+        </div>
+      );
+    }
 
     if (isMobile) {
       return (
@@ -482,6 +502,11 @@ const SidebarMenuButton = React.forwardRef<
   ) => {
     const Comp = asChild ? Slot : "button"
     const { isMobile, open } = useSidebar()
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+      setMounted(true);
+    }, []);
 
     const buttonChildren = !open ? React.Children.map(children, child =>
         React.isValidElement(child) && child.type === 'span' ? null : child
@@ -499,6 +524,10 @@ const SidebarMenuButton = React.forwardRef<
         {buttonChildren}
       </Comp>
     )
+    
+    if (!mounted) {
+      return button;
+    }
 
     if (!tooltip) {
       return button

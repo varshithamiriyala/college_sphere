@@ -8,6 +8,7 @@ import { User } from '@/components/app/chat-user-list';
 
 export default function ChatPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [defaultUser, setDefaultUser] = useState<User | null>(null);
 
   useEffect(() => {
     // Moved logic that uses Math.random() into useEffect to prevent hydration errors.
@@ -20,12 +21,17 @@ export default function ChatPage() {
       online: Math.random() > 0.5, // Simulate online status
     }));
     setUsers(usersWithStatus);
+
+    // Find a default user to display in the chat, for demo purposes.
+    // In a real app, this might be the first user, a welcome bot, or based on routing.
+    const defaultChatUser = usersWithStatus.find(u => u.id === '1') ?? usersWithStatus[0];
+    setDefaultUser(defaultChatUser);
   }, []);
 
 
-  // Find a default user to display in the chat, for demo purposes.
-  // In a real app, this might be the first user, a welcome bot, or based on routing.
-  const defaultUser = users.find(u => u.id === '1') ?? users[0];
+  if (!defaultUser) {
+    return null; // or a loading state
+  }
 
   const initialMessages = [
     {
@@ -53,11 +59,6 @@ export default function ChatPage() {
       timestamp: '10:02 AM',
     },
   ];
-
-  if (!defaultUser) {
-    return null; // or a loading state
-  }
-
 
   return (
     <ChatLayout
