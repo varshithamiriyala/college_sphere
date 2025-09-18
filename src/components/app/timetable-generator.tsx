@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,6 +34,7 @@ const FormSchema = z.object({
   numTimetables: z.string(),
   maxClassesPerDay: z.string().optional(),
   classesPerSubject: z.string().optional(),
+  labConstraints: z.string().optional(),
   specialConstraints: z.string().optional(),
 });
 
@@ -119,6 +121,7 @@ export default function TimetableGenerator() {
       numTimetables: '3',
       maxClassesPerDay: '',
       classesPerSubject: '',
+      labConstraints: '',
       specialConstraints: '',
     },
   });
@@ -380,6 +383,21 @@ export default function TimetableGenerator() {
               )}
             />
             </div>
+
+            <FormField
+              control={form.control}
+              name="labConstraints"
+              render={({ field }) => (
+                <FormItem className="md:col-span-2">
+                  <FormLabel>Lab &amp; Special Durations</FormLabel>
+                  <FormControl>
+                    <Textarea placeholder="e.g., Data Structures Lab: 3 hours, Workshop Practice: 2 hours" {...field} rows={2} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Card>
                 <CardHeader>
                     <CardTitle>Faculty-to-Subject Mapping</CardTitle>
@@ -409,7 +427,7 @@ export default function TimetableGenerator() {
               name="specialConstraints"
               render={({ field }) => (
                 <FormItem className="md:col-span-2">
-                  <FormLabel>Special Constraints & Fixed Slots</FormLabel>
+                  <FormLabel>Other Constraints & Fixed Slots</FormLabel>
                   <FormControl>
                     <Textarea placeholder="e.g., Lab session for CS-A on Wednesday 11:00-13:00 in LB-301. No classes after 4 PM on Fridays." {...field} rows={3} />
                   </FormControl>
@@ -504,5 +522,7 @@ export default function TimetableGenerator() {
     </div>
   );
 }
+
+    
 
     

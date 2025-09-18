@@ -31,6 +31,7 @@ const GenerateTimetableFromDataInputSchema = z.object({
   breakTimings: z.string().optional().describe('Comma-separated break time intervals, e.g., "11:00-11:15, 13:00-14:00".'),
   maxClassesPerDay: z.string().optional().describe('Maximum number of classes allowed per day.'),
   classesPerSubject: z.string().optional().describe('Specifies the number of classes to be conducted for each subject (e.g., "Data Structures: 4 per week").'),
+  labConstraints: z.string().optional().describe('Specifies subjects that have a fixed, multi-hour duration (e.g., "Data Structures Lab: 3 hours, Workshop: 2 hours").'),
   facultySubjectMapping: z.string().optional().describe('Mapping of which faculty can teach which subjects (e.g., "Dr. Reed: Data Structures, Algorithms").'),
   specialConstraints: z.string().optional().describe('Any other special constraints or fixed slots, like lab schedules or faculty availability (e.g., "No classes after 4 PM on Fridays").'),
 });
@@ -71,23 +72,29 @@ const prompt = ai.definePrompt({
 **Constraints:**
 {{#if collegeStartTime}}- College Start Time: {{{collegeStartTime}}}{{/if}}
 {{#if collegeEndTime}}- College End Time: {{{collegeEndTime}}}{{/if}}
-{{#if periodDuration}}- Class Period Duration: {{{periodDuration}}} minutes{{/if}}
+{{#if periodDuration}}- Standard Class Period Duration: {{{periodDuration}}} minutes{{/if}}
 {{#if breakTimings}}- Break Times: {{{breakTimings}}}{{/if}}
 {{#if maxClassesPerDay}}- Maximum classes per day: {{{maxClassesPerDay}}}{{/if}}
 {{#if classesPerSubject}}- Weekly classes per subject: {{{classesPerSubject}}}{{/if}}
 {{#if facultySubjectMapping}}- Faculty-Subject mapping: {{{facultySubjectMapping}}}{{/if}}
-{{#if specialConstraints}}- Special constraints: {{{specialConstraints}}}{{/if}}
+{{#if labConstraints}}- Lab & Special Durations: {{{labConstraints}}}. These sessions must be scheduled in a continuous, unbroken block of the specified duration.{{/if}}
+{{#if specialConstraints}}- Other special constraints: {{{specialConstraints}}}{{/if}}
 
 **Instructions:**
 1.  Generate {{{numTimetables}}} different timetable versions.
 2.  Ensure there are no conflicts: a faculty member, a classroom, or a batch cannot be in two places at once.
-3.  Strictly adhere to all provided constraints, including the available time slots, class limits, and special requirements. The generated class times must exactly match the slots provided in 'Available Time Slots'.
-4.  For each timetable option, return a single JSON string which is an array of objects.
-5.  Each object in the array represents a single class session and must include the keys: "day", "time", "room", "batch", "subject", and "faculty".
-6.  The final output must be a JSON object with a "timetables" key, which is an array of objects, where each object has a "timetable" key containing the JSON string of the generated timetable.
+3.  Strictly adhere to all provided constraints.
+4.  **Crucially, for any subject listed under "Lab & Special Durations", you MUST schedule it as a single, continuous block of the specified length.** For example, a 3-hour lab from 09:00 to 12:00 should be a single entry with "time": "09:00-12:00". Do not split it into multiple 1-hour slots.
+5.  All other classes should follow the standard period duration.
+6.  The generated class times must align with the provided 'Available Time Slots' or be composed of multiple consecutive slots for labs.
+7.  For each timetable option, return a single JSON string which is an array of objects.
+8.  Each object in the array represents a single class session and must include the keys: "day", "time", "room", "batch", "subject", and "faculty".
+9.  The final output must be a JSON object with a "timetables" key, which is an array of objects, where each object has a "timetable" key containing the JSON string of the generated timetable.
 
 Example of a single timetable entry in the JSON array:
 { "day": "Monday", "time": "09:00-10:00", "room": "CR-101", "batch": "CS-A", "subject": "Data Structures", "faculty": "Dr. Evelyn Reed" }
+Example of a lab entry:
+{ "day": "Tuesday", "time": "14:00-17:00", "room": "CS-LAB-1", "batch": "CS-A", "subject": "Data Structures Lab", "faculty": "Dr. Evelyn Reed" }
 `,
 });
 
@@ -102,5 +109,7 @@ const generateTimetableFromDataFlow = ai.defineFlow(
     return output!;
   }
 );
+
+    
 
     
