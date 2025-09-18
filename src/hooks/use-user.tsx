@@ -51,14 +51,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
+    // This effect runs only on the client, after hydration.
+    // This prevents a mismatch between server and client initial render.
     try {
       const storedUser = localStorage.getItem(USER_STORAGE_KEY);
       if (storedUser) {
         setUserState(JSON.parse(storedUser));
-      } else {
-        // If no one is logged in, you might want to default to null
-        // or a guest state, rather than auto-logging in as admin.
-        setUserState(null);
       }
     } catch (error) {
       console.error("Failed to parse user from localStorage", error);
@@ -99,8 +97,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = useCallback(() => {
     setUser(null);
-    router.push('/login');
-  }, [router]);
+    // No need to push here if Redirects are handled elsewhere
+    // router.push('/login'); 
+  }, []);
 
   const signup = useCallback((name: string, email: string, pass: string, role: string) => {
     const allUsers = getStoredUsers();
@@ -121,7 +120,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, isLoading, login, logout, signup, setUser }}>
+    <UserContext.Provider value={{ user, isLoading, login, logout, signup, setUser: setUser as (u: User) => void }}>
       {children}
     </UserContext.Provider>
   );
