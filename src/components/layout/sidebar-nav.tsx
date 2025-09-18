@@ -22,13 +22,13 @@ export function SidebarNav() {
 
     const menuItems = [
         { href: '/dashboard', label: 'Dashboard', icon: GanttChart },
-        { href: '/features', label: 'Features', icon: ListTree },
         { href: '/timetable', label: 'Timetable', icon: CalendarDays },
         { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus },
         { href: '/faculty', label: 'Faculty', icon: Users },
         { href: '/chat', label: 'Chat', icon: MessageSquare },
         { href: '/analytics', label: 'Analytics', icon: BarChart3 },
         { href: '/profile', label: 'Profile', icon: User },
+        { href: '/features', label: 'Features', icon: ListTree },
         { href: '/settings', label: 'Settings', icon: Settings },
     ];
 
