@@ -5,37 +5,37 @@ import { BrainCircuit, GanttChart, BarChart3, Users, MessageSquare, Settings } f
 const features = [
   {
     title: 'AI-Powered Timetable Generation',
-    description: 'At its core, the application uses a powerful AI to automatically generate multiple, conflict-free timetable options. Users can input a wide range of data—including classrooms, student batches, subjects, and faculty—along with specific constraints like college hours, break times, and faculty-subject mappings. The AI processes this information to produce several complete, optimized schedules, which are presented in easy-to-compare tabs.',
+    description: 'Leverages AI to automatically generate multiple, conflict-free timetable options based on your unique constraints, saving time and optimizing resources.',
     icon: <BrainCircuit className="h-10 w-10 text-primary" />,
   },
   {
     title: 'Comprehensive Dashboard',
-    description: 'The dashboard serves as the central hub, providing an at-a-glance overview of the institution\'s key metrics. It features summary cards for tracking the total number of faculty, subjects, and classrooms. A "Quick Actions" section offers shortcuts to common tasks like adding new faculty or generating a timetable, while an "Upcoming Events" panel keeps administrators informed of the day\'s and week\'s schedule.',
+    description: 'Get an at-a-glance overview of key metrics, access shortcuts for common tasks, and stay informed with a summary of upcoming events.',
     icon: <GanttChart className="h-10 w-10 text-primary" />,
   },
   {
     title: 'Master Timetable Grid',
-    description: 'This feature offers a complete, interactive view of the master timetable. The grid is organized by days (including Saturday) and time slots, with each class session displayed as a distinct card containing all relevant details. It also includes an "AI Suggestion Tool" that allows users to describe scheduling conflicts and receive intelligent, actionable recommendations for resolving them.',
+    description: 'View the complete, interactive master timetable for all classes. Use the integrated AI tool to receive intelligent suggestions for resolving conflicts.',
     icon: <GanttChart className="h-10 w-10 text-primary" />,
   },
   {
     title: 'Detailed Analytics',
-    description: 'The analytics page provides deep insights into institutional efficiency. It features a suite of charts and graphs that visualize key data points, such as faculty workload distribution, leave trends over time, and submission compliance rates for assignments and attendance, allowing for data-driven decision-making.',
+    description: 'Visualize faculty workload, leave trends, and submission compliance rates with a suite of charts and graphs for data-driven decision-making.',
     icon: <BarChart3 className="h-10 w-10 text-primary" />,
   },
   {
     title: 'Faculty & Profile Management',
-    description: 'The app includes dedicated sections for managing faculty information. You can browse a directory of all faculty members, view their detailed profiles—including working hours and submission statuses—and add new members. The user profile page allows individuals to manage their own qualifications and submit documents like attendance records or exam scores.',
+    description: 'Browse faculty directories, manage detailed profiles, and allow users to update their own qualifications and submit documents through a personal portal.',
     icon: <Users className="h-10 w-10 text-primary" />,
   },
   {
     title: 'Interactive Chat',
-    description: 'A built-in chat feature facilitates real-time communication between faculty and administrators. Users can select a colleague from a list, view their online status, and engage in conversations, making it easy to coordinate and collaborate on academic matters.',
+    description: 'Facilitates real-time communication between faculty and administrators, making it easy to coordinate and collaborate on academic matters instantly.',
     icon: <MessageSquare className="h-10 w-10 text-primary" />
   },
   {
     title: 'Customization and Settings',
-    description: 'The application is highly customizable. The settings page includes a theme customizer that allows users to switch between different color palettes to personalize the application\'s appearance. It also provides options for managing profile information and setting preferences for email notifications.',
+    description: 'Personalize the application\'s appearance with a theme customizer, manage your profile, and set preferences for email notifications.',
     icon: <Settings className="h-10 w-10 text-primary" />
   }
 ];
