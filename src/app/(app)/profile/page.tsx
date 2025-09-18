@@ -50,12 +50,15 @@ export default function ProfilePage() {
 
     const qualificationForm = useForm<Qualification>({
         resolver: zodResolver(qualificationSchema),
-        defaultValues: { degree: '', institution: '', year: undefined },
+        defaultValues: { degree: '', institution: '', year: new Date().getFullYear() },
     });
 
     const profileForm = useForm<z.infer<typeof profileFormSchema>>({
         resolver: zodResolver(profileFormSchema),
-        defaultValues: { name: '', avatar: '' },
+        values: {
+            name: user?.name ?? '',
+            avatar: user?.avatarUrl ?? '',
+        },
     });
     
     const submissionForm = useForm<z.infer<typeof submissionFormSchema>>({
@@ -127,10 +130,19 @@ export default function ProfilePage() {
                             <div className="space-y-4">
                                 <div className="flex items-center space-x-4">
                                     <Skeleton className="h-20 w-20 rounded-full" />
-                                    <Skeleton className="h-10 w-28" />
+                                    <div className="space-y-2">
+                                        <Skeleton className="h-4 w-24" />
+                                        <Skeleton className="h-8 w-28" />
+                                    </div>
                                 </div>
-                                <Skeleton className="h-10 w-full" />
-                                <Skeleton className="h-10 w-full" />
+                                <div className="space-y-2">
+                                    <Skeleton className="h-4 w-16" />
+                                    <Skeleton className="h-10 w-full" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Skeleton className="h-4 w-12" />
+                                    <Skeleton className="h-10 w-full" />
+                                </div>
                                 <Skeleton className="h-10 w-full" />
                             </div>
                         ) : (
@@ -225,8 +237,8 @@ export default function ProfilePage() {
                  {/* Submissions Card */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Submit Documents</CardTitle>
-                        <CardDescription>Upload attendance records, assignment marks, or other documents.</CardDescription>
+                        <DialogTitle>Submit Documents</DialogTitle>
+                        <DialogDescription>Upload attendance records, assignment marks, or other documents.</DialogDescription>
                     </CardHeader>
                     <CardContent>
                          <Form {...submissionForm}>

@@ -12,7 +12,7 @@ import {
     SidebarTrigger,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, MessageSquare, ListTree } from 'lucide-react';
+import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, MessageSquare, ListTree, Settings } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
@@ -29,6 +29,7 @@ export function SidebarNav() {
         { href: '/chat', label: 'Chat', icon: MessageSquare },
         { href: '/analytics', label: 'Analytics', icon: BarChart3 },
         { href: '/profile', label: 'Profile', icon: User },
+        { href: '/settings', label: 'Settings', icon: Settings },
     ];
 
     const handleLinkClick = () => {
