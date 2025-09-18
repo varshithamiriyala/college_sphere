@@ -17,7 +17,7 @@ export default function AnalyticsDashboard() {
 
   const { workloadData, submissionData } = useMemo(() => {
     // Memoize random data generation to ensure it's consistent across re-renders
-    // and doesn't cause hydration issues.
+    // and doesn't cause hydration issues on the client side.
     const workload = facultyData.map(f => ({
       name: f.name.split(' ').slice(1).join(' '),
       hours: Math.floor(Math.random() * 20) + 10, // Mock weekly hours
