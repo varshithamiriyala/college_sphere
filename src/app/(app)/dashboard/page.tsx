@@ -32,11 +32,14 @@ import { UploadData } from '@/components/app/upload-data';
 import { ScheduleFixedClass } from '@/components/app/schedule-fixed-class';
 import { SendNotification } from '@/components/app/send-notification';
 import { Badge } from '@/components/ui/badge';
-import { addDays, format, getDay } from 'date-fns';
-import { cn } from '@/lib/utils';
+import { addDays, format } from 'date-fns';
 import { EntityListSheet } from '@/components/app/entity-list-sheet';
+import { useUser } from '@/hooks/use-user';
+import { useMemo } from 'react';
 
 export default function DashboardPage() {
+  const { user } = useUser();
+
   // Moved data that uses `new Date()` into the component to avoid hydration mismatches.
   const upcomingEvents = [
       { type: 'class', title: 'Data Structures', time: '10:00 AM', batch: 'CS-A', date: new Date() },
@@ -73,8 +76,8 @@ export default function DashboardPage() {
       description: 'A list of all available classrooms.',
     },
   ];
-
-  const quickActions = [
+  
+  const allQuickActions = useMemo(() => [
     {
       label: 'Add Faculty',
       icon: PlusCircle,
@@ -90,6 +93,7 @@ export default function DashboardPage() {
           </Link>
         </Button>
       ),
+      adminOnly: true,
     },
     { label: 'Add Subject', icon: BookPlus, component: <AddSubject /> },
     { label: 'Add Classroom', icon: Home, component: <AddClassroom /> },
@@ -112,8 +116,16 @@ export default function DashboardPage() {
       ),
     },
     { label: 'Schedule Fixed Class', icon: CalendarClock, component: <ScheduleFixedClass /> },
-    { label: 'Send Notification', icon: Bell, component: <SendNotification /> },
-  ];
+    { label: 'Send Notification', icon: Bell, component: <SendNotification />, adminOnly: true },
+  ], []);
+
+  const quickActions = useMemo(() => {
+    if (user?.role === 'admin') {
+      return allQuickActions;
+    }
+    return allQuickActions.filter(action => !action.adminOnly);
+  }, [user, allQuickActions]);
+
 
   return (
     <div className="space-y-6">
