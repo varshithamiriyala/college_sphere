@@ -1,14 +1,27 @@
+
+'use client';
+
 import ChatLayout from '@/components/app/chat-layout';
 import { facultyData } from '@/lib/data';
+import { useState, useEffect } from 'react';
+import { User } from '@/components/app/chat-user-list';
 
 export default function ChatPage() {
-  const users = facultyData.map(f => ({
-    id: f.id,
-    name: f.name,
-    avatar: f.avatar,
-    role: f.title,
-    online: Math.random() > 0.5, // Simulate online status
-  }));
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    // Moved logic that uses Math.random() into useEffect to prevent hydration errors.
+    // This ensures it only runs on the client side.
+    const usersWithStatus = facultyData.map(f => ({
+      id: f.id,
+      name: f.name,
+      avatar: f.avatar,
+      role: f.title,
+      online: Math.random() > 0.5, // Simulate online status
+    }));
+    setUsers(usersWithStatus);
+  }, []);
+
 
   // Find a default user to display in the chat, for demo purposes.
   // In a real app, this might be the first user, a welcome bot, or based on routing.
@@ -40,6 +53,10 @@ export default function ChatPage() {
       timestamp: '10:02 AM',
     },
   ];
+
+  if (!defaultUser) {
+    return null; // or a loading state
+  }
 
 
   return (

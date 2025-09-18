@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from 'recharts';
@@ -6,23 +7,29 @@ import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 import { facultyData } from '@/lib/data';
 import { useMemo } from 'react';
 
-const workloadData = facultyData.map(f => ({
-  name: f.name.split(' ').slice(1).join(' '),
-  hours: Math.floor(Math.random() * 20) + 10, // Mock weekly hours
-}));
-
 const leaveTrendsData = [
     { month: 'Jan', days: 5 }, { month: 'Feb', days: 3 }, { month: 'Mar', days: 8 },
     { month: 'Apr', days: 4 }, { month: 'May', days: 10 }, { month: 'Jun', days: 6 },
     { month: 'Jul', days: 12 }, { month: 'Aug', days: 7 }, { month: 'Sep', days: 5 },
 ];
 
-const submissionData = facultyData.map(f => ({
-    name: f.name.split(' ').slice(1).join(' '),
-    ...f.submissions,
-}))
-
 export default function AnalyticsDashboard() {
+
+  const { workloadData, submissionData } = useMemo(() => {
+    // Memoize random data generation to ensure it's consistent across re-renders
+    // and doesn't cause hydration issues.
+    const workload = facultyData.map(f => ({
+      name: f.name.split(' ').slice(1).join(' '),
+      hours: Math.floor(Math.random() * 20) + 10, // Mock weekly hours
+    }));
+
+    const submissions = facultyData.map(f => ({
+      name: f.name.split(' ').slice(1).join(' '),
+      ...f.submissions,
+    }));
+
+    return { workloadData: workload, submissionData: submissions };
+  }, []);
 
   const chartConfig = useMemo(() => ({
     hours: { label: "Workload (Hours)", color: "hsl(var(--primary))" },

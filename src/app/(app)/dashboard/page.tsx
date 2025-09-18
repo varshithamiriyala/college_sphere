@@ -36,16 +36,16 @@ import { addDays, format, getDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { EntityListSheet } from '@/components/app/entity-list-sheet';
 
-const upcomingEvents = [
-    { type: 'class', title: 'Data Structures', time: '10:00 AM', batch: 'CS-A', date: new Date() },
-    { type: 'deadline', title: 'Assignment 1 Submission', time: '11:59 PM', subject: 'Algorithms', date: addDays(new Date(), 2) },
-    { type: 'event', title: 'Faculty Meeting', time: '04:00 PM', location: 'Conference Hall', date: addDays(new Date(), 3) },
-    { type: 'class', title: 'Circuit Theory', time: '02:00 PM', batch: 'EE-A', date: new Date() },
-    { type: 'deadline', title: 'Lab Report Submission', time: '11:59 PM', subject: 'Data Structures', date: addDays(new Date(), 5) },
-];
-
-
 export default function DashboardPage() {
+  // Moved data that uses `new Date()` into the component to avoid hydration mismatches.
+  const upcomingEvents = [
+      { type: 'class', title: 'Data Structures', time: '10:00 AM', batch: 'CS-A', date: new Date() },
+      { type: 'deadline', title: 'Assignment 1 Submission', time: '11:59 PM', subject: 'Algorithms', date: addDays(new Date(), 2) },
+      { type: 'event', title: 'Faculty Meeting', time: '04:00 PM', location: 'Conference Hall', date: addDays(new Date(), 3) },
+      { type: 'class', title: 'Circuit Theory', time: '02:00 PM', batch: 'EE-A', date: new Date() },
+      { type: 'deadline', title: 'Lab Report Submission', time: '11:59 PM', subject: 'Data Structures', date: addDays(new Date(), 5) },
+  ];
+
   const totalFaculty = facultyData.length;
   const uniqueSubjects = [...new Set(sampleTimetable.map(item => item.subject))];
   const uniqueClassrooms = [...new Set(sampleTimetable.map(item => item.room))];
