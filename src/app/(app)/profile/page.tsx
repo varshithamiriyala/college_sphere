@@ -47,11 +47,13 @@ export default function ProfilePage() {
 
     useEffect(() => {
         // Moved state that should only exist on the client into useEffect.
-        setQualifications([
-            { degree: 'Ph.D. in Computer Science', institution: 'Stanford University', year: 2010 },
-            { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
-        ]);
-    }, []);
+        if (user) {
+            setQualifications([
+                { degree: 'Ph.D. in Computer Science', institution: 'Stanford University', year: 2010 },
+                { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
+            ]);
+        }
+    }, [user]);
 
     const qualificationForm = useForm<Qualification>({
         resolver: zodResolver(qualificationSchema),
@@ -115,6 +117,50 @@ export default function ProfilePage() {
         }, 1000);
     }
 
+    if (isUserLoading) {
+        return (
+            <div className="space-y-6">
+                <div className="space-y-1">
+                    <Skeleton className="h-8 w-64" />
+                    <Skeleton className="h-4 w-96" />
+                </div>
+                <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    <div className="lg:col-span-1 space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <Skeleton className="h-6 w-32" />
+                                <Skeleton className="h-4 w-48" />
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="flex items-center space-x-4">
+                                    <Skeleton className="h-20 w-20 rounded-full" />
+                                    <Skeleton className="h-10 w-28" />
+                                </div>
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </CardContent>
+                        </Card>
+                    </div>
+                     <div className="lg:col-span-2">
+                        <Card>
+                            <CardHeader>
+                                <Skeleton className="h-6 w-40" />
+                                <Skeleton className="h-4 w-64" />
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-24 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
   return (
     <div className="space-y-6">
         <div className="space-y-1">
@@ -131,26 +177,6 @@ export default function ProfilePage() {
                         <CardDescription>Edit your name and profile picture.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {isUserLoading ? (
-                            <div className="space-y-4">
-                                <div className="flex items-center space-x-4">
-                                    <Skeleton className="h-20 w-20 rounded-full" />
-                                    <div className="space-y-2">
-                                        <Skeleton className="h-4 w-24" />
-                                        <Skeleton className="h-8 w-28" />
-                                    </div>
-                                </div>
-                                <div className="space-y-2">
-                                    <Skeleton className="h-4 w-16" />
-                                    <Skeleton className="h-10 w-full" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Skeleton className="h-4 w-12" />
-                                    <Skeleton className="h-10 w-full" />
-                                </div>
-                                <Skeleton className="h-10 w-full" />
-                            </div>
-                        ) : (
                         <Form {...profileForm}>
                             <form onSubmit={profileForm.handleSubmit(onProfileUpdate)} className="space-y-4">
                                  <div className="flex items-center space-x-4">
@@ -180,7 +206,6 @@ export default function ProfilePage() {
                                 </Button>
                             </form>
                         </Form>
-                        )}
                     </CardContent>
                 </Card>
 
@@ -292,4 +317,6 @@ export default function ProfilePage() {
     </div>
   );
 }
+    
+
     
