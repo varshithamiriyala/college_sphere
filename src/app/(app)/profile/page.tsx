@@ -16,6 +16,7 @@ import { Loader2, PlusCircle, Trash2, Image as ImageIcon } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useUser } from '@/hooks/use-user';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
 const qualificationSchema = z.object({
   degree: z.string().min(2, 'Degree is required.'),
