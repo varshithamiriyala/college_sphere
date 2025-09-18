@@ -16,7 +16,6 @@ import { Loader2, PlusCircle, Trash2, Image as ImageIcon } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useUser } from '@/hooks/use-user';
 import { Skeleton } from '@/components/ui/skeleton';
-import { DialogDescription, DialogTitle } from '@/components/ui/dialog';
 
 const qualificationSchema = z.object({
   degree: z.string().min(2, 'Degree is required.'),
@@ -41,13 +40,18 @@ export default function ProfilePage() {
     const { toast } = useToast();
     const { user, setUser, isLoading: isUserLoading } = useUser();
     
-    const [qualifications, setQualifications] = useState<Qualification[]>([
-        { degree: 'Ph.D. in Computer Science', institution: 'Stanford University', year: 2010 },
-        { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
-    ]);
+    const [qualifications, setQualifications] = useState<Qualification[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmittingSubmission, setIsSubmittingSubmission] = useState(false);
     const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+
+    useEffect(() => {
+        // Moved state that should only exist on the client into useEffect.
+        setQualifications([
+            { degree: 'Ph.D. in Computer Science', institution: 'Stanford University', year: 2010 },
+            { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
+        ]);
+    }, []);
 
     const qualificationForm = useForm<Qualification>({
         resolver: zodResolver(qualificationSchema),
@@ -288,3 +292,5 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+    
