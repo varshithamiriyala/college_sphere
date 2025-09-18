@@ -64,7 +64,6 @@ export function AddFaculty() {
     // Here you would typically send the data to your backend/API
     console.log('New faculty data:', data);
     
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     setIsLoading(false);
