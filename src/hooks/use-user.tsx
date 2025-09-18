@@ -19,7 +19,7 @@ type UserContextType = {
   login: (email: string, pass: string) => boolean;
   logout: () => void;
   signup: (name: string, email: string, pass: string, role: string) => void;
-  setUser: (user: User) => void; // Allow components to update user state
+  setUser: (user: User) => void; 
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -31,14 +31,12 @@ const defaultUser: User = {
     role: 'admin',
 };
 
-// In a real app, this would be a database call. We simulate it with localStorage.
 const getStoredUsers = (): Record<string, any> => {
     if (typeof window === 'undefined') return {};
     const users = localStorage.getItem(ALL_USERS_STORAGE_KEY);
     if (users) {
         return JSON.parse(users);
     }
-    // If no users, add the default admin
     const defaultUsers = { [defaultUser.email]: { password: 'password', ...defaultUser } };
     localStorage.setItem(ALL_USERS_STORAGE_KEY, JSON.stringify(defaultUsers));
     return defaultUsers;
@@ -48,9 +46,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // This `useEffect` runs only on the client, after the component has mounted.
-  // This prevents a mismatch between server and client initial render by delaying
-  // access to localStorage.
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem(USER_STORAGE_KEY);
@@ -70,7 +65,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (typeof window !== 'undefined') {
         if (newUser) {
             localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
-            // Also update the user in the "all users" list
             const allUsers = getStoredUsers();
             if (allUsers[newUser.email]) {
                 allUsers[newUser.email] = { ...allUsers[newUser.email], ...newUser };
@@ -86,7 +80,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const allUsers = getStoredUsers();
     const foundUser = allUsers[email];
     
-    // In a real app, you'd compare hashed passwords
     if (foundUser && foundUser.password === pass) {
       const { password, ...userToSet } = foundUser;
       setUser(userToSet);

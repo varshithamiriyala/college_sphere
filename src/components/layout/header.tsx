@@ -77,9 +77,9 @@ export function Header() {
           </DropdownMenu>
           <ModeToggle />
 
-          {isLoading && <Skeleton className="h-10 w-10 rounded-full" />}
-          
-          {!isLoading && user && (
+          {isLoading ? (
+             <Skeleton className="h-10 w-10 rounded-full" />
+          ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full">
@@ -118,7 +118,7 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          )}
+          ) : null}
 
         </div>
     </header>
