@@ -21,6 +21,7 @@ import { useState } from 'react';
 import { Loader2, Bot } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/hooks/use-user';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
@@ -35,6 +36,7 @@ export default function SignupPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { signup } = useUser();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -48,17 +50,27 @@ export default function SignupPage() {
 
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
-    console.log('Signup data:', data);
-
+    
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    toast({
-      title: 'Account Created',
-      description: 'Your account has been created. You can now log in.',
-    });
+    try {
+        signup(data.name, data.email, data.password, data.role);
+        toast({
+            title: 'Account Created',
+            description: 'Your account has been created. You can now log in.',
+        });
+        router.push('/login');
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+        toast({
+            variant: 'destructive',
+            title: 'Signup Failed',
+            description: errorMessage,
+        });
+    }
 
-    router.push('/login');
+
     setIsLoading(false);
   }
 

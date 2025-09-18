@@ -11,17 +11,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { useState } from 'react';
-import { Loader2, PlusCircle, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Loader2, PlusCircle, Trash2, Image as ImageIcon } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-
-// In a real application, this would come from an auth context or API
-const loggedInUser = {
-    name: 'Admin',
-    title: 'Professor',
-    department: 'Computer Science',
-    avatarUrl: 'https://picsum.photos/seed/AdminUser/200/200',
-};
+import { useUser } from '@/hooks/use-user';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const qualificationSchema = z.object({
   degree: z.string().min(2, 'Degree is required.'),
@@ -31,6 +25,11 @@ const qualificationSchema = z.object({
 
 type Qualification = z.infer<typeof qualificationSchema>;
 
+const profileFormSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters.'),
+    avatar: z.string().optional(),
+});
+
 const submissionFormSchema = z.object({
     type: z.string(),
     file: z.any(),
@@ -39,29 +38,39 @@ const submissionFormSchema = z.object({
 
 export default function ProfilePage() {
     const { toast } = useToast();
+    const { user, setUser, isLoading: isUserLoading } = useUser();
+    
     const [qualifications, setQualifications] = useState<Qualification[]>([
         { degree: 'Ph.D. in Computer Science', institution: 'Stanford University', year: 2010 },
         { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
     ]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmittingSubmission, setIsSubmittingSubmission] = useState(false);
+    const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
 
     const qualificationForm = useForm<Qualification>({
         resolver: zodResolver(qualificationSchema),
-        defaultValues: {
-        degree: '',
-        institution: '',
-        year: undefined,
-        },
+        defaultValues: { degree: '', institution: '', year: undefined },
     });
 
+    const profileForm = useForm<z.infer<typeof profileFormSchema>>({
+        resolver: zodResolver(profileFormSchema),
+        defaultValues: { name: '', avatar: '' },
+    });
+    
     const submissionForm = useForm<z.infer<typeof submissionFormSchema>>({
         resolver: zodResolver(submissionFormSchema),
-        defaultValues: {
-            type: 'assignment',
-            description: '',
-        }
+        defaultValues: { type: 'assignment', description: '' }
     });
+    
+    useEffect(() => {
+        if (user) {
+            profileForm.reset({
+                name: user.name,
+                avatar: user.avatarUrl,
+            });
+        }
+    }, [user, profileForm]);
 
     function onAddQualification(data: Qualification) {
         setIsSubmitting(true);
@@ -78,6 +87,16 @@ export default function ProfilePage() {
         toast({ title: 'Qualification Removed', description: 'The qualification has been removed.' });
     }
 
+    function onProfileUpdate(data: z.infer<typeof profileFormSchema>) {
+        if (!user) return;
+        setIsUpdatingProfile(true);
+        setTimeout(() => {
+            setUser({ ...user, name: data.name, avatarUrl: data.avatar || user.avatarUrl });
+            toast({ title: 'Profile Updated', description: 'Your name and photo have been updated.' });
+            setIsUpdatingProfile(false);
+        }, 500);
+    }
+
     function onSubmissionSubmit(data: z.infer<typeof submissionFormSchema>) {
         setIsSubmittingSubmission(true);
         console.log("Submission Data:", data);
@@ -87,6 +106,22 @@ export default function ProfilePage() {
             setIsSubmittingSubmission(false);
         }, 1000);
     }
+
+  if (isUserLoading || !user) {
+    return (
+        <div className="space-y-6">
+            <Skeleton className="h-10 w-1/3" />
+            <Skeleton className="h-8 w-2/3" />
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                <div className="lg:col-span-1 space-y-6">
+                    <Skeleton className="h-48 w-full" />
+                    <Skeleton className="h-96 w-full" />
+                </div>
+                <div className="lg:col-span-2"><Skeleton className="h-64 w-full" /></div>
+            </div>
+        </div>
+    )
+  }
 
 
   return (
@@ -100,14 +135,41 @@ export default function ProfilePage() {
             <div className="lg:col-span-1 space-y-6">
                 {/* Profile Card */}
                 <Card>
-                    <CardHeader className="text-center">
-                        <Avatar className="w-24 h-24 mx-auto border-2 border-primary mb-4">
-                            <AvatarImage src={loggedInUser.avatarUrl} alt={loggedInUser.name} data-ai-hint="person portrait" />
-                            <AvatarFallback>{loggedInUser.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <CardTitle>{loggedInUser.name}</CardTitle>
-                        <CardDescription>{loggedInUser.title}, {loggedInUser.department}</CardDescription>
+                    <CardHeader>
+                        <CardTitle>Your Information</CardTitle>
+                        <CardDescription>Edit your name and profile picture.</CardDescription>
                     </CardHeader>
+                    <CardContent>
+                        <Form {...profileForm}>
+                            <form onSubmit={profileForm.handleSubmit(onProfileUpdate)} className="space-y-4">
+                                 <div className="flex items-center space-x-4">
+                                    <Avatar className="w-20 h-20 border-2 border-primary">
+                                        <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="person portrait" />
+                                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                    <Button type="button" variant="outline" onClick={() => toast({ title: 'Feature not implemented', description: 'You can add an upload handler here.'})}>
+                                        <ImageIcon className="mr-2 h-4 w-4" />
+                                        Change Photo
+                                    </Button>
+                                </div>
+                                <FormField control={profileForm.control} name="name" render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Full Name</FormLabel>
+                                        <FormControl><Input placeholder="Your name" {...field} /></FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}/>
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <Input value={user.email} disabled />
+                                </FormItem>
+                                 <Button type="submit" disabled={isUpdatingProfile} className="w-full">
+                                    {isUpdatingProfile ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                    Update Profile
+                                </Button>
+                            </form>
+                        </Form>
+                    </CardContent>
                 </Card>
 
                  {/* Qualifications */}

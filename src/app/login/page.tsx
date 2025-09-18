@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { Loader2, Bot } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/hooks/use-user';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address.'),
@@ -32,29 +33,38 @@ export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useUser();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'admin@techtrack.edu',
+      password: 'password',
     },
   });
 
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
-    console.log('Login data:', data);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    // In a real app, you would handle successful login and redirect
-    toast({
-      title: 'Login Successful',
-      description: 'Welcome back! Redirecting you to the dashboard.',
-    });
+    const loggedIn = login(data.email, data.password);
 
-    router.push('/dashboard');
+    if (loggedIn) {
+        toast({
+            title: 'Login Successful',
+            description: 'Welcome back! Redirecting you to the dashboard.',
+        });
+        router.push('/dashboard');
+    } else {
+        toast({
+            variant: 'destructive',
+            title: 'Login Failed',
+            description: 'Invalid email or password. Please try again.',
+        });
+    }
+
     setIsLoading(false);
   }
 
