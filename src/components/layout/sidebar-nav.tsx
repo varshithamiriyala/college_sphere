@@ -18,7 +18,7 @@ import Link from 'next/link';
 
 export function SidebarNav() {
     const pathname = usePathname();
-    const { open } = useSidebar();
+    const { open, isMobile, setOpenMobile } = useSidebar();
 
     const menuItems = [
         { href: '/dashboard', label: 'Dashboard', icon: GanttChart },
@@ -30,6 +30,12 @@ export function SidebarNav() {
         { href: '/analytics', label: 'Analytics', icon: BarChart3 },
         { href: '/profile', label: 'Profile', icon: User },
     ];
+
+    const handleLinkClick = () => {
+        if (isMobile) {
+            setOpenMobile(false);
+        }
+    };
     
     return (
         <>
@@ -50,6 +56,7 @@ export function SidebarNav() {
                                 asChild
                                 isActive={pathname.startsWith(item.href)}
                                 tooltip={item.label}
+                                onClick={handleLinkClick}
                             >
                                 <Link href={item.href}>
                                     <item.icon />
