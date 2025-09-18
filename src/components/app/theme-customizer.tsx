@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -30,11 +29,16 @@ export default function ThemeCustomizer() {
 
   useEffect(() => {
     setMounted(true);
-    const storedTheme = localStorage.getItem('app-theme') || 'Default';
-    const theme = themes.find(t => t.name === storedTheme) || themes[0];
-    applyTheme(theme);
-    setActiveTheme(theme.name);
   }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      const storedTheme = localStorage.getItem('app-theme') || 'Default';
+      const theme = themes.find(t => t.name === storedTheme) || themes[0];
+      applyTheme(theme);
+      setActiveTheme(theme.name);
+    }
+  }, [mounted]);
 
   const applyTheme = (theme: Theme) => {
     const root = document.documentElement;
