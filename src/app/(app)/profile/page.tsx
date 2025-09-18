@@ -64,7 +64,7 @@ export default function ProfilePage() {
                 { degree: 'M.S. in Computer Science', institution: 'MIT', year: 2006 },
             ]);
         }
-    }, [user]);
+    }, [user, profileForm]);
     
     const qualificationForm = useForm<Qualification>({
         resolver: zodResolver(qualificationSchema),
@@ -313,4 +313,6 @@ export default function ProfilePage() {
   );
 }
     
+    
+
     
