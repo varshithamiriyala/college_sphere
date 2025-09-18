@@ -107,23 +107,6 @@ export default function ProfilePage() {
         }, 1000);
     }
 
-  if (isUserLoading || !user) {
-    return (
-        <div className="space-y-6">
-            <Skeleton className="h-10 w-1/3" />
-            <Skeleton className="h-8 w-2/3" />
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                <div className="lg:col-span-1 space-y-6">
-                    <Skeleton className="h-48 w-full" />
-                    <Skeleton className="h-96 w-full" />
-                </div>
-                <div className="lg:col-span-2"><Skeleton className="h-64 w-full" /></div>
-            </div>
-        </div>
-    )
-  }
-
-
   return (
     <div className="space-y-6">
         <div className="space-y-1">
@@ -140,12 +123,23 @@ export default function ProfilePage() {
                         <CardDescription>Edit your name and profile picture.</CardDescription>
                     </CardHeader>
                     <CardContent>
+                        {isUserLoading ? (
+                            <div className="space-y-4">
+                                <div className="flex items-center space-x-4">
+                                    <Skeleton className="h-20 w-20 rounded-full" />
+                                    <Skeleton className="h-10 w-28" />
+                                </div>
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                                <Skeleton className="h-10 w-full" />
+                            </div>
+                        ) : (
                         <Form {...profileForm}>
                             <form onSubmit={profileForm.handleSubmit(onProfileUpdate)} className="space-y-4">
                                  <div className="flex items-center space-x-4">
                                     <Avatar className="w-20 h-20 border-2 border-primary">
-                                        <AvatarImage src={user.avatarUrl} alt={user.name} data-ai-hint="person portrait" />
-                                        <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                                        <AvatarImage src={user?.avatarUrl} alt={user?.name} data-ai-hint="person portrait" />
+                                        <AvatarFallback>{user?.name.charAt(0)}</AvatarFallback>
                                     </Avatar>
                                     <Button type="button" variant="outline" onClick={() => toast({ title: 'Feature not implemented', description: 'You can add an upload handler here.'})}>
                                         <ImageIcon className="mr-2 h-4 w-4" />
@@ -161,7 +155,7 @@ export default function ProfilePage() {
                                 )}/>
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
-                                    <Input value={user.email} disabled />
+                                    <Input value={user?.email || ''} disabled />
                                 </FormItem>
                                  <Button type="submit" disabled={isUpdatingProfile} className="w-full">
                                     {isUpdatingProfile ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
@@ -169,6 +163,7 @@ export default function ProfilePage() {
                                 </Button>
                             </form>
                         </Form>
+                        )}
                     </CardContent>
                 </Card>
 
