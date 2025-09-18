@@ -238,8 +238,8 @@ export default function ProfilePage() {
                  {/* Submissions Card */}
                 <Card>
                     <CardHeader>
-                        <DialogTitle>Submit Documents</DialogTitle>
-                        <DialogDescription>Upload attendance records, assignment marks, or other documents.</DialogDescription>
+                        <CardTitle>Submit Documents</CardTitle>
+                        <CardDescription>Upload attendance records, assignment marks, or other documents.</CardDescription>
                     </CardHeader>
                     <CardContent>
                          <Form {...submissionForm}>
