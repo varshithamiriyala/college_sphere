@@ -2,11 +2,9 @@ import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar'
 import { SidebarNav } from '@/components/layout/sidebar-nav';
 import { Header } from '@/components/layout/header';
 import { Toaster } from "@/components/ui/toaster"
-import { UserProvider } from '@/hooks/use-user';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <UserProvider>
       <SidebarProvider>
         <Sidebar>
           <SidebarNav />
@@ -21,6 +19,5 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
         <Toaster />
       </SidebarProvider>
-    </UserProvider>
   );
 }
