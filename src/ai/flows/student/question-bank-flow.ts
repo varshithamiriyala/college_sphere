@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const QuestionBankOutputSchema = z.object({
+const QuestionBankOutputSchema = z.object({
   questions: z.array(z.object({
     questionText: z.string().describe('The multiple-choice question.'),
     options: z.array(z.string()).length(4).describe('An array of exactly four possible answers (one correct, three distractors).'),
