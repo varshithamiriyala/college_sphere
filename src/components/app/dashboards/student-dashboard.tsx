@@ -23,6 +23,7 @@ import { Progress } from '@/components/ui/progress';
 import { useUser } from '@/hooks/use-user';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 const roadmapTasks = [
   { id: 1, text: 'Complete "Variables & Data Types" in Python Basics', completed: true },
