@@ -30,27 +30,29 @@ const allMenuItems = [
     { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
     { href: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'faculty'] },
     
-    // Student - Learning & AI Tools
+    // Student - Main
     { href: '/dashboard', label: 'Student Hub', icon: GraduationCap, roles: ['student'], group: 'main' },
+    
+    // Student - Study Tools
     { href: '/subjects', label: 'Subject Organizer', icon: BookCopy, roles: ['student'], group: 'study' },
     { href: '/roadmap', label: 'Roadmap Builder', icon: PenSquare, roles: ['student'], group: 'study' },
     { href: '/pomodoro', label: 'Pomodoro Timer', icon: Timer, roles: ['student'], group: 'study' },
-    { href: '/ai-tools/doubt-assistant', label: 'Doubt Assistant', icon: LifeBuoy, roles: ['student'], group: 'ai' },
-    { href: '/ai-tools/summarizer', label: 'Summarizer', icon: FileText, roles: ['student'], group: 'ai' },
-    { href: '/ai-tools/diagram-generator', label: 'Diagram Generator', icon: GitGraph, roles: ['student'], group: 'ai' },
-    { href: '/ai-tools/question-generator', label: 'Question Bank', icon: HelpCircle, roles: ['student'], group: 'ai' },
-    { href: '/ai-tools/exam-coach', label: 'Exam Coach', icon: BrainCircuit, roles: ['student'], group: 'ai' },
+    { href: '/ai-tools/doubt-assistant', label: 'Doubt Assistant', icon: LifeBuoy, roles: ['student'], group: 'study' },
+    { href: '/ai-tools/summarizer', label: 'Summarizer', icon: FileText, roles: ['student'], group: 'study' },
+    { href: '/ai-tools/diagram-generator', label: 'Diagram Generator', icon: GitGraph, roles: ['student'], group: 'study' },
+    { href: '/ai-tools/question-generator', label: 'Question Bank', icon: HelpCircle, roles: ['student'], group: 'study' },
+    { href: '/ai-tools/exam-coach', label: 'Exam Coach', icon: BrainCircuit, roles: ['student'], group: 'study' },
     
-    // Student - Career Prep
-    { href: '/career/advisor', label: 'Career Advisor', icon: Briefcase, roles: ['student'], group: 'career' },
-    { href: '/career/resume-builder', label: 'Resume Builder', icon: FileText, roles: ['student'], group: 'career' },
-    { href: '/career/resume-analyzer', label: 'Resume Analyzer', icon: Search, roles: ['student'], group: 'career' },
-    { href: '/career/interview-prep', label: 'Interview Prep', icon: Key, roles: ['student'], group: 'career' },
-    { href: '/career/aptitude-tests', label: 'Aptitude Tests', icon: Trophy, roles: ['student'], group: 'career' },
-    { href: '/career/soft-skills-trainer', label: 'Soft Skills Trainer', icon: Users2, roles: ['student'], group: 'career' },
-    { href: '/career/coding-practice', label: 'Coding Practice', icon: Code2, roles: ['student'], group: 'career' },
-    { href: '/career/job-finder', label: 'Job Finder', icon: BriefcaseBusiness, roles: ['student'], group: 'career' },
-    { href: '/career/project-hub', label: 'Project Hub', icon: Lightbulb, roles: ['student'], group: 'career' },
+    // Student - Placement Tools
+    { href: '/career/advisor', label: 'Career Advisor', icon: Briefcase, roles: ['student'], group: 'placement' },
+    { href: '/career/resume-builder', label: 'Resume Builder', icon: FileText, roles: ['student'], group: 'placement' },
+    { href: '/career/resume-analyzer', label: 'Resume Analyzer', icon: Search, roles: ['student'], group: 'placement' },
+    { href: '/career/interview-prep', label: 'Interview Prep', icon: Key, roles: ['student'], group: 'placement' },
+    { href: '/career/aptitude-tests', label: 'Aptitude Tests', icon: Trophy, roles: ['student'], group: 'placement' },
+    { href: '/career/soft-skills-trainer', label: 'Soft Skills Trainer', icon: Users2, roles: ['student'], group: 'placement' },
+    { href: '/career/coding-practice', label: 'Coding Practice', icon: Code2, roles: ['student'], group: 'placement' },
+    { href: '/career/job-finder', label: 'Job Finder', icon: BriefcaseBusiness, roles: ['student'], group: 'placement' },
+    { href: '/career/project-hub', label: 'Project Hub', icon: Lightbulb, roles: ['student'], group: 'placement' },
     
     // Student - Community
     { href: '/community/barter', label: 'Barter System', icon: Swapper, roles: ['student'], group: 'community' },
@@ -67,9 +69,8 @@ const allMenuItems = [
 const menuGroups = {
     'main': { order: 1 },
     'study': { label: 'Study Tools', order: 2 },
-    'ai': { label: 'AI Tools', order: 3 },
-    'career': { label: 'Career Prep', order: 4 },
-    'community': { label: 'Community', order: 5 },
+    'placement': { label: 'Placement Tools', order: 3 },
+    'community': { label: 'Community Tools', order: 4 },
 };
 
 
