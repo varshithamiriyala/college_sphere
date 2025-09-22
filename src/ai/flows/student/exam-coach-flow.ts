@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const ExamCoachOutputSchema = z.object({
+const ExamCoachOutputSchema = z.object({
     keyTopics: z.array(z.object({
         topic: z.string().describe('A key topic or concept relevant to the subject.'),
         explanation: z.string().describe('A concise explanation or definition of the topic.'),
