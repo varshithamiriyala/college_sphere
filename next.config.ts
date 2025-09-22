@@ -24,11 +24,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    // This is a workaround for a webpack issue with the handlebars dependency.
-    config.externals.push('handlebars');
-    return config;
-  },
 };
 
 export default nextConfig;
