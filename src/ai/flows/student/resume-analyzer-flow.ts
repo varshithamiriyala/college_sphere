@@ -11,12 +11,12 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const ResumeAnalysisInputSchema = z.object({
+const ResumeAnalysisInputSchema = z.object({
   resumeDataUri: z.string().describe("The user's resume, provided as a data URI (e.g., PDF). Expected format: 'data:<mimetype>;base64,<encoded_data>'."),
 });
 export type ResumeAnalysisInput = z.infer<typeof ResumeAnalysisInputSchema>;
 
-export const ResumeAnalysisOutputSchema = z.object({
+const ResumeAnalysisOutputSchema = z.object({
     overallScore: z.number().min(0).max(100).describe('A score from 0-100 representing the resume\'s overall quality.'),
     overallFeedback: z.string().describe('A summary of the resume\'s strengths and weaknesses.'),
     suggestions: z.string().describe('Actionable suggestions for improvement, formatted as a Markdown list.'),
