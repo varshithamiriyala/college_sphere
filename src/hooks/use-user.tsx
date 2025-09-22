@@ -6,11 +6,13 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 const USER_STORAGE_KEY = 'techtrack.user';
 const ALL_USERS_STORAGE_KEY = 'techtrack.users';
 
+type UserRole = 'admin' | 'faculty' | 'student';
+
 type User = {
   name: string;
   email: string;
   avatarUrl: string;
-  role: string;
+  role: UserRole;
   collegeName: string;
   collegeCode: string;
 };
@@ -22,6 +24,7 @@ type UserContextType = {
   logout: () => void;
   signup: (name: string, email: string, pass: string, role: string, collegeName: string, collegeCode: string) => void;
   setUser: (user: User) => void; 
+  switchRole: (newRole: UserRole) => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -113,7 +116,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const newUser: User = {
         name,
         email,
-        role,
+        role: role as UserRole,
         collegeName,
         collegeCode,
         avatarUrl: `https://picsum.photos/seed/${name.replace(/\s/g, '')}/100/100`,
@@ -124,7 +127,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   }, []);
 
-  const value = { user, isLoading, login, logout, signup, setUser: setUser as (u: User) => void };
+  const switchRole = useCallback((newRole: UserRole) => {
+    if (user) {
+        const updatedUser = { ...user, role: newRole };
+        setUser(updatedUser);
+    }
+  }, [user]);
+
+  const value = { user, isLoading, login, logout, signup, setUser: setUser as (u: User) => void, switchRole };
 
   return (
     <UserContext.Provider value={value}>

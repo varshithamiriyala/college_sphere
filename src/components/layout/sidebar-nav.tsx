@@ -2,9 +2,7 @@
 'use client';
 
 import {
-    SidebarClose,
     SidebarContent,
-    SidebarGroup,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuItem,
@@ -12,25 +10,45 @@ import {
     SidebarTrigger,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, MessageSquare, ListTree, Settings } from 'lucide-react';
+import { 
+    BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, 
+    MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
+    FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph
+} from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useUser } from '@/hooks/use-user';
+import { useMemo } from 'react';
+
+const allMenuItems = [
+    // Admin & Faculty
+    { href: '/dashboard', label: 'Dashboard', icon: GanttChart, roles: ['admin', 'faculty'] },
+    { href: '/timetable', label: 'Timetable', icon: CalendarDays, roles: ['admin', 'faculty'] },
+    { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus, roles: ['admin'] },
+    { href: '/faculty', label: 'Faculty', icon: Users, roles: ['admin', 'faculty'] },
+    { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
+    { href: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'faculty'] },
+    
+    // Student
+    { href: '/dashboard', label: 'Student Hub', icon: GraduationCap, roles: ['student'] },
+    { href: '/ai-tools/doubt-assistant', label: 'Doubt Assistant', icon: LifeBuoy, roles: ['student'] },
+    { href: '/ai-tools/summarizer', label: 'Summarizer', icon: FileText, roles: ['student'] },
+    { href: '/ai-tools/diagram-generator', label: 'Diagram Generator', icon: GitGraph, roles: ['student'] },
+    { href: '/subjects', label: 'Subject Organizer', icon: BookCopy, roles: ['student'] },
+    { href: '/roadmap', label: 'Roadmap Builder', icon: PenSquare, roles: ['student'] },
+    { href: '/pomodoro', label: 'Pomodoro Timer', icon: Timer, roles: ['student'] },
+
+
+    // Common
+    { href: '/profile', label: 'Profile', icon: User, roles: ['admin', 'faculty', 'student'] },
+    { href: '/features', label: 'Features', icon: ListTree, roles: ['admin', 'faculty', 'student'] },
+    { href: '/settings', label: 'Settings', icon: Settings, roles: ['admin', 'faculty', 'student'] },
+];
 
 export function SidebarNav() {
     const pathname = usePathname();
+    const { user, isLoading } = useUser();
     const { open, isMobile, setOpenMobile } = useSidebar();
-
-    const menuItems = [
-        { href: '/dashboard', label: 'Dashboard', icon: GanttChart },
-        { href: '/timetable', label: 'Timetable', icon: CalendarDays },
-        { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus },
-        { href: '/faculty', label: 'Faculty', icon: Users },
-        { href: '/chat', label: 'Chat', icon: MessageSquare },
-        { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-        { href: '/profile', label: 'Profile', icon: User },
-        { href: '/features', label: 'Features', icon: ListTree },
-        { href: '/settings', label: 'Settings', icon: Settings },
-    ];
 
     const handleLinkClick = () => {
         if (isMobile) {
@@ -38,6 +56,11 @@ export function SidebarNav() {
         }
     };
     
+    const menuItems = useMemo(() => {
+        if (isLoading || !user) return [];
+        return allMenuItems.filter(item => item.roles.includes(user.role));
+    }, [user, isLoading]);
+
     return (
         <>
             <SidebarHeader>
@@ -52,10 +75,10 @@ export function SidebarNav() {
             <SidebarContent>
                 <SidebarMenu>
                     {menuItems.map((item) => (
-                        <SidebarMenuItem key={item.href}>
+                        <SidebarMenuItem key={`${item.href}-${item.label}`}>
                             <SidebarMenuButton
                                 asChild
-                                isActive={pathname.startsWith(item.href)}
+                                isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))}
                                 tooltip={item.label}
                                 onClick={handleLinkClick}
                             >

@@ -8,10 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuPortal,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, User, Settings, Bell } from 'lucide-react';
+import { LogOut, User, Settings, Bell, Check, UserSwitch } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
 import Link from 'next/link';
 import { useSidebar } from '../ui/sidebar';
@@ -23,11 +27,19 @@ import { Skeleton } from '../ui/skeleton';
 export function Header() {
   const { isMobile, open } = useSidebar();
   const router = useRouter();
-  const { user, logout, isLoading } = useUser();
+  const { user, logout, isLoading, switchRole } = useUser();
 
   const handleLogout = () => {
     logout();
     router.push('/login');
+  };
+
+  const handleRoleSwitch = (newRole: 'admin' | 'faculty' | 'student') => {
+    if (user) {
+      switchRole(newRole);
+      // Optional: force a reload or redirect to ensure all components re-evaluate the new role
+      router.push('/dashboard'); 
+    }
   };
 
   return (
@@ -98,6 +110,29 @@ export function Header() {
                     </p>
                   </div>
                 </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <UserSwitch className="mr-2 h-4 w-4" />
+                    <span>Switch Role</span>
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem onClick={() => handleRoleSwitch('admin')}>
+                        <Check className={`mr-2 h-4 w-4 ${user.role === 'admin' ? 'opacity-100' : 'opacity-0'}`} />
+                        Admin
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleRoleSwitch('faculty')}>
+                         <Check className={`mr-2 h-4 w-4 ${user.role === 'faculty' ? 'opacity-100' : 'opacity-0'}`} />
+                        Faculty
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleRoleSwitch('student')}>
+                         <Check className={`mr-2 h-4 w-4 ${user.role === 'student' ? 'opacity-100' : 'opacity-0'}`} />
+                        Student
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/profile">
