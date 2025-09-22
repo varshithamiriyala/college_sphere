@@ -87,6 +87,34 @@ export function Header() {
                 </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Users className="mr-2 h-4 w-4" />
+                  Switch Role
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Select a role to view as</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleRoleSwitch('admin')}>
+                  <Check className={`mr-2 h-4 w-4 ${user.role === 'admin' ? 'opacity-100' : 'opacity-0'}`} />
+                  Admin
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleRoleSwitch('faculty')}>
+                  <Check className={`mr-2 h-4 w-4 ${user.role === 'faculty' ? 'opacity-100' : 'opacity-0'}`} />
+                  Faculty
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleRoleSwitch('student')}>
+                  <Check className={`mr-2 h-4 w-4 ${user.role === 'student' ? 'opacity-100' : 'opacity-0'}`} />
+                  Student
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
           <ModeToggle />
 
           {isLoading ? (
@@ -110,29 +138,6 @@ export function Header() {
                     </p>
                   </div>
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>
-                    <Users className="mr-2 h-4 w-4" />
-                    <span>Switch Role</span>
-                  </DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                      <DropdownMenuItem onClick={() => handleRoleSwitch('admin')}>
-                        <Check className={`mr-2 h-4 w-4 ${user.role === 'admin' ? 'opacity-100' : 'opacity-0'}`} />
-                        Admin
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleRoleSwitch('faculty')}>
-                         <Check className={`mr-2 h-4 w-4 ${user.role === 'faculty' ? 'opacity-100' : 'opacity-0'}`} />
-                        Faculty
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleRoleSwitch('student')}>
-                         <Check className={`mr-2 h-4 w-4 ${user.role === 'student' ? 'opacity-100' : 'opacity-0'}`} />
-                        Student
-                      </DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/profile">
