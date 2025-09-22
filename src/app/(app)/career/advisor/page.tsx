@@ -10,9 +10,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, Loader2, Sparkles, Wand2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { suggestCareers, CareerAdviceInputSchema, CareerAdviceInput, CareerAdviceOutput } from '@/ai/flows/student/career-advisor-flow';
+import { suggestCareers, CareerAdviceInput, CareerAdviceOutput } from '@/ai/flows/student/career-advisor-flow';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
+import { z } from 'zod';
+
+const CareerAdviceFormSchema = z.object({
+  skills: z.string().min(1, 'Please enter at least one skill.'),
+  interests: z.string().min(1, 'Please enter at least one interest.'),
+});
+
 
 export default function CareerAdvisorPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +27,7 @@ export default function CareerAdvisorPage() {
   const { toast } = useToast();
 
   const form = useForm<CareerAdviceInput>({
-    resolver: zodResolver(CareerAdviceInputSchema),
+    resolver: zodResolver(CareerAdviceFormSchema),
     defaultValues: {
       skills: '',
       interests: '',
