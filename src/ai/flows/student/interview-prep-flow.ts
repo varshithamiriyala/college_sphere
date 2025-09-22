@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const InterviewPrepOutputSchema = z.object({
+const InterviewPrepOutputSchema = z.object({
     technical: z.array(z.object({
         question: z.string().describe('The technical question.'),
         answer: z.string().describe('A detailed sample answer.'),
