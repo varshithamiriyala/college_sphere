@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const ResumeDataSchema = z.object({
+const ResumeDataSchema = z.object({
   fullName: z.string().describe("The user's full name."),
   email: z.string().email().describe("The user's email address."),
   phone: z.string().describe("The user's phone number."),
