@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, User, Settings, Bell, Check, UserSwitch } from 'lucide-react';
+import { LogOut, User, Settings, Bell, Check, Users } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
 import Link from 'next/link';
 import { useSidebar } from '../ui/sidebar';
@@ -113,7 +113,7 @@ export function Header() {
                 <DropdownMenuSeparator />
                 <DropdownMenuSub>
                   <DropdownMenuSubTrigger>
-                    <UserSwitch className="mr-2 h-4 w-4" />
+                    <Users className="mr-2 h-4 w-4" />
                     <span>Switch Role</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
