@@ -14,7 +14,7 @@ import {
     BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, 
     MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
     FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph, Briefcase,
-    Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Swapper, SearchX, Group, Star
+    Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Repeat, SearchX, Group, Star
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -55,7 +55,7 @@ const allMenuItems = [
     { href: '/career/project-hub', label: 'Project Hub', icon: Lightbulb, roles: ['student'], group: 'placement' },
     
     // Student - Community
-    { href: '/community/barter', label: 'Barter System', icon: Swapper, roles: ['student'], group: 'community' },
+    { href: '/community/barter', label: 'Barter System', icon: Repeat, roles: ['student'], group: 'community' },
     { href: '/community/lost-and-found', label: 'Lost & Found', icon: SearchX, roles: ['student'], group: 'community' },
     { href: '/community/study-groups', label: 'Study Groups', icon: Group, roles: ['student'], group: 'community' },
     { href: '/community/mentorship', label: 'Mentorship', icon: Star, roles: ['student'], group: 'community' },

@@ -1,13 +1,13 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Swapper } from "lucide-react";
+import { Repeat } from "lucide-react";
 
 export default function BarterSystemPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-start gap-4">
         <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
-            <Swapper className="h-6 w-6 text-primary" />
+            <Repeat className="h-6 w-6 text-primary" />
         </div>
         <div>
             <h1 className="text-3xl font-bold tracking-tight">Barter System</h1>
