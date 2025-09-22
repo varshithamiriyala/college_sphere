@@ -13,7 +13,8 @@ import {
 import { 
     BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, 
     MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
-    FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph
+    FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph, Briefcase,
+    Key, HelpCircle
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -34,6 +35,9 @@ const allMenuItems = [
     { href: '/ai-tools/doubt-assistant', label: 'Doubt Assistant', icon: LifeBuoy, roles: ['student'] },
     { href: '/ai-tools/summarizer', label: 'Summarizer', icon: FileText, roles: ['student'] },
     { href: '/ai-tools/diagram-generator', label: 'Diagram Generator', icon: GitGraph, roles: ['student'] },
+    { href: '/ai-tools/question-generator', label: 'Question Bank', icon: HelpCircle, roles: ['student'] },
+    { href: '/career/advisor', label: 'Career Advisor', icon: Briefcase, roles: ['student'] },
+    { href: '/career/interview-prep', label: 'Interview Prep', icon: Key, roles: ['student'] },
     { href: '/subjects', label: 'Subject Organizer', icon: BookCopy, roles: ['student'] },
     { href: '/roadmap', label: 'Roadmap Builder', icon: PenSquare, roles: ['student'] },
     { href: '/pomodoro', label: 'Pomodoro Timer', icon: Timer, roles: ['student'] },
@@ -58,7 +62,20 @@ export function SidebarNav() {
     
     const menuItems = useMemo(() => {
         if (isLoading || !user) return [];
-        return allMenuItems.filter(item => item.roles.includes(user.role));
+        // A simple grouping logic
+        const studentTools = ['/ai-tools/doubt-assistant', '/ai-tools/summarizer', '/ai-tools/diagram-generator', '/ai-tools/question-generator'];
+        const studentCareer = ['/career/advisor', '/career/interview-prep'];
+
+        return allMenuItems.filter(item => item.roles.includes(user.role)).map(item => {
+             if (studentTools.some(tool => item.href.startsWith(tool))) {
+                return {...item, group: 'AI Tools'};
+             }
+             if (studentCareer.some(tool => item.href.startsWith(tool))) {
+                return {...item, group: 'Career Prep'};
+             }
+             return item;
+        });
+
     }, [user, isLoading]);
 
     return (
@@ -74,7 +91,7 @@ export function SidebarNav() {
             </SidebarHeader>
             <SidebarContent>
                 <SidebarMenu>
-                    {menuItems.map((item) => (
+                    {menuItems.map((item, index) => (
                         <SidebarMenuItem key={`${item.href}-${item.label}`}>
                             <SidebarMenuButton
                                 asChild
