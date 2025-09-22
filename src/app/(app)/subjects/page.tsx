@@ -124,14 +124,14 @@ export default function SubjectOrganizerPage() {
                 <Accordion type="single" collapsible className="w-full">
                 {subjects.map(subject => (
                     <AccordionItem key={subject.id} value={`item-${subject.id}`}>
-                    <AccordionTrigger className="text-lg font-medium">
-                        <div className="flex items-center justify-between w-full pr-4">
-                            {subject.name}
-                            <Button variant="ghost" size="icon" onClick={(e) => { e.stopPropagation(); handleDeleteSubject(subject.id)}}>
+                        <div className="flex items-center w-full">
+                            <AccordionTrigger className="text-lg font-medium flex-1">
+                                {subject.name}
+                            </AccordionTrigger>
+                            <Button variant="ghost" size="icon" onClick={() => handleDeleteSubject(subject.id)} className="ml-4">
                                 <Trash2 className="h-4 w-4 text-destructive" />
                             </Button>
                         </div>
-                    </AccordionTrigger>
                     <AccordionContent className="p-4 bg-muted/50 rounded-md">
                         <div className="space-y-4">
                         {subject.units.length > 0 ? (
