@@ -15,7 +15,7 @@ import {
     MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
     FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph, Briefcase,
     Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Repeat, 
-    SearchX, Group, Star, CalendarCheck
+    SearchX, Group, Star, CalendarCheck, CheckSquare, LineChart, NotebookText, Edit, MessageCircle, Share2, CalendarSync
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -23,15 +23,24 @@ import { useUser } from '@/hooks/use-user';
 import { useMemo } from 'react';
 
 const allMenuItems = [
-    // Admin & Faculty
-    { href: '/dashboard', label: 'Dashboard', icon: GanttChart, roles: ['admin', 'faculty'] },
-    { href: '/timetable', label: 'Timetable', icon: CalendarDays, roles: ['admin', 'faculty'] },
-    { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus, roles: ['admin'] },
-    { href: '/faculty', label: 'Faculty', icon: Users, roles: ['admin', 'faculty'] },
-    { href: '/leave', label: 'Leave Management', icon: CalendarCheck, roles: ['admin', 'faculty'] },
-    { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
-    { href: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'faculty'] },
+    // Admin & Faculty - Core
+    { href: '/dashboard', label: 'Dashboard', icon: GanttChart, roles: ['admin', 'faculty'], group: 'main' },
+    { href: '/timetable', label: 'Timetable', icon: CalendarDays, roles: ['admin', 'faculty'], group: 'main' },
+    { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus, roles: ['admin'], group: 'main' },
+    { href: '/faculty', label: 'Faculty Directory', icon: Users, roles: ['admin', 'faculty'], group: 'main' },
+    { href: '/leave', label: 'Leave Management', icon: CalendarCheck, roles: ['admin', 'faculty'], group: 'main' },
+    { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'], group: 'main' },
+    { href: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'faculty'], group: 'main' },
     
+    // Faculty Tools
+    { href: '/faculty-tools/assignments', label: 'Assignments', icon: Edit, roles: ['faculty'], group: 'faculty' },
+    { href: '/faculty-tools/attendance', label: 'Attendance', icon: CheckSquare, roles: ['faculty'], group: 'faculty' },
+    { href: '/faculty-tools/performance', label: 'Performance', icon: LineChart, roles: ['faculty'], group: 'faculty' },
+    { href: '/faculty-tools/notes', label: 'Lecture Notes', icon: NotebookText, roles: ['faculty'], group: 'faculty' },
+    { href: '/faculty-tools/feedback', label: 'Student Feedback', icon: MessageCircle, roles: ['faculty'], group: 'faculty' },
+    { href: '/faculty-tools/collaboration', label: 'Collaboration', icon: Share2, roles: ['faculty'], group: 'faculty' },
+    { href: '/faculty-tools/calendar', label: 'Calendar Sync', icon: CalendarSync, roles: ['faculty'], group: 'faculty' },
+
     // Student - Main
     { href: '/dashboard', label: 'Student Hub', icon: GraduationCap, roles: ['student'], group: 'main' },
     
@@ -63,16 +72,18 @@ const allMenuItems = [
     { href: '/community/mentorship', label: 'Mentorship', icon: Star, roles: ['student'], group: 'community' },
 
     // Common
-    { href: '/profile', label: 'Profile', icon: User, roles: ['admin', 'faculty', 'student'] },
-    { href: '/features', label: 'Features', icon: ListTree, roles: ['admin', 'faculty', 'student'] },
-    { href: '/settings', label: 'Settings', icon: Settings, roles: ['admin', 'faculty', 'student'] },
+    { href: '/profile', label: 'Profile', icon: User, roles: ['admin', 'faculty', 'student'], group: 'common' },
+    { href: '/features', label: 'Features', icon: ListTree, roles: ['admin', 'faculty', 'student'], group: 'common' },
+    { href: '/settings', label: 'Settings', icon: Settings, roles: ['admin', 'faculty', 'student'], group: 'common' },
 ];
 
 const menuGroups = {
     'main': { order: 1 },
-    'study': { label: 'Study Tools', order: 2 },
-    'placement': { label: 'Placement Tools', order: 3 },
-    'community': { label: 'Community Tools', order: 4 },
+    'faculty': { label: 'Faculty Tools', order: 2 },
+    'study': { label: 'Study Tools', order: 3 },
+    'placement': { label: 'Placement Tools', order: 4 },
+    'community': { label: 'Community Tools', order: 5 },
+    'common': { order: 99 },
 };
 
 
@@ -130,7 +141,7 @@ export function SidebarNav() {
                     {groupedMenuItems.map((group, groupIndex) => (
                         <div key={groupIndex} className="space-y-1">
                             {group.label && open && (
-                                <h2 className="px-4 pt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                                <h2 className="px-4 pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                                     {group.label}
                                 </h2>
                             )}
