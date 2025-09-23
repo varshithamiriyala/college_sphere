@@ -75,6 +75,7 @@ const allMenuItems = [
     { href: '/career/project-hub', label: 'Project Hub', icon: Lightbulb, roles: ['student'], group: 'placement' },
     
     // Student - Community
+    { href: '/community/events', label: 'Events', icon: Presentation, roles: ['student'], group: 'community' },
     { href: '/community/barter', label: 'Barter System', icon: Repeat, roles: ['student'], group: 'community' },
     { href: '/community/lost-and-found', label: 'Lost & Found', icon: SearchX, roles: ['student'], group: 'community' },
     { href: '/community/study-groups', label: 'Study Groups', icon: Group, roles: ['student'], group: 'community' },
@@ -92,7 +93,7 @@ const menuGroups = {
     'faculty': { label: 'Faculty Tools', order: 3 },
     'study': { label: 'Study Tools', order: 4 },
     'placement': { label: 'Placement Tools', order: 5 },
-    'community': { label: 'Community Tools', order: 6 },
+    'community': { label: 'Community', order: 6 },
     'common': { order: 99 },
 };
 

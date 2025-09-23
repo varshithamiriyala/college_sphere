@@ -1,9 +1,14 @@
 
+
+'use client';
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, PlusCircle, Users } from "lucide-react";
+import { ManageParticipantsDialog } from "@/components/app/manage-participants-dialog";
 
 const events = [
   { id: 1, name: "Annual Tech Fest 'Innovate 2024'", date: "2024-09-15", location: "Main Auditorium", type: "Tech Fest", status: "Upcoming" },
@@ -55,10 +60,7 @@ export default function EventsPage() {
                         </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                        <Button variant="outline" size="sm">
-                            <Users className="mr-2 h-4 w-4" />
-                            Manage Participants
-                        </Button>
+                        <ManageParticipantsDialog event={event} />
                     </TableCell>
                 </TableRow>
               ))}
