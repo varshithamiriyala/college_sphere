@@ -14,7 +14,8 @@ import {
     BarChart3, CalendarDays, GanttChart, Users, Bot, CalendarPlus, User, 
     MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
     FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph, Briefcase,
-    Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Repeat, SearchX, Group, Star
+    Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Repeat, 
+    SearchX, Group, Star, CalendarCheck
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -27,6 +28,7 @@ const allMenuItems = [
     { href: '/timetable', label: 'Timetable', icon: CalendarDays, roles: ['admin', 'faculty'] },
     { href: '/generate-timetable', label: 'Generator', icon: CalendarPlus, roles: ['admin'] },
     { href: '/faculty', label: 'Faculty', icon: Users, roles: ['admin', 'faculty'] },
+    { href: '/leave', label: 'Leave Management', icon: CalendarCheck, roles: ['admin', 'faculty'] },
     { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'] },
     { href: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'faculty'] },
     

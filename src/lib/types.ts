@@ -1,3 +1,4 @@
+
 export interface TimetableEntry {
   day: string;
   time: string;
@@ -25,3 +26,16 @@ export interface Faculty {
 export type GeneratedTimetable = {
   timetable: TimetableEntry[];
 };
+
+export type LeaveRequestStatus = 'pending' | 'approved' | 'rejected';
+
+export interface LeaveRequest {
+  id: string;
+  facultyId: string;
+  facultyName: string;
+  facultyAvatar: string;
+  startDate: Date;
+  endDate: Date;
+  reason: string;
+  status: LeaveRequestStatus;
+}
