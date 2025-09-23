@@ -1,10 +1,11 @@
 
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { CheckSquare, Percent, FileDown } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { TakeAttendanceDialog } from "@/components/app/take-attendance-dialog";
 
 const classes = [
   { id: 1, subject: "Data Structures", batch: "CS-A", time: "Monday, 09:00 AM", attendance: 95 },
@@ -60,7 +61,7 @@ export default function AttendancePage() {
                             </div>
                         </TableCell>
                         <TableCell className="text-right">
-                            <Button>Take Attendance</Button>
+                           <TakeAttendanceDialog classInfo={cls} />
                         </TableCell>
                     </TableRow>
               ))}
