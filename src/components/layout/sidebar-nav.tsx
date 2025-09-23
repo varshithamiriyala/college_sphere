@@ -15,7 +15,7 @@ import {
     MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
     FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph, Briefcase,
     Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Repeat, 
-    SearchX, Group, Star, CalendarCheck, CheckSquare, LineChart, NotebookText, Edit, MessageCircle, Share2, CalendarSync
+    SearchX, Group, Star, CalendarCheck, CheckSquare, LineChart, NotebookText, Edit, MessageCircle, Share2, CalendarSync, QrCode
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -48,6 +48,7 @@ const allMenuItems = [
     { href: '/subjects', label: 'Subject Organizer', icon: BookCopy, roles: ['student'], group: 'study' },
     { href: '/roadmap', label: 'Roadmap Builder', icon: PenSquare, roles: ['student'], group: 'study' },
     { href: '/pomodoro', label: 'Pomodoro Timer', icon: Timer, roles: ['student'], group: 'study' },
+    { href: '/attendance/scan', label: 'Scan Attendance', icon: QrCode, roles: ['student'], group: 'study' },
     { href: '/ai-tools/doubt-assistant', label: 'Doubt Assistant', icon: LifeBuoy, roles: ['student'], group: 'study' },
     { href: '/ai-tools/summarizer', label: 'Summarizer', icon: FileText, roles: ['student'], group: 'study' },
     { href: '/ai-tools/diagram-generator', label: 'Diagram Generator', icon: GitGraph, roles: ['student'], group: 'study' },
