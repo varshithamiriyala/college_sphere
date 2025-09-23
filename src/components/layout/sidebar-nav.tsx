@@ -15,7 +15,8 @@ import {
     MessageSquare, ListTree, Settings, GraduationCap, Lightbulb, BookCopy, 
     FileText, BrainCircuit, PenSquare, LifeBuoy, Timer, GitGraph, Briefcase,
     Key, HelpCircle, Trophy, Users2, Code2, Search, BriefcaseBusiness, Repeat, 
-    SearchX, Group, Star, CalendarCheck, CheckSquare, LineChart, NotebookText, Edit, MessageCircle, Share2, CalendarSync, QrCode
+    SearchX, Group, Star, CalendarCheck, CheckSquare, LineChart, NotebookText, Edit, MessageCircle, Share2, CalendarSync, QrCode,
+    CreditCard, Building2, Megaphone, UserPlus, Presentation, Bell
 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -31,6 +32,13 @@ const allMenuItems = [
     { href: '/leave', label: 'Leave Management', icon: CalendarCheck, roles: ['admin', 'faculty'], group: 'main' },
     { href: '/analytics', label: 'Analytics', icon: BarChart3, roles: ['admin'], group: 'main' },
     { href: '/chat', label: 'Chat', icon: MessageSquare, roles: ['admin', 'faculty'], group: 'main' },
+
+    // Admin Tools
+    { href: '/admin/admissions', label: 'Admissions', icon: UserPlus, roles: ['admin'], group: 'admin' },
+    { href: '/admin/financials', label: 'Financials', icon: CreditCard, roles: ['admin'], group: 'admin' },
+    { href: '/admin/resources', label: 'Resources', icon: Building2, roles: ['admin'], group: 'admin' },
+    { href: '/admin/events', label: 'Events', icon: Presentation, roles: ['admin'], group: 'admin' },
+    { href: '/admin/notifications', label: 'Notifications', icon: Bell, roles: ['admin'], group: 'admin' },
     
     // Faculty Tools
     { href: '/faculty-tools/assignments', label: 'Assignments', icon: Edit, roles: ['faculty'], group: 'faculty' },
@@ -80,10 +88,11 @@ const allMenuItems = [
 
 const menuGroups = {
     'main': { order: 1 },
-    'faculty': { label: 'Faculty Tools', order: 2 },
-    'study': { label: 'Study Tools', order: 3 },
-    'placement': { label: 'Placement Tools', order: 4 },
-    'community': { label: 'Community Tools', order: 5 },
+    'admin': { label: 'Admin Tools', order: 2 },
+    'faculty': { label: 'Faculty Tools', order: 3 },
+    'study': { label: 'Study Tools', order: 4 },
+    'placement': { label: 'Placement Tools', order: 5 },
+    'community': { label: 'Community Tools', order: 6 },
     'common': { order: 99 },
 };
 
