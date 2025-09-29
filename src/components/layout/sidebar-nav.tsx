@@ -141,7 +141,7 @@ export function SidebarNav() {
             <SidebarHeader>
                 <div className="flex items-center gap-2">
                     <Bot className="h-7 w-7 text-primary" />
-                    <span className={`text-xl font-semibold transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>TechTrack</span>
+                    <span className={`text-xl font-semibold transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>College Sphere</span>
                 </div>
                 <div className={`${open ? '' : 'md:hidden'}`}>
                     <SidebarTrigger/>

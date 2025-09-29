@@ -38,7 +38,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Bot className="h-7 w-7 text-primary" />
-            <span className="text-xl font-semibold">TechTrack</span>
+            <span className="text-xl font-semibold">College Sphere</span>
           </Link>
           <Button asChild>
             <Link href="/login">Login</Link>
@@ -50,7 +50,7 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-20 text-center md:px-6 md:py-32">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-            Intelligent Timetable Management
+            Your All-in-One Campus Hub
           </h1>
           <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground md:text-xl">
             Harness the power of AI to create flawless, conflict-free academic schedules. Save time, reduce stress, and optimize resource allocation effortlessly.
@@ -66,7 +66,7 @@ export default function LandingPage() {
         <section id="features" className="w-full bg-muted py-20 md:py-32">
           <div className="container mx-auto px-4 md:px-6">
             <div className="mb-12 text-center">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Why TechTrack?</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Why College Sphere?</h2>
                 <p className="mx-auto mt-4 max-w-[700px] text-muted-foreground md:text-lg">
                     Discover the features that make scheduling simple and intelligent.
                 </p>
@@ -100,7 +100,7 @@ export default function LandingPage() {
       <footer className="border-t">
         <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 py-8 md:flex-row md:px-6">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} TechTrack. All rights reserved.
+            © {new Date().getFullYear()} College Sphere. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">

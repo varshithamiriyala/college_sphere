@@ -164,7 +164,7 @@ export default function FeaturesPage() {
     <div className="space-y-6">
       <div className="space-y-1">
         <h1 className="text-3xl font-bold tracking-tight">Application Features</h1>
-        <p className="text-muted-foreground">A detailed look at the capabilities of TechTrack, tailored for each role.</p>
+        <p className="text-muted-foreground">A detailed look at the capabilities of College Sphere, tailored for each role.</p>
       </div>
 
       <Tabs defaultValue="admin" className="w-full">

@@ -38,7 +38,7 @@ export default function LoginPage() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: 'admin@techtrack.edu',
+      email: 'admin@collegesphere.edu',
       password: 'password',
     },
   });
@@ -74,7 +74,7 @@ export default function LoginPage() {
         <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
                 <Bot className="h-8 w-8 text-primary" />
-                <span className="text-2xl font-semibold">TechTrack</span>
+                <span className="text-2xl font-semibold">College Sphere</span>
             </div>
           <CardTitle>Welcome Back</CardTitle>
           <CardDescription>Enter your credentials to access your account.</CardDescription>
@@ -89,7 +89,7 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="admin@techtrack.edu" {...field} />
+                      <Input type="email" placeholder="admin@collegesphere.edu" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

@@ -84,10 +84,10 @@ export default function SignupPage() {
         <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-2 mb-4">
                 <Bot className="h-8 w-8 text-primary" />
-                <span className="text-2xl font-semibold">TechTrack</span>
+                <span className="text-2xl font-semibold">College Sphere</span>
             </div>
           <CardTitle>Create an Account</CardTitle>
-          <CardDescription>Join TechTrack to start managing timetables intelligently.</CardDescription>
+          <CardDescription>Join College Sphere to start managing your campus intelligently.</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

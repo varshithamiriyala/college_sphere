@@ -3,8 +3,8 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
-const USER_STORAGE_KEY = 'techtrack.user';
-const ALL_USERS_STORAGE_KEY = 'techtrack.users';
+const USER_STORAGE_KEY = 'collegesphere.user';
+const ALL_USERS_STORAGE_KEY = 'collegesphere.users';
 
 type UserRole = 'admin' | 'faculty' | 'student';
 
@@ -31,11 +31,11 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 const defaultUser: User = {
     name: 'Admin',
-    email: 'admin@techtrack.edu',
+    email: 'admin@collegesphere.edu',
     avatarUrl: 'https://picsum.photos/seed/AdminUser/100/100',
     role: 'admin',
-    collegeName: 'TechTrack University',
-    collegeCode: 'TTU',
+    collegeName: 'College Sphere University',
+    collegeCode: 'CSU',
 };
 
 const getStoredUsers = (): Record<string, any> => {

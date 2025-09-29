@@ -6,8 +6,8 @@ import { ThemeProvider } from '@/components/layout/theme-provider';
 import { UserProvider } from '@/hooks/use-user';
 
 export const metadata: Metadata = {
-  title: 'TechTrack',
-  description: 'Intelligent Timetable Management',
+  title: 'College Sphere',
+  description: 'Your All-in-One Campus Hub',
 };
 
 export default function RootLayout({
