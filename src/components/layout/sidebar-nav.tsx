@@ -88,13 +88,13 @@ const allMenuItems = [
 ];
 
 const menuGroups = {
-    'main': { order: 1 },
+    'main': { label: 'Main', order: 1 },
     'admin': { label: 'Admin Tools', order: 2 },
     'faculty': { label: 'Faculty Tools', order: 3 },
     'study': { label: 'Study Tools', order: 4 },
     'placement': { label: 'Placement Tools', order: 5 },
     'community': { label: 'Community', order: 6 },
-    'common': { order: 99 },
+    'common': { label: 'Common', order: 99 },
 };
 
 
