@@ -151,9 +151,9 @@ export function SidebarNav() {
                 <SidebarMenu>
                     {groupedMenuItems.map((group, groupIndex) => (
                         <div key={groupIndex} className="space-y-1">
-                            {group.label && open && (
+                            {("label" in group && group.label) && open && (
                                 <h2 className="px-4 pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                    {group.label}
+                                    {group.label as string}
                                 </h2>
                             )}
                             {group.items.map((item) => (

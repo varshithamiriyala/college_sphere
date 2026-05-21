@@ -92,10 +92,10 @@ export function ManageParticipantsDialog({ event }: { event: Event }) {
                             </div>
                              {app.status === 'pending' ? (
                                 <div className="flex gap-2 justify-end mt-2">
-                                    <Button size="xs" variant="outline" className="text-green-600 border-green-500 hover:bg-green-100" onClick={() => handleApplication(app.id, 'approved')}>
+                                    <Button size="sm" variant="outline" className="text-green-600 border-green-500 hover:bg-green-100" onClick={() => handleApplication(app.id, 'approved')}>
                                         <ThumbsUp className="mr-1 h-3 w-3" /> Approve
                                     </Button>
-                                    <Button size="xs" variant="outline" className="text-red-600 border-red-500 hover:bg-red-100" onClick={() => handleApplication(app.id, 'rejected')}>
+                                    <Button size="sm" variant="outline" className="text-red-600 border-red-500 hover:bg-red-100" onClick={() => handleApplication(app.id, 'rejected')}>
                                         <ThumbsDown className="mr-1 h-3 w-3" /> Reject
                                     </Button>
                                 </div>

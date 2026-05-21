@@ -15,6 +15,7 @@ type User = {
   role: UserRole;
   collegeName: string;
   collegeCode: string;
+  id: string;
 };
 
 type UserContextType = {
@@ -36,6 +37,7 @@ const defaultUser: User = {
     role: 'admin',
     collegeName: 'College Sphere University',
     collegeCode: 'CSU',
+    id: '1',
 };
 
 const getStoredUsers = (): Record<string, any> => {
@@ -120,6 +122,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         collegeName,
         collegeCode,
         avatarUrl: `https://picsum.photos/seed/${name.replace(/\s/g, '')}/100/100`,
+        id: Math.random().toString(36).substr(2, 9),
     };
     
     allUsers[email] = { password: pass, ...newUser };
