@@ -1,0 +1,111 @@
+diff --git a/node_modules/handlebars/lib/index.js b/node_modules/handlebars/lib/index.js
+index 3039239..8c19958 100644
+--- a/node_modules/handlebars/lib/index.js
++++ b/node_modules/handlebars/lib/index.js
+@@ -16,7 +16,7 @@
+ var _handlebarsSafeString = require('./handlebars/safe-string');
+ 
+ var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
+-
++/*
+ var _handlebarsException = require('./handlebars/exception');
+ 
+ var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
+@@ -35,7 +35,7 @@
+ var _handlebarsCreate = require('./handlebars/create');
+ 
+ var _handlebarsCreate2 = _interopRequireDefault(_handlebarsCreate);
+-
++*/
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+ 
+ //- Other Modules
+@@ -43,14 +43,14 @@
+ 
+ var base = _interopRequireWildcard(_base);
+ 
+-var _runtime = require('./handlebars.runtime');
+-
+-var _runtime2 = _interopRequireDefault(_runtime);
+-
+ //- Utils
+-
+-var _utils = require('./handlebars/utils');
+-
+-var Utils = _interopRequireWildcard(_utils);
+-
+ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+ 
+-var create = (0, _handlebarsCreate2['default'])();
++var create = _handlebarsCreate2['default'] ? (0, _handlebarsCreate2['default'])() : (0, _base.create)();
+ create.Visitor = _visitor2['default'];
+ create.print = function (ast) {
+   return new _printer.PrintVisitor().accept(ast);
+@@ -62,7 +62,7 @@
+   return _printer.print;
+ };
+ 
+-Utils.extend(create, base);
++Object.assign(create, base);
+ 
+ // Each of these need to be executed for Blanket to see them under this context
+ /* istanbul ignore next */
+diff --git a/node_modules/handlebars/lib/index.js b/node_modules/handlebars/lib/index.js
+index 3039239..8c19958 100644
+--- a/node_modules/handlebars/lib/index.js
++++ b/node_modules/handlebars/lib/index.js
+@@ -16,7 +16,7 @@
+ var _handlebarsSafeString = require('./handlebars/safe-string');
+ 
+ var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
+-
++/*
+ var _handlebarsException = require('./handlebars/exception');
+ 
+ var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
+@@ -35,7 +35,7 @@
+ var _handlebarsCreate = require('./handlebars/create');
+ 
+ var _handlebarsCreate2 = _interopRequireDefault(_handlebarsCreate);
+-
++*/
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+ 
+ //- Other Modules
+@@ -43,14 +43,14 @@
+ 
+ var base = _interopRequireWildcard(_base);
+ 
+-var _runtime = require('./handlebars.runtime');
+-
+-var _runtime2 = _interopRequireDefault(_runtime);
+-
+ // //- Utils
+ 
+-var _utils = require('./handlebars/utils');
+-
+-var Utils = _interopRequireWildcard(_utils);
+-
++//var _utils = require('./handlebars/utils');
++
++//var Utils = _interopRequireWildcard(_utils);
++
++//var _runtime = require('./handlebars.runtime');
++
++//var _runtime2 = _interopRequireDefault(_runtime);
+ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+ 
+-var create = (0, _handlebarsCreate2['default'])();
++var create = (0, _base.create)();
+ create.Visitor = _visitor2['default'];
+ create.print = function (ast) {
+   return new _printer.PrintVisitor().accept(ast);
+@@ -62,7 +62,7 @@
+   return _printer.print;
+ };
+ 
+-Utils.extend(create, base);
++Object.assign(create, base);
+ 
+ // Each of these need to be executed for Blanket to see them under this context
+ /* istanbul ignore next */
