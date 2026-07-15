@@ -22,6 +22,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/hooks/use-user';
 import { useMemo } from 'react';
+import { cn } from '@/lib/utils';
 
 const allMenuItems = [
     // Admin & Faculty - Core
@@ -98,6 +99,16 @@ const menuGroups = {
 };
 
 
+const groupCodes: Record<string, string> = {
+    'main': 'DIR.01',
+    'admin': 'ADM.02',
+    'faculty': 'FAC.03',
+    'study': 'STD.04',
+    'placement': 'PLC.05',
+    'community': 'COM.06',
+    'common': 'GEN.99',
+};
+
 export function SidebarNav() {
     const pathname = usePathname();
     const { user, isLoading } = useUser();
@@ -131,6 +142,7 @@ export function SidebarNav() {
           })
           .map(([group, items]) => ({
               ...menuGroups[group as keyof typeof menuGroups],
+              groupKey: group,
               items
           }));
 
@@ -138,41 +150,60 @@ export function SidebarNav() {
 
     return (
         <>
-            <SidebarHeader>
-                <div className="flex items-center gap-2">
-                    <Bot className="h-7 w-7 text-primary" />
-                    <span className={`text-xl font-semibold transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>College Sphere</span>
+            <SidebarHeader className="border-b border-border/80 px-4 py-4">
+                <div className="flex items-center gap-3">
+                    <div className="bg-[#E2A73E] p-1.5 rounded-[4px] text-[#1B2A4A] font-bold font-mono text-xs">
+                        CS.X
+                    </div>
+                    <span className={`text-lg font-bold tracking-tight font-display text-primary transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}>
+                        COLLEGE SPHERE
+                    </span>
                 </div>
                 <div className={`${open ? '' : 'md:hidden'}`}>
-                    <SidebarTrigger/>
+                    <SidebarTrigger className="hover:bg-primary/10 rounded-[4px]" />
                 </div>
             </SidebarHeader>
-            <SidebarContent>
-                <SidebarMenu>
-                    {groupedMenuItems.map((group, groupIndex) => (
-                        <div key={groupIndex} className="space-y-1">
-                            {("label" in group && group.label) && open && (
-                                <h2 className="px-4 pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                                    {group.label as string}
-                                </h2>
-                            )}
-                            {group.items.map((item) => (
-                                <SidebarMenuItem key={`${item.href}-${item.label}`}>
-                                    <SidebarMenuButton
-                                        asChild
-                                        isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))}
-                                        tooltip={item.label}
-                                        onClick={handleLinkClick}
-                                    >
-                                        <Link href={item.href}>
-                                            <item.icon />
-                                            <span>{item.label}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </div>
-                    ))}
+            <SidebarContent className="px-2 py-4 space-y-4">
+                <SidebarMenu className="space-y-4">
+                    {groupedMenuItems.map((group, groupIndex) => {
+                        const code = groupCodes[group.groupKey] || 'DIR.00';
+                        return (
+                            <div key={groupIndex} className="space-y-1.5 border-t border-border/20 pt-3 first:border-0 first:pt-0">
+                                {("label" in group && group.label) && open && (
+                                    <h2 className="px-3 pb-1 text-[11px] font-mono tracking-wider text-muted-foreground flex items-center gap-2">
+                                        <span className="text-[#E2A73E] font-bold">[{code}]</span> 
+                                        <span className="font-semibold uppercase">{group.label as string}</span>
+                                    </h2>
+                                )}
+                                <div className="space-y-1">
+                                    {group.items.map((item) => {
+                                        const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
+                                        return (
+                                            <SidebarMenuItem key={`${item.href}-${item.label}`}>
+                                                <SidebarMenuButton
+                                                    asChild
+                                                    isActive={isActive}
+                                                    tooltip={item.label}
+                                                    onClick={handleLinkClick}
+                                                    className={cn(
+                                                        "rounded-none font-sans text-sm py-2 px-3 transition-all flex items-center gap-3 h-9",
+                                                        isActive 
+                                                            ? "bg-transparent data-[active=true]:bg-transparent border-l-[4px] border-l-[#E2A73E] text-[#1B2A4A] dark:text-[#EEF2F6] font-bold" 
+                                                            : "hover:bg-muted/10 text-muted-foreground hover:text-foreground border-l-[4px] border-l-transparent"
+                                                    )}
+                                                >
+                                                    <Link href={item.href} className="flex items-center w-full">
+                                                        <item.icon className={cn("h-4 w-4 shrink-0", isActive ? "text-[#E2A73E]" : "text-muted-foreground")} />
+                                                        <span className="truncate">{item.label}</span>
+                                                    </Link>
+                                                </SidebarMenuButton>
+                                            </SidebarMenuItem>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        );
+                    })}
                 </SidebarMenu>
             </SidebarContent>
         </>

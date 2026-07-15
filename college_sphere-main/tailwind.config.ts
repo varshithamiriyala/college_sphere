@@ -11,9 +11,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
+        sans: ['"Public Sans"', 'sans-serif'],
+        display: ['"Space Grotesk"', 'sans-serif'],
+        body: ['"Public Sans"', 'sans-serif'],
+        headline: ['"Space Grotesk"', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
+        code: ['"IBM Plex Mono"', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',

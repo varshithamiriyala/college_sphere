@@ -32,72 +32,81 @@ export default function AnalyticsDashboard() {
   }, []);
 
   const chartConfig = useMemo(() => ({
-    hours: { label: "Workload (Hours)", color: "hsl(var(--primary))" },
-    days: { label: "Leave Days", color: "hsl(var(--accent))" },
-    marks: { label: "Marks", color: "hsl(var(--chart-1))" },
-    assignments: { label: "Assignments", color: "hsl(var(--chart-2))" },
-    attendance: { label: "Attendance", color: "hsl(var(--chart-3))" },
+    hours: { label: "Workload (Hours)", color: "hsl(221 46% 20%)" },
+    days: { label: "Leave Days", color: "hsl(38 75% 56%)" },
+    marks: { label: "Marks Compliance", color: "hsl(221 46% 20%)" },
+    assignments: { label: "Assignments Compliance", color: "hsl(38 75% 56%)" },
+    attendance: { label: "Attendance Compliance", color: "hsl(216 18% 43%)" },
   }), []);
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <Card>
-        <CardHeader>
-          <CardTitle>Faculty Workload Distribution</CardTitle>
-          <CardDescription>Weekly teaching hours per faculty member.</CardDescription>
+      <Card className="campus-card">
+        <CardHeader className="border-b border-border/20 pb-4 relative">
+          <div className="absolute top-2 right-2 text-[9px] font-mono text-muted-foreground uppercase font-bold">
+            [ANL.WORK]
+          </div>
+          <CardTitle className="text-md font-bold font-display">Faculty Workload Distribution</CardTitle>
+          <CardDescription className="text-xs">Weekly teaching hours per faculty officer.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[300px] w-full">
+        <CardContent className="pt-6">
+          <ChartContainer config={chartConfig} className="h-[280px] w-full">
             <ResponsiveContainer>
-              <BarChart data={workloadData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={8} />
-                <YAxis />
+              <BarChart data={workloadData} margin={{ top: 10, right: 10, left: -25, bottom: 5 }}>
+                <CartesianGrid vertical={false} stroke="rgba(27, 42, 74, 0.08)" />
+                <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={8} tick={{ fill: '#5B6B82', fontSize: 10, fontFamily: 'monospace' }} />
+                <YAxis tickLine={false} axisLine={false} tick={{ fill: '#5B6B82', fontSize: 10, fontFamily: 'monospace' }} />
                 <Tooltip cursor={false} content={<ChartTooltipContent />} />
-                <Bar dataKey="hours" fill="var(--color-hours)" radius={4} />
+                <Bar dataKey="hours" fill="hsl(221, 46%, 20%)" radius={2} />
               </BarChart>
             </ResponsiveContainer>
           </ChartContainer>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Leave Trends</CardTitle>
-          <CardDescription>Total leave days taken by all faculty per month.</CardDescription>
+      <Card className="campus-card">
+        <CardHeader className="border-b border-border/20 pb-4 relative">
+          <div className="absolute top-2 right-2 text-[9px] font-mono text-muted-foreground uppercase font-bold">
+            [ANL.LEAVE]
+          </div>
+          <CardTitle className="text-md font-bold font-display">Leave Trends</CardTitle>
+          <CardDescription className="text-xs">Total leave days compiled per active monthly period.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[300px] w-full">
+        <CardContent className="pt-6">
+          <ChartContainer config={chartConfig} className="h-[280px] w-full">
             <ResponsiveContainer>
-              <LineChart data={leaveTrendsData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
-                <YAxis />
+              <LineChart data={leaveTrendsData} margin={{ top: 10, right: 10, left: -25, bottom: 5 }}>
+                <CartesianGrid vertical={false} stroke="rgba(27, 42, 74, 0.08)" />
+                <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tick={{ fill: '#5B6B82', fontSize: 10, fontFamily: 'monospace' }} />
+                <YAxis tickLine={false} axisLine={false} tick={{ fill: '#5B6B82', fontSize: 10, fontFamily: 'monospace' }} />
                 <Tooltip cursor={false} content={<ChartTooltipContent />} />
-                <Line type="monotone" dataKey="days" stroke="var(--color-days)" strokeWidth={2} dot={true} />
+                <Line type="monotone" dataKey="days" stroke="hsl(38, 75%, 56%)" strokeWidth={2.5} dot={{ fill: 'hsl(38, 75%, 56%)', r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
           </ChartContainer>
         </CardContent>
       </Card>
 
-      <Card className="lg:col-span-2">
-        <CardHeader>
-          <CardTitle>Submission Compliance Rates (%)</CardTitle>
-          <CardDescription>Percentage of on-time submissions for key academic tasks.</CardDescription>
+      <Card className="campus-card lg:col-span-2">
+        <CardHeader className="border-b border-border/20 pb-4 relative">
+          <div className="absolute top-2 right-2 text-[9px] font-mono text-muted-foreground uppercase font-bold">
+            [ANL.COMPL]
+          </div>
+          <CardTitle className="text-md font-bold font-display">Submission Compliance Rates (%)</CardTitle>
+          <CardDescription className="text-xs">Percentage of on-time log entries and curriculum tracking obligations.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig} className="h-[400px] w-full">
+        <CardContent className="pt-6">
+          <ChartContainer config={chartConfig} className="h-[360px] w-full">
             <ResponsiveContainer>
-                <BarChart data={submissionData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
-                    <CartesianGrid vertical={false} />
-                    <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={8} />
-                    <YAxis domain={[50, 100]} />
+                <BarChart data={submissionData} margin={{ top: 10, right: 10, left: -25, bottom: 5 }}>
+                    <CartesianGrid vertical={false} stroke="rgba(27, 42, 74, 0.08)" />
+                    <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={8} tick={{ fill: '#5B6B82', fontSize: 10, fontFamily: 'monospace' }} />
+                    <YAxis domain={[50, 100]} tickLine={false} axisLine={false} tick={{ fill: '#5B6B82', fontSize: 10, fontFamily: 'monospace' }} />
                     <Tooltip cursor={false} content={<ChartTooltipContent />} />
-                    <Legend />
-                    <Bar dataKey="marks" fill="var(--color-marks)" radius={4} />
-                    <Bar dataKey="assignments" fill="var(--color-assignments)" radius={4} />
-                    <Bar dataKey="attendance" fill="var(--color-attendance)" radius={4} />
+                    <Legend wrapperStyle={{ fontFamily: 'monospace', fontSize: '11px', paddingTop: '10px' }} />
+                    <Bar dataKey="marks" fill="hsl(221, 46%, 20%)" radius={2} />
+                    <Bar dataKey="assignments" fill="hsl(38, 75%, 56%)" radius={2} />
+                    <Bar dataKey="attendance" fill="hsl(216, 18%, 43%)" radius={2} />
                 </BarChart>
             </ResponsiveContainer>
           </ChartContainer>

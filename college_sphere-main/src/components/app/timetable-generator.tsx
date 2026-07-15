@@ -217,6 +217,13 @@ export default function TimetableGenerator() {
 
   return (
     <div className="space-y-8">
+      {/* Signage Title */}
+      <div className="border-b border-[#1B2A4A]/20 dark:border-border/30 pb-4">
+        <span className="text-[10px] font-mono text-[#E2A73E] font-bold uppercase tracking-wider">[GEN.SCHED-10]</span>
+        <h2 className="text-2xl font-bold font-display text-[#1B2A4A] dark:text-foreground">Schedule Configuration Desk</h2>
+        <p className="text-xs text-[#5B6B82] tracking-wide">Specify metrics, constraints, and resources to trigger automated schedule compiling.</p>
+      </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -224,15 +231,15 @@ export default function TimetableGenerator() {
               control={form.control}
               name="classrooms"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Available Classrooms</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[FACIL.01] Available Classrooms</FormLabel>
                   <MultiSelect
                     options={options.classrooms}
                     selected={field.value}
                     onChange={field.onChange}
                     placeholder="Select classrooms..."
                   />
-                  <FormMessage />
+                  <FormMessage className="text-xs text-[#C1442E]" />
                 </FormItem>
               )}
             />
@@ -240,21 +247,21 @@ export default function TimetableGenerator() {
               control={form.control}
               name="batch"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Batch</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[BATCH.02] Target Cohort</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                          <SelectTrigger>
-                              <SelectValue placeholder="Select a batch to generate timetable for" />
+                          <SelectTrigger className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs">
+                              <SelectValue placeholder="Select target cohort..." />
                           </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className="rounded-[4px] border-[#1B2A4A]/30 font-mono text-xs">
                           {options.batches.map((option) => (
                               <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
                           ))}
                       </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-xs text-[#C1442E]" />
                 </FormItem>
               )}
             />
@@ -262,15 +269,15 @@ export default function TimetableGenerator() {
               control={form.control}
               name="subjects"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Subjects for this Batch</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[CURRIC.03] Subjects Index</FormLabel>
                    <MultiSelect
                     options={options.subjects}
                     selected={field.value}
                     onChange={field.onChange}
-                    placeholder="Select subjects..."
+                    placeholder="Select syllabus subjects..."
                   />
-                  <FormMessage />
+                  <FormMessage className="text-xs text-[#C1442E]" />
                 </FormItem>
               )}
             />
@@ -278,35 +285,36 @@ export default function TimetableGenerator() {
               control={form.control}
               name="faculty"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Available Faculty</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[STAFF.04] Active Faculty Officers</FormLabel>
                    <MultiSelect
                     options={options.faculty}
                     selected={field.value}
                     onChange={field.onChange}
-                    placeholder="Select faculty..."
+                    placeholder="Select lecturers..."
                   />
-                  <FormMessage />
+                  <FormMessage className="text-xs text-[#C1442E]" />
                 </FormItem>
               )}
             />
             </div>
             
-            <Card>
-                <CardHeader>
-                    <CardTitle>Timings & Duration</CardTitle>
-                    <CardDescription>Define the schedule structure for the timetable.</CardDescription>
+            <Card className="campus-card">
+                <CardHeader className="border-b border-border/20 pb-4">
+                    <span className="text-[10px] font-mono text-[#E2A73E] font-bold">[T-INTERVALS]</span>
+                    <CardTitle className="text-md font-bold font-display">Signage & Duration Parameters</CardTitle>
+                    <CardDescription className="text-xs">Define timing structure for academic index schedules.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
+                <CardContent className="space-y-6 pt-5">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
                          <FormField
                             control={form.control}
                             name="collegeStartTime"
                             render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>College Start Time</FormLabel>
+                                <FormItem className="space-y-1.5">
+                                <FormLabel className="text-xs font-mono text-muted-foreground uppercase">[t_start] Hours Start</FormLabel>
                                 <FormControl>
-                                    <Input type="time" {...field} />
+                                    <Input type="time" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs" />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -316,10 +324,10 @@ export default function TimetableGenerator() {
                             control={form.control}
                             name="collegeEndTime"
                             render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>College End Time</FormLabel>
+                                <FormItem className="space-y-1.5">
+                                <FormLabel className="text-xs font-mono text-muted-foreground uppercase">[t_end] Hours End</FormLabel>
                                 <FormControl>
-                                    <Input type="time" {...field} />
+                                    <Input type="time" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs" />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -329,10 +337,10 @@ export default function TimetableGenerator() {
                             control={form.control}
                             name="periodDuration"
                             render={({ field }) => (
-                                <FormItem>
-                                <FormLabel>Period Duration (mins)</FormLabel>
+                                <FormItem className="space-y-1.5">
+                                <FormLabel className="text-xs font-mono text-muted-foreground uppercase">[t_dur] Period Duration (mins)</FormLabel>
                                 <FormControl>
-                                    <Input type="number" placeholder="e.g., 60" {...field} />
+                                    <Input type="number" placeholder="60" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs" />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -343,10 +351,10 @@ export default function TimetableGenerator() {
                         control={form.control}
                         name="breakTimings"
                         render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Break Times (comma-separated)</FormLabel>
+                            <FormItem className="space-y-1.5">
+                            <FormLabel className="text-xs font-mono text-muted-foreground uppercase">[t_break] Rules Break Intervals</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g., 13:00-14:00" {...field} />
+                                <Input placeholder="13:00-14:00" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs" />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -360,10 +368,10 @@ export default function TimetableGenerator() {
               control={form.control}
               name="maxClassesPerDay"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Maximum Classes per Day</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[CONSTR.05] Max Deliveries per Day</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="e.g., 5" {...field} />
+                    <Input type="number" placeholder="5" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -373,10 +381,10 @@ export default function TimetableGenerator() {
               control={form.control}
               name="classesPerSubject"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Number of Classes per Subject (per week/day)</FormLabel>
+                <FormItem className="space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[CONSTR.06] Load per Subject (per week)</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Data Structures: 4 per week, Algorithms: 3 per week" {...field} rows={3} />
+                    <Textarea placeholder="e.g., Data Structures: 4 per week" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-sans text-xs" rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -388,37 +396,38 @@ export default function TimetableGenerator() {
               control={form.control}
               name="labConstraints"
               render={({ field }) => (
-                <FormItem className="md:col-span-2">
-                  <FormLabel>Lab &amp; Special Durations</FormLabel>
+                <FormItem className="md:col-span-2 space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[CONSTR.07] Lab &amp; Practical Extensions</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Data Structures Lab: 3 hours, Workshop Practice: 2 hours" {...field} rows={2} />
+                    <Textarea placeholder="e.g., Data Structures Lab: 3 hours" {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-sans text-xs" rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Faculty-to-Subject Mapping</CardTitle>
-                    <CardDescription>Assign subjects that each selected faculty member can teach.</CardDescription>
+            <Card className="campus-card">
+                <CardHeader className="border-b border-border/20 pb-4">
+                    <span className="text-[10px] font-mono text-[#E2A73E] font-bold">[MAPPED.STAFF]</span>
+                    <CardTitle className="text-md font-bold font-display">Faculty Competency Indexes</CardTitle>
+                    <CardDescription className="text-xs">Map academic subjects to assigned professors.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4 pt-4">
+                <CardContent className="space-y-4 pt-5">
                     {selectedFaculty.map((facultyName) => (
-                        <div key={facultyName}>
-                          <FormLabel>{facultyName}</FormLabel>
+                        <div key={facultyName} className="space-y-1.5">
+                          <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#5B6B82]">- Competencies: {facultyName}</label>
                           <MultiSelect
                               options={allSubjectsOptions}
                               selected={facultySubjectMapping[facultyName] || []}
                               onChange={(selectedSubjects) => {
                                   setFacultySubjectMapping(prev => ({ ...prev, [facultyName]: selectedSubjects }))
                               }}
-                              placeholder="Select subjects..."
+                              placeholder="Assign subjects..."
                           />
                         </div>
                     ))}
                     {selectedFaculty.length === 0 && (
-                        <p className="text-sm text-muted-foreground">Select faculty members above to assign subjects.</p>
+                        <p className="text-xs font-mono text-muted-foreground uppercase">[SYS.WARN] Select faculty officials to initialize competency assignments.</p>
                     )}
                 </CardContent>
             </Card>
@@ -426,10 +435,10 @@ export default function TimetableGenerator() {
               control={form.control}
               name="specialConstraints"
               render={({ field }) => (
-                <FormItem className="md:col-span-2">
-                  <FormLabel>Other Constraints & Fixed Slots</FormLabel>
+                <FormItem className="md:col-span-2 space-y-1.5">
+                  <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[CONSTR.08] Adhoc Exceptions & Rule Adjustments</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="e.g., Lab session for CS-A on Wednesday 11:00-13:00 in LB-301. No classes after 4 PM on Fridays." {...field} rows={3} />
+                    <Textarea placeholder="e.g., Lab session on Wednesday 11:00-13:00. No classes after 4 PM on Fridays." {...field} className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-sans text-xs" rows={3} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -439,18 +448,18 @@ export default function TimetableGenerator() {
             control={form.control}
             name="numTimetables"
             render={({ field }) => (
-              <FormItem className="w-full max-w-xs">
-                <FormLabel>Number of Timetable Options</FormLabel>
+              <FormItem className="w-full max-w-xs space-y-1.5">
+                <FormLabel className="text-xs font-mono font-bold text-[#1B2A4A] dark:text-neutral-300">[COMPILE] Batch Generation Limit</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select number of timetables" />
+                    <SelectTrigger className="rounded-[4px] border-[#1B2A4A]/30 dark:border-border/40 font-mono text-xs">
+                      <SelectValue placeholder="Select output options limit" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="3">3</SelectItem>
-                    <SelectItem value="4">4</SelectItem>
-                    <SelectItem value="5">5</SelectItem>
+                  <SelectContent className="font-mono text-xs">
+                    <SelectItem value="3">3 Configurations</SelectItem>
+                    <SelectItem value="4">4 Configurations</SelectItem>
+                    <SelectItem value="5">5 Configurations</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -458,56 +467,59 @@ export default function TimetableGenerator() {
             )}
           />
 
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-            Generate Timetables
+          <Button type="submit" disabled={isLoading} className="rounded-[4px] bg-[#1B2A4A] dark:bg-card border border-border text-white dark:text-foreground font-mono text-xs font-bold px-6 h-10 hover:bg-[#1B2A4A]/90 transition-all">
+            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin text-[#E2A73E]" /> : null}
+            EXECUTE_COMPILATION
           </Button>
         </form>
       </Form>
       
       {isLoading && (
-        <div className="flex flex-col items-center justify-center space-y-4 rounded-lg border border-dashed p-12">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="text-muted-foreground">AI is thinking... Generating timetables now.</p>
+        <div className="flex flex-col items-center justify-center space-y-4 rounded-none border-2 border-dashed border-[#1B2A4A]/25 p-12 bg-white dark:bg-card/20">
+            <Loader2 className="h-8 w-8 animate-spin text-[#E2A73E]" />
+            <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">[SYSTEM ENGINE] RUNNING INTELLECTUAL HEURISTIC COMPILER...</p>
         </div>
       )}
 
       {generatedTimetables.length > 0 && (
-        <Card>
-            <CardHeader>
-                <CardTitle>Generated Timetables</CardTitle>
-                <CardDescription>Review the generated options below. You can refine these on the Timetable page.</CardDescription>
+        <Card className="campus-card">
+            <CardHeader className="border-b border-border/20 pb-4">
+                <span className="text-[10px] font-mono text-[#E2A73E] font-bold">[OUTPUT.LEDG]</span>
+                <CardTitle className="text-lg font-bold font-display">Generated Schedule Ledgers</CardTitle>
+                <CardDescription className="text-xs">Compile options rendered below. Click to test structural compatibility.</CardDescription>
             </CardHeader>
-            <CardContent>
-                <Tabs defaultValue="option-1">
-                    <TabsList className="grid w-full grid-cols-3">
+            <CardContent className="pt-6">
+                <Tabs defaultValue="option-1" className="space-y-4">
+                    <TabsList className="flex rounded-none border border-border bg-[#EEF2F6] dark:bg-[#10192B] p-0.5 w-max">
                         {generatedTimetables.map((_, index) => (
-                            <TabsTrigger key={`trigger-${index + 1}`} value={`option-${index + 1}`}>Option {index + 1}</TabsTrigger>
+                            <TabsTrigger key={`trigger-${index + 1}`} value={`option-${index + 1}`} className="rounded-none font-mono text-xs px-4 py-1.5 data-[state=active]:bg-[#1B2A4A] data-[state=active]:text-white dark:data-[state=active]:bg-card dark:data-[state=active]:text-white transition-all">
+                              CFG-{index + 1}
+                            </TabsTrigger>
                         ))}
                     </TabsList>
                     {generatedTimetables.map((generated, index) => (
-                        <TabsContent key={`content-${index + 1}`} value={`option-${index + 1}`}>
+                        <TabsContent key={`content-${index + 1}`} value={`option-${index + 1}`} className="border border-border/50 p-1 bg-white dark:bg-card/20 select-text">
                             <div className="overflow-x-auto">
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Day</TableHead>
-                                            <TableHead>Time</TableHead>
-                                            <TableHead>Room</TableHead>
-                                            <TableHead>Batch</TableHead>
-                                            <TableHead>Subject</TableHead>
-                                            <TableHead>Faculty</TableHead>
+                                <Table className="border-collapse">
+                                    <TableHeader className="bg-[#EEF2F6] dark:bg-[#10192B]/80 font-mono text-[11px]">
+                                        <TableRow className="border-b border-border/50">
+                                            <TableHead className="font-bold text-[#1B2A4A] dark:text-white pb-2.5 pt-2.5">DAY</TableHead>
+                                            <TableHead className="font-bold text-[#1B2A4A] dark:text-white pb-2.5 pt-2.5">INTERVAL</TableHead>
+                                            <TableHead className="font-bold text-[#1B2A4A] dark:text-white pb-2.5 pt-2.5">ROOM.ID</TableHead>
+                                            <TableHead className="font-bold text-[#1B2A4A] dark:text-white pb-2.5 pt-2.5">COHORT</TableHead>
+                                            <TableHead className="font-bold text-[#1B2A4A] dark:text-white pb-2.5 pt-2.5">SUBJECT</TableHead>
+                                            <TableHead className="font-bold text-[#1B2A4A] dark:text-white pb-2.5 pt-2.5">OFFICER</TableHead>
                                         </TableRow>
                                     </TableHeader>
-                                    <TableBody>
+                                    <TableBody className="font-mono text-xs">
                                         {generated.timetable.map((entry: TimetableEntry, entryIndex: number) => (
-                                            <TableRow key={entryIndex}>
-                                                <TableCell>{entry.day}</TableCell>
-                                                <TableCell>{entry.time}</TableCell>
-                                                <TableCell>{entry.room}</TableCell>
-                                                <TableCell>{entry.batch}</TableCell>
-                                                <TableCell>{entry.subject}</TableCell>
-                                                <TableCell>{entry.faculty}</TableCell>
+                                            <TableRow key={entryIndex} className="hover:bg-muted/10 border-b border-border/10 last:border-b-0">
+                                                <TableCell className="font-bold pb-2 pt-2">{entry.day}</TableCell>
+                                                <TableCell className="pb-2 pt-2 text-[#5B6B82] dark:text-neutral-400">{entry.time}</TableCell>
+                                                <TableCell className="pb-2 pt-2">{entry.room}</TableCell>
+                                                <TableCell className="pb-2 pt-2 text-[#E2A73E] font-bold">{entry.batch}</TableCell>
+                                                <TableCell className="pb-2 pt-2 text-[#1B2A4A] dark:text-neutral-100 font-sans font-bold">{entry.subject}</TableCell>
+                                                <TableCell className="pb-2 pt-2 text-[#5B6B82] dark:text-neutral-400">{entry.faculty}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
@@ -522,7 +534,3 @@ export default function TimetableGenerator() {
     </div>
   );
 }
-
-    
-
-    

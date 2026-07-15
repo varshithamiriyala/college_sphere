@@ -13,6 +13,8 @@ type Theme = {
   accent: string;
 };
 
+// The presets just serve as metadata for the clickable swatches here now.
+// The actual CSS variables (foreground, muted-foreground, border etc.) are fully defined in globals.css per data-theme!
 const themes: Theme[] = [
     { name: 'Default', primary: '222.2 47.4% 11.2%', background: '0 0% 100%', accent: '210 40% 96.1%' },
     { name: 'Oceanic', primary: '205 90% 45%', background: '210 40% 98%', accent: '180 70% 40%' },
@@ -20,7 +22,6 @@ const themes: Theme[] = [
     { name: 'Sunset', primary: '25 95% 55%', background: '20 40% 98%', accent: '0 85% 60%' },
     { name: 'Lavender', primary: '250 60% 60%', background: '250 30% 99%', accent: '240 80% 75%' },
 ];
-
 
 export default function ThemeCustomizer() {
   const [mounted, setMounted] = useState(false);
@@ -42,13 +43,16 @@ export default function ThemeCustomizer() {
 
   const applyTheme = (theme: Theme) => {
     const root = document.documentElement;
-    root.style.setProperty('--primary', theme.primary);
-    root.style.setProperty('--background', theme.background);
-    root.style.setProperty('--accent', theme.accent);
-    // Simple derivatives
-    root.style.setProperty('--card', theme.background);
-    root.style.setProperty('--muted', `hsl(${theme.accent} / 0.5)`);
-    root.style.setProperty('--secondary', `hsl(${theme.accent} / 0.2)`);
+    // Remove all previous style.setProperty calls and replace with data-theme to support Light/Dark matrix robustly.
+    // Clean up any old inline styles that were breaking contrast
+    root.style.removeProperty('--primary');
+    root.style.removeProperty('--background');
+    root.style.removeProperty('--accent');
+    root.style.removeProperty('--card');
+    root.style.removeProperty('--muted');
+    root.style.removeProperty('--secondary');
+    
+    root.setAttribute('data-theme', theme.name.toLowerCase());
   };
 
   const handleThemeChange = (themeName: string) => {

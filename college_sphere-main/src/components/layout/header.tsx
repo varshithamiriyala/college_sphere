@@ -43,7 +43,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-white/5 bg-background/30 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
         <div className="md:hidden">
             <SidebarTrigger />
         </div>
@@ -53,15 +53,16 @@ export function Header() {
         <div className="flex flex-1 items-center justify-end gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="relative hover:bg-white/5 text-muted-foreground hover:text-white rounded-full">
                 <Bell className="h-5 w-5" />
+                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
                 <span className="sr-only">Notifications</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-80" align="end">
+            <DropdownMenuContent className="w-80 bg-zinc-955/90 backdrop-blur-xl border-white/5 rounded-2xl" align="end">
                 <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/5" />
+                <DropdownMenuItem className="hover:bg-white/5 focus:bg-white/5 cursor-pointer">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium">New Timetable Generated</p>
                     <p className="text-xs text-muted-foreground">
@@ -69,7 +70,7 @@ export function Header() {
                     </p>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-white/5 focus:bg-white/5 cursor-pointer">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium">Deadline Reminder</p>
                     <p className="text-xs text-muted-foreground">
@@ -77,7 +78,7 @@ export function Header() {
                     </p>
                   </div>
                 </DropdownMenuItem>
-                 <DropdownMenuItem>
+                 <DropdownMenuItem className="hover:bg-white/5 focus:bg-white/5 cursor-pointer">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium">Faculty Meeting</p>
                     <p className="text-xs text-muted-foreground">
@@ -91,23 +92,23 @@ export function Header() {
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Users className="mr-2 h-4 w-4" />
+                <Button variant="outline" size="sm" className="rounded-full border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white transition-all font-medium py-1.5 px-4 h-9">
+                  <Users className="mr-2 h-4 w-4 text-blue-400" />
                   Switch Role
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-zinc-955/90 backdrop-blur-xl border-white/5 rounded-2xl">
                 <DropdownMenuLabel>Select a role to view as</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => handleRoleSwitch('admin')}>
+                <DropdownMenuSeparator className="bg-white/5" />
+                <DropdownMenuItem onClick={() => handleRoleSwitch('admin')} className="cursor-pointer hover:bg-white/5 focus:bg-white/5">
                   <Check className={`mr-2 h-4 w-4 ${user.role === 'admin' ? 'opacity-100' : 'opacity-0'}`} />
                   Admin
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleRoleSwitch('faculty')}>
+                <DropdownMenuItem onClick={() => handleRoleSwitch('faculty')} className="cursor-pointer hover:bg-white/5 focus:bg-white/5">
                   <Check className={`mr-2 h-4 w-4 ${user.role === 'faculty' ? 'opacity-100' : 'opacity-0'}`} />
                   Faculty
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleRoleSwitch('student')}>
+                <DropdownMenuItem onClick={() => handleRoleSwitch('student')} className="cursor-pointer hover:bg-white/5 focus:bg-white/5">
                   <Check className={`mr-2 h-4 w-4 ${user.role === 'student' ? 'opacity-100' : 'opacity-0'}`} />
                   Student
                 </DropdownMenuItem>
